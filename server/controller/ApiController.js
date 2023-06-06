@@ -291,6 +291,30 @@ console.log(generateString(10));
 
 
 
+        //ALL Videos//
+        exports.categoryVideos = async(req, res) =>{
+            try{
+                const vcategory = req.query.category;
+                const videos_categories = await VideosModel.find({videos_category:vcategory}).sort({videos_id:-1}).lean();
+                res.json(videos_categories);
+            }catch(error){
+                res.status(400).json({message: error.message});
+            }
+        }
+
+        exports.playVideos = async(req, res) =>{
+            try{
+                const vkey = req.query.vkey;
+                const watch_videos = await VideosModel.find({videos_key:vkey}).lean();
+                res.json(watch_videos);
+            }catch(error){
+                res.status(400).json({message: error.message});
+            }
+        }
+
+
+
+
 
 
 

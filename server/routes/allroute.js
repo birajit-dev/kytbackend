@@ -109,6 +109,13 @@ router.get('/api/v1/musicadd', WebController.musicPage);
 
 
 
+//for Videos categories//
+router.get('/api/v1/get/videos', ApiController.categoryVideos);
+router.get('/api/v1/watch/videos', ApiController.playVideos);
+
+
+
+
 
 
 
