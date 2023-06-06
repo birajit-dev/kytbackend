@@ -14,5 +14,5 @@ const mantraSchema = new mongoose.Schema({
             update_date: String,     
 });
 
-mantraSchema.plugin(AutoIncrement, {id:'mantra_id',inc_field: 'mantra_id'});
+mantraSchema.plugin(AutoIncrement, {id:'mantra_ids',inc_field: 'mantra_ids'});
 module.exports = mongoose.model('mantras', mantraSchema);

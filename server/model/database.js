@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://127.0.0.1:27017/neheraldnews", {
+mongoose.connect("mongodb+srv://kytadmindb:$01%40$db$mongo*12@kytappdb.mongocluster.cosmos.azure.com/kytapis?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000", {
    useNewUrlParser: true,
    useUnifiedTopology: true
 });

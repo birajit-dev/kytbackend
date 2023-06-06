@@ -105,7 +105,7 @@ router.post('/api/v1/post/musiccategories', ApiController.addMcategories);
 
 //Music Add
 router.post('/api/v1/post/musicadd', ApiController.addMusic);
-router.get('/api/v1/musicadd', WebController.addMusic);
+router.get('/api/v1/musicadd', WebController.musicPage);
 
 
 
