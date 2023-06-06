@@ -304,8 +304,9 @@ console.log(generateString(10));
 
         exports.playVideos = async(req, res) =>{
             try{
+            
                 const vkey = req.query.vkey;
-                const watch_videos = await VideosModel.find({videos_key:vkey}).lean();
+                const watch_videos = await VideosModel.find({videos_key:vkey},{"videos_url":0,"videos_keyword":0,"videos_temple_locate":0,"videos_key": 0,"videos_publish":0}).lean();
                 res.json(watch_videos);
             }catch(error){
                 res.status(400).json({message: error.message});
