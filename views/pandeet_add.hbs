@@ -1,0 +1,82 @@
+<div class="content-wrapper">   
+    <div class="container-xxl flex-grow-1 container-p-y">
+    
+        <!-- Form with Tabs -->
+<div class="row">
+  <div class="col">
+    <div class="card mb-3">
+      <div class="card-header">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-personal" role="tab" aria-selected="true">Pandeet Info</button>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="tab-content">
+        <div class="tab-pane fade active show" id="form-tabs-personal" role="tabpanel">
+          <form method="post" action="/api/v1/post/pandeet">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                  <input type="text" id="formtabs-first-name" name="pandeet_name" class="form-control" placeholder="Pandeet Name" />
+                  <label for="formtabs-first-name">Pandeet Name</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                  <input type="text" id="formtabs-last-name" name="pandeet_email" class="form-control" placeholder="Pandeet Email" />
+                  <label for="formtabs-last-name">Email</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                  <input type="text" id="formtabs-phone" class="form-control phone-mask" name="pandeet_phone" placeholder="658 799 8941" aria-label="658 799 8941" />
+                  <label for="formtabs-phone">Phone No</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                  <input type="text" id="formtabs-last-name" name="pandeet_address" class="form-control" placeholder="Pandeet Email" />
+                  <label for="formtabs-last-name">Address</label>
+                </div>
+              </div>
+
+              <label>Pandeet Bio</label>
+              <div class="form-floating form-floating-outline">
+                    <textarea class="mytextarea"  name="pandeet_bio" rows="10" novalidate></textarea>
+              </div>
+
+
+
+
+              
+            </div>
+            <div class="pt-4">
+              <button type="Submit" name="publish" class="btn btn-primary me-sm-3 me-1">Submit</button>
+              <button type="reset" class="btn btn-label-secondary">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+    
+    </div>
+</div>
+            
+            
+
+
+
+
+
+
+
+
