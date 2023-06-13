@@ -59,6 +59,6 @@ app.use('*', (req, res) => {
 
 
 // port where app is served
-app.listen(4000, () => {
-    console.log('The web server has started on port 4000');
+app.listen(3000, () => {
+    console.log('The web server has started on port 3000');
 });
