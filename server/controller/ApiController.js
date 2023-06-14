@@ -114,10 +114,11 @@ console.log(generateString(10));
             try{
                 const vData = req.body;
                 let upVcategories = new VcategoriesModel({
-                    vcategories_name: vData.vcategories_name,
-                    vcategories_thumbnail: vData.vcategories_thumbnail,
-                    vcategories_keywrods: vData.vcategories_keywrods,
-                    vcategories_descriptions: vData.vcategories_descriptions,
+                    categories_title: vData.categories_title,
+                    categories_Id: vData.categories_Id,
+                    thumbnail: vData.thumbnail,
+                    keyword: vData.keyword,
+                    description: vData.description,
                     update_date: newDate, 
                 });
                 await upVcategories.save();
@@ -312,6 +313,18 @@ console.log(generateString(10));
                 res.status(400).json({message: error.message});
             }
         }
+
+        //all category show//
+        exports.videoesCategories = async(req, res) =>{
+            try{
+                const vcategories = await VcategoriesModel.find({}).lean();
+                res.json(vcategories);
+            }catch(error){
+                res.status(400).json({message: error.message});
+            }
+        }
+
+        
 
 
 
