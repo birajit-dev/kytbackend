@@ -134,6 +134,7 @@ console.log(generateString(10));
             try{
                 const subData = req.body;
                 let upSub = new SubCategoryModel({
+                    parentCategory: subData.parentCategory,
                     subcategory_title: subData.subcategory_title,
                     subcategory_Id: subData.subcategory_Id,
                     subcategory_thumbnail: subData.subcategory_thumbnail,

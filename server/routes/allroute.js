@@ -138,7 +138,9 @@ router.get('/api/v1/mobile/music', ApiController.MusicListen);
 router.get('/api/v1/mobile/wishes', ApiController.wishesAPI);
 router.get('/api/v1/mobile/vcategory', ApiController.videoesCategories);
 router.get('/api/v1/mobile/vsubcategory', ApiController.subCategoryVideos);
-router.get('/api/v1/mobile/watch', ApiController.playVideos);
+router.get('/api/v1/mobile/watchV', ApiController.playVideos);
+router.get('/api/v1/mobile/getVideos', ApiController.categoryVideos);
+
 
 
 
