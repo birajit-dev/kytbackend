@@ -3,7 +3,8 @@ var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const mantracategoriesSchema = new mongoose.Schema({
             mantra_categories_id: Number,
-            mantras_categories_name: String,
+            mantras_categories_title: String,
+            mantra_category_Id: String,
             mantras_categories_thumbnail: String,
             update_date: String,     
 });

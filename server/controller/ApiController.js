@@ -28,6 +28,8 @@ const HoroscopeModel = require('../model/horoscope');
 const WishesModel = require('../model/wishes');
 const MantraCategoriesModel = require('../model/mantra_categories');
 const MantraModel = require('../model/mantra');
+const SubCategoryModel =  require('../model/vsubcategory');
+const music = require('../model/music');
 const newDate = moment().format('lll');
 //Value KEY Generator for Podcast and Videos & Musics
 const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -114,15 +116,31 @@ console.log(generateString(10));
             try{
                 const vData = req.body;
                 let upVcategories = new VcategoriesModel({
-                    categories_title: vData.categories_title,
-                    categories_Id: vData.categories_Id,
-                    thumbnail: vData.thumbnail,
-                    keyword: vData.keyword,
-                    description: vData.description,
-                    update_date: newDate, 
+                    vcategories_title: vData.vcategories_title,
+                    categoriesId: vData.categoriesId,
+                    vcategories_thumbnail: vData.vcategories_thumbnail,
+                    vcategories_keywrods: vData.vcategories_keywrods,
+                    vcategories_descriptions: vData.vcategories_descriptions,
+                    update_date: newDate,  
                 });
                 await upVcategories.save();
-                res.send("Videos Categories Saved,")
+                res.json(upVcategories)
+            }catch(error){
+                res.status(400).json({message: error.message})
+            }
+        }
+
+        exports.addVsubCategory = async(req, res, next) =>{
+            try{
+                const subData = req.body;
+                let upSub = new SubCategoryModel({
+                    subcategory_title: subData.subcategory_title,
+                    subcategory_Id: subData.subcategory_Id,
+                    subcategory_thumbnail: subData.subcategory_thumbnail,
+                    update_date: newDate,
+                })
+                await upSub.save();
+                res.json(upSub);
             }catch(error){
                 res.status(400).json({message: error.message})
             }
@@ -147,7 +165,8 @@ console.log(generateString(10));
                     update_date: newDate,   
                 });
                 await addVideos.save();
-                res.send("Videos Categories Saved,")
+                res.json(addVideos)
+                //res.send("Videos Categories Saved,")
 
             }catch(error){
                 res.status(400).json({message: error.message})
@@ -158,20 +177,17 @@ console.log(generateString(10));
             try{
                 const addM = req.body;
                 let adMusic = new MusicModel({
-                    music_title: adMusic.music_title,
-                    music_description: adMusic.music_description,
-                    music_category: adMusic.music_category,
-                    music_subcategory: adMusic.music_subcategory,
-                    music_url: adMusic.music_url,
-                    music_path: adMusic.music_path,
-                    music_keyword: adMusic.music_keyword,
-                    music_thumbnail: adMusic.music_thumbnail,
-                    music_publisher: adMusic.music_publisher,
-                    music_publish: adMusic.music_publish,
-                    update_date: newDate,
+                    music_title: addM.music_title,
+                    music_category: addM.music_category,
+                    music_subcategory: addM.music_subcategory,
+                    music_url: addM.music_url,
+                    music_key: addM.music_key,
+                    music_path: addM.music_path,
+                    music_publisher: addM.music_publisher,
+                    update_date: newDate, 
                 });
-                await addM.save();
-                res.send('Music Saved');
+                await adMusic.save();
+                res.json(adMusic);
             }catch(error){
                 res.status(400).json({message: error.message})
             }
@@ -181,11 +197,10 @@ console.log(generateString(10));
             try{
                 const addMc = req.body;
                 let addMct = new MusicCategoriesModel({
-                    mcategories_name: addMc.mcategories_name,
+                    mcategories_title: addMc.mcategories_title,
+                    mcategories_Id: addMc.mcategories_Id,
                     mcategories_thumbnail: addMc.mcategories_thumbnail,
-                    mcategories_keywrods: addMc.mcategories_keywrods,
-                    mcategories_descriptions: addMc.mcategories_descriptions,
-                    update_date: newDate,
+                    update_date: newDate, 
                 });
                 await addMct.save();
                 res.send("Music Categories Saved");
@@ -204,12 +219,12 @@ console.log(generateString(10));
                     podcast_description: podData.podcast_description,
                     podcast_url: podData.podcast_url,
                     podcast_key: podData.podcast_key,
+                    podcast_path: podData.podcast_path,
                     podcast_thumbnail: podData.podcast_thumbnail,
-                    podcast_publish: podData.podcast_publish,
                     update_date: newDate,
                 })
                 await addPodData.save();
-                res.send("Music Categories Saved");
+                res.json(addPodData);
             }catch(error){
                 res.status(400).json({message: error.message})
             }
@@ -239,10 +254,11 @@ console.log(generateString(10));
 
         exports.wishesPost = async(req, res) =>{
             try{
-                const wData = res.body;
+                const wData = req.body;
                 let wishesAdd = new WishesModel({
                     wishes_thumbnail: wData.wishes_thumbnail,
                     wishes_url: wData.wishes_url,
+                    wishes_path: wData.wishes_path,
                     wishes_publish: wData.wishes_publish,
                     update_date: newDate,
                 });
@@ -257,7 +273,8 @@ console.log(generateString(10));
             try{
                 const mantraCdata = req.body;
                 let mantraCategoriesAdd = new MantraCategoriesModel({
-                    mantras_categories_name: mantraCdata.mantras_categories_name,
+                    mantras_categories_title: mantraCdata.mantras_categories_title,
+                    mantra_category_Id: mantraCdata.mantra_category_Id,
                     mantras_categories_thumbnail: mantraCdata.mantras_categories_thumbnail,
                     update_date: newDate,   
                 });
@@ -275,8 +292,8 @@ console.log(generateString(10));
                     mantra_title: mantraData.mantra_title,
                     mantra_path: mantraData.mantra_path,
                     mantra_url: mantraData.mantra_url,
+                    mantra_key: mantraData.mantra_key,
                     mantra_category: mantraData.mantra_category,
-                    mantra_keyword: mantraData.mantra_keyword,
                     mantra_sloak: mantraData.mantra_sloak,
                     mantra_thumbnail: mantraData.mantra_thumbnail,
                     mantra_publish: mantraData.mantra_publish,
@@ -296,8 +313,19 @@ console.log(generateString(10));
         exports.categoryVideos = async(req, res) =>{
             try{
                 const vcategory = req.query.category;
-                const videos_categories = await VideosModel.find({videos_category:vcategory}).sort({videos_id:-1}).lean();
-                res.json(videos_categories);
+                const subcategory = req.query.subcategory;
+                if(vcategory == "all"){
+                    const videos_categories = await VideosModel.find().sort({videos_id:-1}).lean();
+                    res.json(videos_categories);
+                }
+                else if(subcategory == "all"){
+                    const videos_categories = await VideosModel.find({videos_category:vcategory}).sort({videos_id:-1}).lean();
+                    res.json(videos_categories);
+                }
+                else{
+                    const videos_categories = await VideosModel.find({$and:[{videos_category:vcategory},{videos_sub_category:subcategory}]}).sort({videos_id:-1}).lean();
+                    res.json(videos_categories);
+                }
             }catch(error){
                 res.status(400).json({message: error.message});
             }
@@ -305,7 +333,6 @@ console.log(generateString(10));
 
         exports.playVideos = async(req, res) =>{
             try{
-            
                 const vkey = req.query.vkey;
                 const watch_videos = await VideosModel.find({videos_key:vkey},{"videos_url":0,"videos_keyword":0,"videos_temple_locate":0,"videos_key": 0,"videos_publish":0}).lean();
                 res.json(watch_videos);
@@ -323,6 +350,83 @@ console.log(generateString(10));
                 res.status(400).json({message: error.message});
             }
         }
+
+        exports.subCategoryVideos = async(req, res) =>{
+            const category = req.query.category;
+            const subv = await SubCategoryModel.find({parentCategory:category}).sort({sub_category_id:-1}).lean();
+            res.json(subv);
+        }
+
+
+
+
+        //Podcast View//
+        exports.podcastAll = async(req, res) =>{
+            const podcast = await PodcastModel.find({}).sort({podcast_id: -1}).lean();
+            res.json(podcast);
+        }
+        exports.podcastView = async(req, res) =>{
+            const pKey = req.query.pKey;
+            const podcastWatch = await PodcastModel.findOne({podcast_key:pKey}).lean();
+            res.json(podcastWatch);
+        }
+        
+
+        //Mantra All/
+        exports.mantraCategoryView = async(req, res) =>{
+            const mantraCAll = await MantraCategoriesModel.find({}).sort({mantra_categories_id:-1}).lean();
+            res.json(mantraCAll);
+        }
+        exports.mantraByCategory = async(req, res) =>{
+            const mantraId = req.query.category;
+
+            if(mantraId == "all"){
+                const mantrabycategory = await MantraModel.find({}).sort({mantra_id:-1}).lean();
+                res.json(mantrabycategory);
+
+            }
+            else{
+                const mantrabycategory = await MantraModel.find({mantra_category:mantraId}).sort({mantra_id:-1}).lean();
+                res.json(mantrabycategory);
+            }
+        }
+        exports.mantraListenId = async(req, res) =>{
+            const mantraKey = req.query.mantraKey;
+            const manstraStream = await MantraModel.findOne({mantra_key:mantraKey}).lean();
+            res.json(manstraStream);
+        }
+
+        //Musci API/
+        exports.MusicCategories = async(req, res) =>{
+            const musicCategory = await MusicCategoriesModel.find({}).sort({music_categories_id:-1}).lean();
+            res.json(musicCategory);
+        }
+        exports.MusicFilter = async(req, res) =>{
+            const category = req.query.category;
+            const subcategory = req.query.subcategory;
+
+            if(subcategory == "all"){
+                const musicFilter = await MusicModel.find({music_category:category}).sort({music_id:-1}).lean();
+                res.json(musicFilter);
+            }
+            else{
+                const musicFilter = await MusicModel.find({$and:[{music_category:category},{music_subcategory:subcategory}]}).sort({music_id:-1}).lean();
+                res.json(musicFilter);
+            }
+            
+        }
+        exports.MusicListen = async(req, res) =>{
+            const musicKey = req.query.musicKey;
+            const listen = await MusicModel.findOne({music_key:musicKey}).lean();
+            res.json(listen);
+        }
+
+        //Wishes/
+        exports.wishesAPI = async(req, res) =>{
+            const wish = await WishesModel.find({}).sort({wishes_id:-1}).lean();
+            res.json(wish);
+        }
+
 
         
 

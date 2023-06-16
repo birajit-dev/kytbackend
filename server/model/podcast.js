@@ -6,9 +6,10 @@ const podcastSchema = new mongoose.Schema({
     podcast_title: String,
     podcast_description: String,
     podcast_url: String,
+    podcast_category: String,
+    podcast_path: String,
     podcast_key: String,
     podcast_thumbnail: String,
-    podcast_publish: String,
     update_date: String,
 });
 

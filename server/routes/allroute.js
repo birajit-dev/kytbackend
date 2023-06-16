@@ -97,14 +97,14 @@ router.post('/api/v1/post/videoes', ApiController.addVideos);
 router.get('/api/v1/videos', WebController.videosPage);
 
 router.post('/api/v1/post/videos_categories', ApiController.addVcategories);
+router.post('/api/v1/post/vsubcatory', ApiController.addVsubCategory);
+
 router.get('/api/v1/vcategory', WebController.addVc);
 
 //Music Categories--
 router.get('/api/v1/musiccategories', WebController.mCategoryPage);
-router.post('/api/v1/post/musiccategories', ApiController.addMcategories);
 
 //Music Add
-router.post('/api/v1/post/musicadd', ApiController.addMusic);
 router.get('/api/v1/musicadd', WebController.musicPage);
 
 
@@ -113,6 +113,53 @@ router.get('/api/v1/musicadd', WebController.musicPage);
 router.get('/api/v1/get/videos', ApiController.categoryVideos);
 router.get('/api/v1/watch/videos', ApiController.playVideos);
 router.get('/api/v1/get/videoscategories', ApiController.videoesCategories);
+
+
+
+//API for post//
+router.post('/api/v1/post/mantracategory', ApiController.mantraCategoriesPost);
+router.post('/api/v1/post/mantra', ApiController.mantrasPost);
+router.post('/api/v1/post/musiccategories', ApiController.addMcategories);
+router.post('/api/v1/post/musicadd', ApiController.addMusic);
+router.post('/api/v1/post/podcast', ApiController.podcastPost);
+router.post('/api/v1/post/wishes', ApiController.wishesPost);
+
+
+
+//API for GET//
+router.get('/api/v1/mobile/podcastall', ApiController.podcastAll);
+router.get('/api/v1/mobile/podcastwatch', ApiController.podcastView);
+router.get('/api/v1/mobile/mantracategoies', ApiController.mantraCategoryView);
+router.get('/api/v1/mobile/mantra', ApiController.mantraByCategory);
+router.get('/api/v1/mobile/mantraListen', ApiController.mantraListenId);
+router.get('/api/v1/mobile/musiccategories', ApiController.MusicCategories);
+router.get('/api/v1/mobile/musicbycategory', ApiController.MusicFilter);
+router.get('/api/v1/mobile/music', ApiController.MusicListen);
+router.get('/api/v1/mobile/wishes', ApiController.wishesAPI);
+router.get('/api/v1/mobile/vcategory', ApiController.videoesCategories);
+router.get('/api/v1/mobile/vsubcategory', ApiController.subCategoryVideos);
+router.get('/api/v1/mobile/watch', ApiController.playVideos);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

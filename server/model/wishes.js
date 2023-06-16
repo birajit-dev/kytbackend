@@ -5,6 +5,7 @@ const wishesSchema = new mongoose.Schema({
             wishes_id: Number,
             wishes_thumbnail: String,
             wishes_url: String,
+            wishes_path: String,
             wishes_publish: String,
             update_date: String,
 });
