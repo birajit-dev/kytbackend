@@ -30,6 +30,8 @@ const MantraCategoriesModel = require('../model/mantra_categories');
 const MantraModel = require('../model/mantra');
 const SubCategoryModel =  require('../model/vsubcategory');
 const music = require('../model/music');
+const UserModel = require('../model/user');
+
 const newDate = moment().format('lll');
 //Value KEY Generator for Podcast and Videos & Musics
 const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -466,8 +468,40 @@ exports.testOnePost = async(req, res, next) =>{
 
 
 
+    //User Creations and Verify//
+    exports.authUser = async(req, res) =>{
+        let mno = req.body;
+        const userCheck = await UserModel.findOne({phone_no:mno.phone}).lean();
+        if(userCheck.phone_no == mno.phone){
+            //send response and otp
+            const m_otp = "1234";
+            res.json(m_otp);
+            return;
+        }
+            const m_otp = "1234";
+            let userCreate = new UserModel({
+                phone_no: mno.phone,
+                phone_otp: m_otp,
+                update_date: newDate,
+            });
+            let userSave = await userCreate.save();
+            res.json(userSave);
+        
+
+    }
     
-    
+    exports.deleteVidoes = async(req, res) =>{
+        let vid = req.query.id;
+        VideosModel.remove({_id:vid}, 
+            function(err, data) {
+                if(err){
+                    res.json("Videos Deleted");
+                }
+                else{
+                    res.json("Videos Can not Delete");
+                }
+            }); 
+    }
     
     
 

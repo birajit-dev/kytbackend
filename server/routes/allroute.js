@@ -140,6 +140,15 @@ router.get('/api/v1/mobile/vcategory', ApiController.videoesCategories);
 router.get('/api/v1/mobile/vsubcategory', ApiController.subCategoryVideos);
 router.get('/api/v1/mobile/watchV', ApiController.playVideos);
 router.get('/api/v1/mobile/getVideos', ApiController.categoryVideos);
+router.post('/api/v1/mobile/registeruser', ApiController.authUser);
+
+
+
+//Delete API of Edit API//
+router.get('/api/v1/web/deleteVideos', ApiController.deleteVidoes);
+
+
+
 
 
 
