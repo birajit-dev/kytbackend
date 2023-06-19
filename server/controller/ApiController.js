@@ -31,6 +31,8 @@ const MantraModel = require('../model/mantra');
 const SubCategoryModel =  require('../model/vsubcategory');
 const music = require('../model/music');
 const UserModel = require('../model/user');
+const { json } = require('body-parser');
+const { rmSync } = require('fs');
 
 const newDate = moment().format('lll');
 //Value KEY Generator for Podcast and Videos & Musics
@@ -317,18 +319,66 @@ console.log(generateString(10));
             try{
                 const vcategory = req.query.category;
                 const subcategory = req.query.subcategory;
+
                 if(vcategory == "all"){
-                    const videos_categories = await VideosModel.find().sort({videos_id:-1}).lean();
-                    res.json(videos_categories);
+                    const vd = await VideosModel.find().sort({videos_id:-1}).lean();
+                    const falseData = {
+                        resultFlag: 1,
+                        message: "Video SubCategories Available",
+                        data: vd
+                      };
+                    res.json(falseData);    
+
                 }
                 else if(subcategory == "all"){
-                    const videos_categories = await VideosModel.find({videos_category:vcategory}).sort({videos_id:-1}).lean();
-                    res.json(videos_categories);
+                    const vd = await VideosModel.find({videos_category:vcategory}).sort({videos_id:-1}).lean();
+                    const falseData = {
+                        resultFlag: 1,
+                        message: "Video SubCategories Available",
+                        data: vd
+                      };
+                    const trueData = {
+                        resultFlag: 0,
+                        message: "Video Subcategories Categories not Available",
+                        data: vd
+                      };
+    
+                      let text = "";
+                      for(var i=0 ;i<vd.length;i++) {
+                          text = vd[0].videos_title;
+                      }
+                      if(text){
+                        res.json(falseData)
+                        }else{
+                        res.json(trueData);
+                        }
                 }
                 else{
-                    const videos_categories = await VideosModel.find({$and:[{videos_category:vcategory},{videos_sub_category:subcategory}]}).sort({videos_id:-1}).lean();
-                    res.json(videos_categories);
+                    const vd = await VideosModel.find({$and:[{videos_category:vcategory},{videos_sub_category:subcategory}]}).sort({videos_id:-1}).lean();
+                    const falseData = {
+                        resultFlag: 1,
+                        message: "Video SubCategories Available",
+                        data: vd
+                      };
+                    const trueData = {
+                        resultFlag: 0,
+                        message: "Video Subcategories Categories not Available",
+                        data: vd
+                      };
+    
+                      let text = "";
+                      for(var i=0 ;i<vd.length;i++) {
+                          text = vd[0].videos_title;
+                      }
+                      if(text){
+                        res.json(falseData)
+                        }else{
+                        res.json(trueData);
+                        }
+                    
                 }
+
+
             }catch(error){
                 res.status(400).json({message: error.message});
             }
@@ -348,7 +398,12 @@ console.log(generateString(10));
         exports.videoesCategories = async(req, res) =>{
             try{
                 const vcategories = await VcategoriesModel.find({}).lean();
-                res.json(vcategories);
+                const data = {
+                    resultFlag: 1,
+                    message: "Video Categories Available",
+                    data: vcategories
+                  };
+                  res.json(data);
             }catch(error){
                 res.status(400).json({message: error.message});
             }
@@ -357,7 +412,33 @@ console.log(generateString(10));
         exports.subCategoryVideos = async(req, res) =>{
             const category = req.query.category;
             const subv = await SubCategoryModel.find({parentCategory:category}).sort({sub_category_id:-1}).lean();
-            res.json(subv);
+            const trueData = {
+                resultFlag: 0,
+                message: "Video Subcategories Categories not Available",
+                data: subv
+            };
+            const falseData = {
+                            resultFlag: 1,
+                            message: "Video SubCategories Available",
+                            data: subv
+            };
+            let text = "";
+            for(var i=0 ;i<subv.length;i++) {
+                text = subv[0].parentCategory;
+            }
+            if(text){
+                res.json(falseData)
+            }else{
+                res.json(trueData);
+            }
+            // if(text === null){
+            //     res.json("is null")
+            // }else{
+            //     res.json("not null");
+            // }
+
+
+
         }
 
 
@@ -502,13 +583,3 @@ exports.testOnePost = async(req, res, next) =>{
                 }
             }); 
     }
-    
-    
-
-
-
-  
-
-
-
-
