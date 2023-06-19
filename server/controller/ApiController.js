@@ -251,7 +251,7 @@ console.log(generateString(10));
                     update_date: newDate, 
                 });
                 await addHoro.save();
-                res.send("Horoscope Added Successfully");
+                res.json(addHoro);
             }catch(error){
                 res.status(400).json({message: error.message});
             }
@@ -699,4 +699,127 @@ exports.testOnePost = async(req, res, next) =>{
                     res.json("Videos Can not Delete");
                 }
             }); 
+    }
+
+
+    exports.horoscopeAPI = async(req, res) =>{
+        const sign = req.query.sign;
+        const hdeatails = await HoroscopeModel.findOne({ horoscope_category: sign }).sort({ horoscope_id: -1 }).lean();
+        const obj1 = {
+            resultFlag: 1,
+            message: "Horoscope Record Found",
+          };
+          
+          const object_false = {
+            resultFlag: 0,
+            message: "Horoscope Record Not Found",
+          };
+          
+          let mergedObj;
+          
+          if (hdeatails) {
+            mergedObj = Object.assign({}, obj1, hdeatails);
+            if (hdeatails.horoscope_category) {
+              res.json(mergedObj);
+            } else {
+              res.json(object_false);
+            }
+          } else {
+            res.json(object_false);
+          }
+    }
+
+    exports.horoscopeCategoryAPI = async(req, res) =>{
+        const obj1 = {
+            resultFlag: 1,
+            message: "Horoscope Record Found",
+            data:[
+                {
+                    "_id":"1",
+                    "horoscope_title": "Aries",
+                    "category":"aries",
+                    "thumbnail_sign":"aries.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"2",
+                    "horoscope_title": "Taurus",
+                    "category":"taurus",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"3",
+                    "horoscope_title": "Gemini",
+                    "category":"gemini",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"4",
+                    "horoscope_title": "Cancer",
+                    "category":"cancer",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"5",
+                    "horoscope_title": "Leo",
+                    "category":"leo",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"6",
+                    "horoscope_title": "Virgo",
+                    "category":"virgo",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"7",
+                    "horoscope_title": "Scorpio",
+                    "category":"scorpio",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"8",
+                    "horoscope_title": "Sagittarius",
+                    "category":"sagittarius",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"9",
+                    "horoscope_title": "Capricorn",
+                    "category":"capricorn",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"10",
+                    "horoscope_title": "Aquarius",
+                    "category":"aquarius",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"11",
+                    "horoscope_title": "Pisces",
+                    "category":"pisces",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                },
+                {
+                    "_id":"12",
+                    "horoscope_title": "Libra",
+                    "category":"libra",
+                    "thumbnail_sign":"taurus.jpg",
+                    "update_date":"19/06/2023",
+                }
+
+            ]
+        };
+        res.json(obj1);
     }

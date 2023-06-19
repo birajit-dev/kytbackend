@@ -124,6 +124,10 @@ router.post('/api/v1/post/musicadd', ApiController.addMusic);
 router.post('/api/v1/post/podcast', ApiController.podcastPost);
 router.post('/api/v1/post/wishes', ApiController.wishesPost);
 
+router.post('/api/v1/post/horoscope', ApiController.horoscopePost);
+
+
+
 
 
 //API for GET//
@@ -140,6 +144,12 @@ router.get('/api/v1/mobile/vcategory', ApiController.videoesCategories);
 router.get('/api/v1/mobile/vsubcategory', ApiController.subCategoryVideos);
 router.get('/api/v1/mobile/watchV', ApiController.playVideos);
 router.get('/api/v1/mobile/getVideos', ApiController.categoryVideos);
+router.get('/api/v1/mobile/horoscopeGet', ApiController.horoscopeAPI);
+router.get('/api/v1/mobile/horoscopeCategories', ApiController.horoscopeCategoryAPI);
+
+
+
+
 router.post('/api/v1/mobile/registeruser', ApiController.authUser);
 
 
@@ -149,6 +159,7 @@ router.get('/api/v1/optimise/videos', ApiController.videoOptimise);
 
 //Delete API of Edit API//
 router.get('/api/v1/web/deleteVideos', ApiController.deleteVidoes);
+router.get('/horoscope', WebController.horoscopePage);
 
 
 

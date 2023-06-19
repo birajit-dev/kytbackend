@@ -14,5 +14,5 @@ const horoscopeSchema = new mongoose.Schema({
             update_date: String, 
 });
 
-horoscopeSchema.plugin(AutoIncrement, {id:'mantra_id',inc_field: 'mantra_id'});
+horoscopeSchema.plugin(AutoIncrement, {id:'horoscope_id',inc_field: 'horoscope_id'});
 module.exports = mongoose.model('horoscopes', horoscopeSchema);
