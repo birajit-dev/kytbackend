@@ -387,8 +387,29 @@ console.log(generateString(10));
         exports.playVideos = async(req, res) =>{
             try{
                 const vkey = req.query.vkey;
-                const watch_videos = await VideosModel.find({videos_key:vkey},{"videos_url":0,"videos_keyword":0,"videos_temple_locate":0,"videos_key": 0,"videos_publish":0}).lean();
-                res.json(watch_videos);
+                const watch_videos = await VideosModel.findOne({videos_key:vkey},{"videos_url":0,"videos_keyword":0,"videos_temple_locate":0,"videos_key": 0,"videos_publish":0}).lean();
+                const obj1 = {
+                    resultFlag: 1,
+                    message: "Video Found",
+                  };
+                  
+                  const object_false = {
+                    resultFlag: 0,
+                    message: "Video Not Found",
+                  };
+                  
+                  let mergedObj;
+                  
+                  if (watch_videos) {
+                    mergedObj = Object.assign({}, obj1, watch_videos);
+                    if (watch_videos.videos_category) {
+                      res.json(mergedObj);
+                    } else {
+                      res.json(object_false);
+                    }
+                  } else {
+                    res.json(object_false);
+                  }
             }catch(error){
                 res.status(400).json({message: error.message});
             }
