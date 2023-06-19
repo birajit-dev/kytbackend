@@ -533,6 +533,45 @@ console.log(generateString(10));
         }
 
 
+
+        exports.videoOptimise = async(req, res) =>{
+            try {
+                const vcategory = req.query.category;
+                const subcategory = req.query.subcategory;
+              
+                let query = {};
+              
+                if (vcategory !== "all") {
+                  query.videos_category = vcategory;
+                }
+              
+                if (subcategory !== "all") {
+                  query.videos_sub_category = subcategory;
+                }
+              
+                const vd = await VideosModel.find(query).sort({ videos_id: -1 }).lean();
+              
+                const falseData = {
+                  resultFlag: 1,
+                  message: "Video SubCategories Available",
+                  data: vd
+                };
+              
+                const trueData = {
+                  resultFlag: 0,
+                  message: "Video Subcategories Categories not Available",
+                  data: vd
+                };
+              
+                const hasData = vd.length > 0;
+              
+                res.json(hasData ? falseData : trueData);
+              } catch (error) {
+                res.json("Something Went Wrong")
+              }
+        }
+
+
         
 
 

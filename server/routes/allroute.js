@@ -143,6 +143,9 @@ router.get('/api/v1/mobile/getVideos', ApiController.categoryVideos);
 router.post('/api/v1/mobile/registeruser', ApiController.authUser);
 
 
+router.get('/api/v1/optimise/videos', ApiController.videoOptimise);
+
+
 
 //Delete API of Edit API//
 router.get('/api/v1/web/deleteVideos', ApiController.deleteVidoes);
