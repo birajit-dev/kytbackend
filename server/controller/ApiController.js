@@ -528,8 +528,30 @@ console.log(generateString(10));
 
         //Wishes/
         exports.wishesAPI = async(req, res) =>{
-            const wish = await WishesModel.find({}).sort({wishes_id:-1}).lean();
-            res.json(wish);
+            const pageSize = 10; // Number of documents to retrieve per page
+            const page = req.query.page || 1; // Current page number (default: 1)
+            const count = await WishesModel.countDocuments({});
+            const totalPages = Math.ceil(count / pageSize);
+            const skipDocuments = (page - 1) * pageSize;
+            const wish = await WishesModel.find({})
+            .sort({ wishes_id: -1 })
+            .skip(skipDocuments)
+            .limit(pageSize)
+            .lean();
+            const hasData = wish && wish.length > 0;
+            const falseData = {
+            resultFlag: 1,
+            message: "Wishes Record Found",
+            data: wish,
+            totalPages: totalPages
+            };
+            const trueData = {
+            resultFlag: 0,
+            message: "Wishes Record Not Found",
+            data: wish,
+            totalPages: totalPages
+            };
+            res.json(hasData ? falseData : trueData);
         }
 
 
