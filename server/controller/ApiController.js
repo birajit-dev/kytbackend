@@ -528,7 +528,7 @@ console.log(generateString(10));
 
         //Wishes/
         exports.wishesAPI = async(req, res) =>{
-            const pageSize = 10; // Number of documents to retrieve per page
+            /* const pageSize = 10; // Number of documents to retrieve per page
             const page = req.query.page || 1; // Current page number (default: 1)
             const count = await WishesModel.countDocuments({});
             const totalPages = Math.ceil(count / pageSize);
@@ -551,6 +551,41 @@ console.log(generateString(10));
             data: wish,
             totalPages: totalPages
             };
+            res.json(hasData ? falseData : trueData); */
+            const pageSize = 10; // Number of documents to retrieve per page
+            const page = req.query.page || 1; // Current page number (default: 1)
+
+            const countPromise = WishesModel.countDocuments({});
+            const skipDocuments = (page - 1) * pageSize;
+
+            const [count, wish] = await Promise.all([
+            countPromise,
+            WishesModel.find({})
+                .sort({ wishes_id: -1 })
+                .skip(skipDocuments)
+                .limit(pageSize)
+                .lean()
+            ]);
+
+            const totalPages = Math.ceil(count / pageSize);
+            const hasData = wish && wish.length > 0;
+
+            const falseData = {
+            resultFlag: 1,
+            message: "Wishes Record Found",
+            data: wish,
+            totalPages: totalPages,
+            totalCount: count
+            };
+
+            const trueData = {
+            resultFlag: 0,
+            message: "Wishes Record Not Found",
+            data: wish,
+            totalPages: totalPages,
+            totalCount: count
+            };
+
             res.json(hasData ? falseData : trueData);
         }
 
