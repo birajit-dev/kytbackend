@@ -15,6 +15,7 @@ const videosSchema = new mongoose.Schema({
             videos_thumbnail: String,
             videos_publisher: String,
             videos_publish: String,
+            videos_duration: String,
             update_date: String,        
 });
 

@@ -167,6 +167,7 @@ console.log(generateString(10));
                     videos_thumbnail: addV.videos_thumbnail,
                     videos_publisher: addV.videos_publisher,
                     videos_publish: addV.videos_publish,
+                    videos_duration: addV.videos_duration,
                     update_date: newDate,   
                 });
                 await addVideos.save();
@@ -457,9 +458,6 @@ console.log(generateString(10));
             // }else{
             //     res.json("not null");
             // }
-
-
-
         }
 
 
@@ -856,3 +854,5 @@ exports.testOnePost = async(req, res, next) =>{
         };
         res.json(obj1);
     }
+
+
