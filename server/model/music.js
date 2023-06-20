@@ -9,6 +9,7 @@ const musicSchema = new mongoose.Schema({
             music_url: String,
             music_key: String,
             music_path: String,
+            music_duration: String,
             music_publisher: String,
             update_date: String,        
 });

@@ -189,6 +189,7 @@ console.log(generateString(10));
                     music_url: addM.music_url,
                     music_key: addM.music_key,
                     music_path: addM.music_path,
+                    music_duration: addM.music_duration,
                     music_publisher: addM.music_publisher,
                     update_date: newDate, 
                 });
@@ -227,6 +228,7 @@ console.log(generateString(10));
                     podcast_key: podData.podcast_key,
                     podcast_path: podData.podcast_path,
                     podcast_thumbnail: podData.podcast_thumbnail,
+                    podcast_duration: podData.podcast_duration,
                     update_date: newDate,
                 })
                 await addPodData.save();
@@ -514,9 +516,6 @@ console.log(generateString(10));
         }
 
         exports.mantraListenId = async(req, res) =>{
-
-
-
             const mantraKey = req.query.mantraKey;
             const manstraStream = await MantraModel.findOne({mantra_key:mantraKey}).lean();
                 const obj1 = {
@@ -548,26 +547,60 @@ console.log(generateString(10));
         //Musci API/
         exports.MusicCategories = async(req, res) =>{
             const musicCategory = await MusicCategoriesModel.find({}).sort({music_categories_id:-1}).lean();
-            res.json(musicCategory);
+            const trueData = {
+                resultFlag: 1,
+                message: "Music Categories Record Found",
+                data: musicCategory
+              };
+            res.json(trueData);
         }
+
         exports.MusicFilter = async(req, res) =>{
             const category = req.query.category;
             const subcategory = req.query.subcategory;
-
-            if(subcategory == "all"){
-                const musicFilter = await MusicModel.find({music_category:category}).sort({music_id:-1}).lean();
-                res.json(musicFilter);
+            const page = req.query.page || 1; // Current page number, defaulting to 1
+            const limit = req.query.limit || 10; // Number of records per page, defaulting to 10
+            let filter = { music_category: category };
+            if (subcategory !== "all") {
+            filter.music_subcategory = subcategory;
             }
-            else{
-                const musicFilter = await MusicModel.find({$and:[{music_category:category},{music_subcategory:subcategory}]}).sort({music_id:-1}).lean();
-                res.json(musicFilter);
-            }
+            const countPromise = MusicModel.countDocuments(filter);
+            const dataPromise = MusicModel.find(filter)
+            .sort({ music_id: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit);
+            const [totalRecords, musicFilter] = await Promise.all([countPromise, dataPromise]);
+            const totalPages = Math.ceil(totalRecords / limit);
+            const resultFlag = musicFilter.length > 0 ? 1 : 0;
+            const message = musicFilter.length > 0 ? "Music Record Found" : "Music Record not Found";
+            const responseData = {
+            resultFlag,
+            message,
+            data: musicFilter,
+            totalCount: totalRecords,
+            totalPages,
+            currentPage: page,
+            };
+            res.json(responseData);
             
         }
         exports.MusicListen = async(req, res) =>{
             const musicKey = req.query.musicKey;
-            const listen = await MusicModel.findOne({music_key:musicKey}).lean();
-            res.json(listen);
+            const listen = await MusicModel.findOne({ music_key: musicKey }).lean();
+            if (listen && listen.music_category) {
+            const responseData = {
+                resultFlag: 1,
+                message: "Music Audio Found",
+                ...listen,
+            };
+            res.json(responseData);
+            } else {
+            const responseData = {
+                resultFlag: 0,
+                message: "Music Audio Not Found",
+            };
+            res.json(responseData);
+            }
         }
 
         //Wishes/
