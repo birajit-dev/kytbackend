@@ -487,20 +487,45 @@ console.log(generateString(10));
               };
             res.json(trueData);
         }
-        
+
         exports.mantraByCategory = async(req, res) =>{
             const mantraId = req.query.category;
-
-            if(mantraId == "all"){
-                const mantrabycategory = await MantraModel.find({}).sort({mantra_id:-1}).lean();
-                res.json(mantrabycategory);
-
+            const mantrabycategory = await MantraModel.find({ mantra_category: mantraId }).sort({ mantra_id: -1 }).lean();
+            const resultFlag = mantrabycategory.length > 0 ? 1 : 0;
+            const message = mantrabycategory.length > 0 ? "Mantra Records Found" : "Mantra Records Not Found";
+            const responseData = {
+            resultFlag,
+            message,
+            data: mantrabycategory
+            };
+            res.json(responseData);
+            /* const mantraId = req.query.category;
+            const mantrabycategory = await MantraModel.find({mantra_category:mantraId}).sort({mantra_id:-1}).lean();
+            const trueData = {
+                resultFlag: 0,
+                message: "Mantra Records Not Found",
+                data: mantrabycategory
+            };
+            const falseData = {
+                resultFlag: 1,
+                message: "Mantra Records Found",
+                data: mantrabycategory
+            };
+            let text = "";
+            for(var i=0 ;i<mantrabycategory.length;i++) {
+                text = mantrabycategory[0].mantra_category;
             }
-            else{
-                const mantrabycategory = await MantraModel.find({mantra_category:mantraId}).sort({mantra_id:-1}).lean();
-                res.json(mantrabycategory);
+            if(text){
+                res.json(falseData)
+            }else{
+                res.json(trueData);
             }
+            */
         }
+
+
+
+
         exports.mantraListenId = async(req, res) =>{
             const mantraKey = req.query.mantraKey;
             const manstraStream = await MantraModel.findOne({mantra_key:mantraKey}).lean();
