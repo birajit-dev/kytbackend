@@ -513,13 +513,33 @@ console.log(generateString(10));
             res.json(responseData);
         }
 
-
-
-
         exports.mantraListenId = async(req, res) =>{
+
+
+
             const mantraKey = req.query.mantraKey;
             const manstraStream = await MantraModel.findOne({mantra_key:mantraKey}).lean();
-            res.json(manstraStream);
+                const obj1 = {
+                    resultFlag: 1,
+                    message: "Mantra Audio Found",
+                  };
+                  const object_false = {
+                    resultFlag: 0,
+                    message: "Mantra Audio Not Found",
+                  };
+                  
+                  let mergedObj;
+                  
+                  if (manstraStream) {
+                    mergedObj = Object.assign({}, obj1, manstraStream);
+                    if (manstraStream.mantra_category) {
+                      res.json(mergedObj);
+                    } else {
+                      res.json(object_false);
+                    }
+                  } else {
+                    res.json(object_false);
+                  }
         }
 
 
