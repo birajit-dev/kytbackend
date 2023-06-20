@@ -113,3 +113,115 @@ https://northeastherald.sfo3.digitaloceanspaces.com/kyt/mantra_audio.mp3
     "mantra_publish": "Published",
 }
 
+
+
+Shiv Ji
+Genesha
+Vishvarupa
+Lord Ram
+Krishna Ji
+Shani Dev
+
+{
+    "mcategories_title": "Shiv Ji",
+    "mcategories_Id": "shiv_ji",
+    "mcategories_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_category.jpg"
+}
+{
+    "mcategories_title": "Ganesha",
+    "mcategories_Id": "ganesha",
+    "mcategories_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_category.jpg"
+}
+{
+    "mcategories_title": "Vishvarupa",
+    "mcategories_Id": "vishvarupa",
+    "mcategories_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_category.jpg"
+}
+{
+    "mcategories_title": "Lord Ram",
+    "mcategories_Id": "lord_ram",
+    "mcategories_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_category.jpg"
+}
+{
+    "mcategories_title": "Krishna Ji",
+    "mcategories_Id": "krishan_ji",
+    "mcategories_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_category.jpg"
+}
+{
+    "mcategories_title": "Shani Dev",
+    "mcategories_Id": "shani_dev",
+    "mcategories_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_category.jpg"
+}
+
+
+
+chalisha
+paath
+aarti
+bhajan
+mantra
+{
+    "music_title": "Shiv Ji Music 1",
+    "music_category": "shiv_ji",
+    "music_subcategory": "paath",
+    "music_url": "test_music_title",
+    "music_key": "yei927Hgsn",
+    "music_singer": "Deep Dey",
+    "music_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_single.jpg",
+    "music_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music.mp3",
+    "music_publisher": "KYT",
+    "music_duration": "2:01",
+}
+{
+    "music_title": "Shiv Ji Music 2",
+    "music_category": "shiv_ji",
+    "music_subcategory": "chalisa",
+    "music_url": "test_music_title",
+    "music_key": "asiedhas22",
+    "music_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music.mp3",
+    "music_publisher": "KYT",
+    "music_duration": "2:01",
+    "music_singer": "Deep Dey",
+    "music_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_single.jpg",
+    
+}
+{
+    "music_title": "Shiv Ji Music 1",
+    "music_category": "shiv_ji",
+    "music_subcategory": "aarti",
+    "music_url": "test_music_title",
+    "music_key": "sabdui2o827",
+    "music_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music.mp3",
+    "music_publisher": "KYT",
+    "music_duration": "2:01",
+    "music_singer": "Deep Dey",
+    "music_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_single.jpg",
+}
+
+{
+    "music_title": "Shiv Ji Music 1",
+    "music_category": "shiv_ji",
+    "music_subcategory": "bhajan",
+    "music_url": "test_music_title",
+    "music_key": "asb72dbws",
+    "music_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music.mp3",
+    "music_publisher": "KYT",
+    "music_duration": "2:01",
+    "music_singer": "Deep Dey",
+    "music_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_single.jpg",
+}
+
+{
+    "music_title": "Shiv Ji Music 1",
+    "music_category": "shiv_ji",
+    "music_subcategory": "mantra",
+    "music_url": "test_music_title",
+    "music_key": "sabi8qhj",
+    "music_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music.mp3",
+    "music_publisher": "KYT",
+    "music_duration": "2:01",
+    "music_singer": "Deep Dey",
+    "music_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_single.jpg",
+}
+
+

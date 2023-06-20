@@ -6,6 +6,8 @@ const musicSchema = new mongoose.Schema({
             music_title: String,
             music_category: String,
             music_subcategory: String,
+            music_singer: String,
+            music_thumbnail: String,
             music_url: String,
             music_key: String,
             music_path: String,

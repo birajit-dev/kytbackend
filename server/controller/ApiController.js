@@ -186,6 +186,8 @@ console.log(generateString(10));
                     music_title: addM.music_title,
                     music_category: addM.music_category,
                     music_subcategory: addM.music_subcategory,
+                    music_singer: addM.music_singer,
+                    music_thumbnail: addM.music_thumbnail,
                     music_url: addM.music_url,
                     music_key: addM.music_key,
                     music_path: addM.music_path,
