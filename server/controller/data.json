@@ -154,12 +154,7 @@ Shani Dev
 }
 
 
-
-chalisha
-paath
-aarti
-bhajan
-mantra
+["all, chalisha, paath, aarti, bhajan, mantra"]
 {
     "music_title": "Shiv Ji Music 1",
     "music_category": "shiv_ji",
@@ -186,7 +181,7 @@ mantra
     
 }
 {
-    "music_title": "Shiv Ji Music 1",
+    "music_title": "Shiv Ji Music 3",
     "music_category": "shiv_ji",
     "music_subcategory": "aarti",
     "music_url": "test_music_title",
@@ -199,7 +194,7 @@ mantra
 }
 
 {
-    "music_title": "Shiv Ji Music 1",
+    "music_title": "Shiv Ji Music 4",
     "music_category": "shiv_ji",
     "music_subcategory": "bhajan",
     "music_url": "test_music_title",
@@ -212,7 +207,7 @@ mantra
 }
 
 {
-    "music_title": "Shiv Ji Music 1",
+    "music_title": "Shiv Ji Music 5",
     "music_category": "shiv_ji",
     "music_subcategory": "mantra",
     "music_url": "test_music_title",
@@ -224,4 +219,30 @@ mantra
     "music_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/music_single.jpg",
 }
 
+
+
+
+
+
+
+podcast_title: String,
+podcast_description: String,
+podcast_url: String,
+podcast_category: String,
+podcast_path: String,
+podcast_key: String,
+podcast_thumbnail: String,
+podcast_duration: String,
+
+{
+    "podcast_title": "Podcast Title",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_title",
+    "podcast_category": "Shiv",
+    "podcast_path": "podcast.mp4",
+    "podcast_key": "sauwbsua823023b",
+    "podcast_thumbnail": "podcast_thumbanil.png",
+    "podcast_duration": "2:01 Min",
+
+}
 

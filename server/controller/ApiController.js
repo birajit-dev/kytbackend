@@ -470,13 +470,46 @@ console.log(generateString(10));
 
         //Podcast View//
         exports.podcastAll = async(req, res) =>{
-            const podcast = await PodcastModel.find({}).sort({podcast_id: -1}).lean();
-            res.json(podcast);
+            const page = req.query.page || 1; // Current page number, defaulting to 1
+            const limit = req.query.limit || 10; // Number of records per page, defaulting to 10
+            const countPromise = PodcastModel.countDocuments({});
+            const dataPromise = PodcastModel.find({})
+            .sort({ podcast_id: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .lean();
+            const [totalRecords, podcast] = await Promise.all([countPromise, dataPromise]);
+            const totalPages = Math.ceil(totalRecords / limit);
+            const resultFlag = podcast.length > 0 ? 1 : 0;
+            const message = podcast.length > 0 ? "Podcast Records Found" : "Podcast Record Not Found";
+            const responseData = {
+            resultFlag,
+            message,
+            data: podcast,
+            totalCount: totalRecords,
+            totalPages,
+            currentPage: page,
+            };
+            res.json(responseData);
         }
         exports.podcastView = async(req, res) =>{
             const pKey = req.query.pKey;
-            const podcastWatch = await PodcastModel.findOne({podcast_key:pKey}).lean();
-            res.json(podcastWatch);
+            const podcastWatch = await PodcastModel.findOne({ podcast_key: pKey }).lean();
+
+            if (podcastWatch && podcastWatch.podcast_path) {
+            const responseData = {
+                resultFlag: 1,
+                message: "Podcast Record Found",
+                ...podcastWatch,
+            };
+            res.json(responseData);
+            } else {
+            const responseData = {
+                resultFlag: 0,
+                message: "Podcast Record Not Found",
+            };
+            res.json(responseData);
+            }
         }
         
 
