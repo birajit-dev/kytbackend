@@ -24,10 +24,14 @@ const PandeetModel = require('../model/pandeet');
                 for(var i=0 ;i<topnews.length;i++) {
                       ftopNews.push(topnews[i].post_name);   
                 }
+                const skipOneTopNews = ftopNews.toString();
+
+
+
+
                 const pandeetName = await PandeetModel.find({}).lean();
 
 
-                const skipOneTopNews = ftopNews.toString();
 
 
                 const tripuranews = await allNews.find({post_category:'tripura',post_name:{$ne:skipOneTopNews}}).sort({news_id:-1}).limit('10').lean();

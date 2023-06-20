@@ -480,8 +480,14 @@ console.log(generateString(10));
         //Mantra All/
         exports.mantraCategoryView = async(req, res) =>{
             const mantraCAll = await MantraCategoriesModel.find({}).sort({mantra_categories_id:-1}).lean();
-            res.json(mantraCAll);
+            const trueData = {
+                resultFlag: 1,
+                message: "Mantra Categories Record Found",
+                data: mantraCAll
+              };
+            res.json(trueData);
         }
+        
         exports.mantraByCategory = async(req, res) =>{
             const mantraId = req.query.category;
 
@@ -500,6 +506,9 @@ console.log(generateString(10));
             const manstraStream = await MantraModel.findOne({mantra_key:mantraKey}).lean();
             res.json(manstraStream);
         }
+
+
+
 
         //Musci API/
         exports.MusicCategories = async(req, res) =>{
@@ -818,7 +827,6 @@ exports.testOnePost = async(req, res, next) =>{
                     "thumbnail_sign":"taurus.jpg",
                     "update_date":"19/06/2023",
                 }
-
             ]
         };
         res.json(obj1);
