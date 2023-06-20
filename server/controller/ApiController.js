@@ -303,6 +303,7 @@ console.log(generateString(10));
                     mantra_sloak: mantraData.mantra_sloak,
                     mantra_thumbnail: mantraData.mantra_thumbnail,
                     mantra_publish: mantraData.mantra_publish,
+                    mantra_duration: mantraData.mantra_duration,
                     update_date: newDate,   
                 });
                 await manatraAdd.save();
@@ -488,37 +489,28 @@ console.log(generateString(10));
 
         exports.mantraByCategory = async(req, res) =>{
             const mantraId = req.query.category;
-            const mantrabycategory = await MantraModel.find({ mantra_category: mantraId }).sort({ mantra_id: -1 }).lean();
+            const page = req.query.page || 1; // Current page number, defaulting to 1
+            const limit = req.query.limit || 10; // Number of records per page, defaulting to 10
+            const skip = (page - 1) * limit;
+            const countPromise = MantraModel.countDocuments({ mantra_category: mantraId });
+            const dataPromise = MantraModel.find({ mantra_category: mantraId })
+            .sort({ mantra_id: -1 })
+            .skip(skip)
+            .limit(limit)
+            .lean();
+            const [totalRecords, mantrabycategory] = await Promise.all([countPromise, dataPromise]);
+            const totalPages = Math.ceil(totalRecords / limit);
             const resultFlag = mantrabycategory.length > 0 ? 1 : 0;
             const message = mantrabycategory.length > 0 ? "Mantra Records Found" : "Mantra Records Not Found";
             const responseData = {
             resultFlag,
             message,
-            data: mantrabycategory
+            data: mantrabycategory,
+            totalCount: totalRecords,
+            totalPages,
+            currentPage: page,
             };
             res.json(responseData);
-            /* const mantraId = req.query.category;
-            const mantrabycategory = await MantraModel.find({mantra_category:mantraId}).sort({mantra_id:-1}).lean();
-            const trueData = {
-                resultFlag: 0,
-                message: "Mantra Records Not Found",
-                data: mantrabycategory
-            };
-            const falseData = {
-                resultFlag: 1,
-                message: "Mantra Records Found",
-                data: mantrabycategory
-            };
-            let text = "";
-            for(var i=0 ;i<mantrabycategory.length;i++) {
-                text = mantrabycategory[0].mantra_category;
-            }
-            if(text){
-                res.json(falseData)
-            }else{
-                res.json(trueData);
-            }
-            */
         }
 
 
@@ -560,30 +552,6 @@ console.log(generateString(10));
 
         //Wishes/
         exports.wishesAPI = async(req, res) =>{
-            /* const pageSize = 10; // Number of documents to retrieve per page
-            const page = req.query.page || 1; // Current page number (default: 1)
-            const count = await WishesModel.countDocuments({});
-            const totalPages = Math.ceil(count / pageSize);
-            const skipDocuments = (page - 1) * pageSize;
-            const wish = await WishesModel.find({})
-            .sort({ wishes_id: -1 })
-            .skip(skipDocuments)
-            .limit(pageSize)
-            .lean();
-            const hasData = wish && wish.length > 0;
-            const falseData = {
-            resultFlag: 1,
-            message: "Wishes Record Found",
-            data: wish,
-            totalPages: totalPages
-            };
-            const trueData = {
-            resultFlag: 0,
-            message: "Wishes Record Not Found",
-            data: wish,
-            totalPages: totalPages
-            };
-            res.json(hasData ? falseData : trueData); */
             const pageSize = 10; // Number of documents to retrieve per page
             const page = req.query.page || 1; // Current page number (default: 1)
 

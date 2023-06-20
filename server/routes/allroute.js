@@ -160,6 +160,7 @@ router.get('/api/v1/optimise/videos', ApiController.videoOptimise);
 //Delete API of Edit API//
 router.get('/api/v1/web/deleteVideos', ApiController.deleteVidoes);
 router.get('/horoscope', WebController.horoscopePage);
+router.get('/mantra', WebController.mantraPage);
 
 
 

@@ -10,6 +10,7 @@ const mantraSchema = new mongoose.Schema({
             mantra_category: String,
             mantra_sloak: String,
             mantra_thumbnail: String,
+            mantra_duration: String,
             mantra_publish: String,
             update_date: String,     
 });
