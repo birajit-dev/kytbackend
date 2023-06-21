@@ -1062,5 +1062,31 @@ exports.testOnePost = async(req, res, next) =>{
                   res.json(obj2);
             }
         };
+
+
+        exports.forYou = async(req, res) =>{
+            const mantra = await MantraModel.find({}).sort({mantra_id:-1}).limit(4).lean();
+            const music = await MusicModel.find({}).sort({music_id:-1}).limit(8).lean();
+            const promotional_title = "Promotional Title";
+            const promotional_thumbnail = "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=";
+            const music_title = "Music for you";
+            const mantras_title = "Mantras For You";
+            const today_title = "Today Title";
+            const today_content = "Today Content";
+
+            const obj1 = {
+                resultFlag: 1,
+                message: "For You Record Found",
+                today_title,
+                today_content,
+                mantras_title,
+                mantrasList:mantra,
+                promotional_title,
+                promotional_thumbnail,
+                music_title,
+                musicList:music
+              };
+              res.json(obj1);
+        }
   
     

@@ -150,6 +150,9 @@ router.get('/api/v1/mobile/panchang', ApiController.panchangAPI);
 router.post('/api/v1/mobile/sendotp', ApiController.sendOTP);
 router.post('/api/v1/mobile/verifyotp', ApiController.VerifyOTP);
 router.post('/api/v1/mobile/resendotp', ApiController.resendOTP);
+router.get('/api/v1/mobile/foryou', ApiController.forYou);
+
+
 
 
 
