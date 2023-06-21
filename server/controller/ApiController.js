@@ -1231,6 +1231,7 @@ exports.testOnePost = async(req, res, next) =>{
                 resultFlag: 0,
                 message: "Invalid OTP",
               };
-             
+              res.json(obj2);
             }
-            }          
+          };
+                  
