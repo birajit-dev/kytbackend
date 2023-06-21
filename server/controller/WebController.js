@@ -70,6 +70,9 @@ const newDate = moment().format('lll');
     exports.horoscopePage = async(req, res) =>{
         res.render('horoscope');
     }
+    exports.homePage = async(req, res, next) => {
+        res.render('home');
+    }
 
     
 

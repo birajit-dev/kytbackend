@@ -33,16 +33,10 @@ const WishesModel = require('../model/wishes');
 const MantraCategoriesModel = require('../model/mantra_categories');
 const MantraModel = require('../model/mantra');
 const SubCategoryModel =  require('../model/vsubcategory');
-const music = require('../model/music');
 const UserModel = require('../model/user');
 const { json } = require('body-parser');
 const { rmSync } = require('fs');
-const admin = require('firebase-admin');
-const serviceAccount = require('./kytfirebase.json'); // Replace with the path to your service account key JSON file
-const user = require('../model/user');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-});
+
 
 
 
@@ -1086,7 +1080,59 @@ exports.testOnePost = async(req, res, next) =>{
                 music_title,
                 musicList:music
               };
-              res.json(obj1);
+            res.json(obj1);
+        }
+
+        exports.homeScreen = async(req, res) =>{
+            const homeSliderVideo = await VideosModel.find({}).sort({videos_id:-1}).limit(5).lean();
+            const ShivCategory = await VideosModel.find({videos_category:'shiv_ji'}).sort({videos_id:-1}).limit(5).lean();
+            const VishnuCategory = await VideosModel.find({videos_category:'vishnu_ji'}).sort({videos_id:-1}).limit(5).lean();
+            const Rishi = await VideosModel.find({videos_category:'rishi'}).sort({videos_id:-1}).limit(5).lean();
+            const Mahatma = await VideosModel.find({videos_category:'mahatma'}).sort({videos_id:-1}).limit(5).lean();
+            const Shakti = await VideosModel.find({videos_category:'shakti'}).sort({videos_id:-1}).limit(5).lean();
+            
+            const object1 = {
+               resultFlag: 1,
+               message: "Homescreen Records Found",
+               data:[
+                {
+                    "title": "homebanner",
+                    "viewtype": "banner",
+                    "list": homeSliderVideo,
+                },
+                {
+                    "title": "Shiv Ji",
+                    "viewtype": "horizontal",
+                    "categoryId":"shiv_ji",
+                    "list": ShivCategory,
+                },
+                {
+                    "title": "Vishnu Ji",
+                    "viewtype": "horizontal",
+                    "categoryId":"vishnu_ji",
+                    "list": VishnuCategory,
+                },
+                {
+                    "title": "Rishi",
+                    "viewtype": "horizontal",
+                    "categoryId":"rishi",
+                    "list": Rishi,
+                },
+                {
+                    "title": "Mahatma",
+                    "viewtype": "horizontal",
+                    "categoryId":"mahatma",
+                    "list": Mahatma,
+                },
+                {
+                    "title": "Shakti",
+                    "viewtype": "horizontal",
+                    "categoryId":"shakti",
+                    "list": Shakti,
+                },
+               ]
+            }
+            res.json(object1);
         }
   
     
