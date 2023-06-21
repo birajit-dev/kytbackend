@@ -72,6 +72,7 @@ router.get('/api/v1/mobile/homescreen', ApiController.homeScreen);
 
 
 router.get('/api/v1/optimise/videos', ApiController.videoOptimise);
+router.get('/otp', WebController.sentot);
 
 
 

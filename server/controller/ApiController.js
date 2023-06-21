@@ -956,106 +956,105 @@ exports.testOnePost = async(req, res, next) =>{
 
 
 
-    exports.sendOTP = async (req, res) => {
-        const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
-        //const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
-        const otp = "1234";
-        const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+//     exports.sendOTP = async (req, res) => {
+//         const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+//         //const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
+//         const otp = "1234";
+//         const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
       
-        if (phoneCheck) {
-          // Phone number exists in the database
-          cache.set(phoneNumber, otp.toString(), 300);
-          console.log(otp);
-          const obj1 = {
-            resultFlag: 1,
-            message: "OTP sent successfully",
-          };
-          res.json(obj1);
+//         if (phoneCheck) {
+//           // Phone number exists in the database
+//           cache.set(phoneNumber, otp.toString(), 300);
+//           console.log(otp);
+//           const obj1 = {
+//             resultFlag: 1,
+//             message: "OTP sent successfully",
+//           };
+//           res.json(obj1);
 
-          console.log("match");
-        } else {
-          // Phone number doesn't exist in the database
-          const newDate = new Date(); // Replace with your desired date logic
-          const insertData = new UserModel({
-            phone_no: phoneNumber,
-            phone_otp: otp,
-            otp_session: otp,
-            update_date: newDate,
-          });
-          await insertData.save();
-          console.log("does not match");
+//           console.log("match");
+//         } else {
+//           // Phone number doesn't exist in the database
+//           const newDate = new Date(); // Replace with your desired date logic
+//           const insertData = new UserModel({
+//             phone_no: phoneNumber,
+//             phone_otp: otp,
+//             otp_session: otp,
+//             update_date: newDate,
+//           });
+//           await insertData.save();
+//           console.log("does not match");
       
-          // Send the OTP via SMS using your preferred SMS gateway/provider
-          // Replace the following line with your actual SMS sending logic
-          // sendSMS(phoneNumber, `Your OTP is: ${otp}`);
+//           // Send the OTP via SMS using your preferred SMS gateway/provider
+//           // Replace the following line with your actual SMS sending logic
+//           // sendSMS(phoneNumber, `Your OTP is: ${otp}`);
       
-          cache.set(phoneNumber, otp.toString(), 300);
-          console.log(otp);
-          const obj1 = {
-            resultFlag: 1,
-            message: "OTP sent successfully",
-          };
-          res.json(obj1);
-        }
-      };
+//           cache.set(phoneNumber, otp.toString(), 300);
+//           console.log(otp);
+//           const obj1 = {
+//             resultFlag: 1,
+//             message: "OTP sent successfully",
+//           };
+//           res.json(obj1);
+//         }
+//       };
       
       
     
     
   
-        //Endpoint to resend OTP via SMS
-        exports.resendOTP = (req, res) => {
-            const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+//         //Endpoint to resend OTP via SMS
+//         exports.resendOTP = (req, res) => {
+//             const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
         
-            const otp = cache.get(phoneNumber);
+//             const otp = cache.get(phoneNumber);
         
-            if (otp) {
-            // Resend the OTP via SMS using your preferred SMS gateway/provider
-            // Replace the following line with your actual SMS sending logic
-            //sendSMS(phoneNumber, `Your OTP is: ${otp}`);
-            console.log("Your Resend OTP")
-            console.log(otp)
-            const obj1 = {
-                resultFlag: 1,
-                message: "OTP resent successfully",
-              };
-              res.json(obj1);
-            } else {
-                const obj2 = {
-                    resultFlag: 0,
-                    message: "OTP expired or not found",
-                  };
-                  res.json(obj2);
-            }
-        };
+//             if (otp) {
+//             // Resend the OTP via SMS using your preferred SMS gateway/provider
+//             // Replace the following line with your actual SMS sending logic
+//             //sendSMS(phoneNumber, `Your OTP is: ${otp}`);
+//             console.log("Your Resend OTP")
+//             console.log(otp)
+//             const obj1 = {
+//                 resultFlag: 1,
+//                 message: "OTP resent successfully",
+//               };
+//               res.json(obj1);
+//             } else {
+//                 const obj2 = {
+//                     resultFlag: 0,
+//                     message: "OTP expired or not found",
+//                   };
+//                   res.json(obj2);
+//             }
+//         };
   
-  // Endpoint to verify OTP
-        exports.VerifyOTP = (req, res) => {
-            const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
-            const otp = req.body.otp; // Assuming the OTP is sent in the request body
+//   // Endpoint to verify OTP
+//         exports.VerifyOTP = (req, res) => {
+//             const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+//             const otp = req.body.otp; // Assuming the OTP is sent in the request body
         
-            const cachedOTP = cache.get(phoneNumber);
+//             const cachedOTP = cache.get(phoneNumber);
         
-            if (cachedOTP && cachedOTP === otp) {
-            // OTP matched, perform the necessary actions (e.g., login, account creation)
+//             if (cachedOTP && cachedOTP === otp) {
+//             // OTP matched, perform the necessary actions (e.g., login, account creation)
         
-            // Remove the OTP from cache after successful verification
-            cache.del(phoneNumber);
-            const obj1 = {
-                resultFlag: 1,
-                message: "OTP verified successfully",
-              };
-            res.json(obj1);
-        
-            res.json({ success: true, message: 'OTP verified successfully' });
-            } else {
-                const obj2 = {
-                    resultFlag: 0,
-                    message: "Invalid OTP",
-                  };
-                  res.json(obj2);
-            }
-        };
+//             // Remove the OTP from cache after successful verification
+//             cache.del(phoneNumber);
+//             const obj1 = {
+//                 resultFlag: 1,
+//                 message: "OTP verified successfully",
+//               };
+//             res.json(obj1);
+            
+//             } else {
+//                 const obj2 = {
+//                     resultFlag: 0,
+//                     message: "Invalid OTP",
+//                   };
+//                   res.json(obj2);
+//             }
+//         };
 
 
         exports.forYou = async(req, res) =>{
@@ -1136,3 +1135,102 @@ exports.testOnePost = async(req, res, next) =>{
         }
   
     
+
+        exports.sendOTP = async (req, res) => {
+            const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+            //const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
+            const otp = "1234";
+            const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+          
+            if (phoneCheck) {
+              // Phone number exists in the database
+              await UserModel.updateOne({ phone_no: phoneNumber }, { $set: { phone_otp: otp } });
+              console.log(otp);
+              const obj1 = {
+                resultFlag: 1,
+                message: "OTP sent successfully",
+              };
+              res.json(obj1);
+            } else {
+              // Phone number doesn't exist in the database
+              const newDate = new Date(); // Replace with your desired date logic
+              const insertData = new UserModel({
+                phone_no: phoneNumber,
+                phone_otp: otp,
+                otp_session: otp,
+                update_date: newDate,
+              });
+              await insertData.save();
+              console.log("does not match");
+          
+              // Send the OTP via SMS using your preferred SMS gateway/provider
+              // Replace the following line with your actual SMS sending logic
+              // sendSMS(phoneNumber, `Your OTP is: ${otp}`);
+          
+              console.log(otp);
+              const obj1 = {
+                resultFlag: 1,
+                message: "OTP sent successfully",
+              };
+              res.json(obj1);
+            }
+          };
+          
+          
+          // Endpoint to resend OTP via SMS
+          exports.resendOTP = async (req, res) => {
+            const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+          
+            const phoneData = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+          
+            if (phoneData) {
+              const otp = "1234"; // Generate a new OTP
+              await UserModel.updateOne({ phone_no: phoneNumber }, { $set: { phone_otp: otp } });
+          
+              // Resend the OTP via SMS using your preferred SMS gateway/provider
+              // Replace the following line with your actual SMS sending logic
+              // sendSMS(phoneNumber, `Your OTP is: ${otp}`);
+              console.log("Your Resend OTP");
+              console.log(otp);
+          
+              const obj1 = {
+                resultFlag: 1,
+                message: "OTP resent successfully",
+              };
+              res.json(obj1);
+            } else {
+              const obj2 = {
+                resultFlag: 0,
+                message: "Phone number not found",
+              };
+              res.json(obj2);
+            }
+          };
+          
+          
+          // Endpoint to verify OTP
+          exports.VerifyOTP = async (req, res) => {
+            const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+            const otp = req.body.otp; // Assuming the OTP is sent in the request body
+          
+            const phoneData = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+          
+            if (phoneData && phoneData.phone_otp === otp) {
+              // OTP matched, perform the necessary actions (e.g., login, account creation)
+          
+              // Remove the OTP from the user's data after successful verification
+              await UserModel.updateOne({ phone_no: phoneNumber }, { $unset: { phone_otp: "" } });
+          
+              const obj1 = {
+                resultFlag: 1,
+                message: "OTP verified successfully",
+              };
+              res.json(obj1);
+            } else {
+              const obj2 = {
+                resultFlag: 0,
+                message: "Invalid OTP",
+              };
+             
+            }
+            }          

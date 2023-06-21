@@ -73,6 +73,10 @@ const newDate = moment().format('lll');
     exports.homePage = async(req, res, next) => {
         res.render('home');
     }
+    exports.sentot = async(req, res, next) => {
+        res.render('otp');
+    }
+
 
     
 
