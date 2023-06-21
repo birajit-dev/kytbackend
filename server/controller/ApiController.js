@@ -33,6 +33,14 @@ const music = require('../model/music');
 const UserModel = require('../model/user');
 const { json } = require('body-parser');
 const { rmSync } = require('fs');
+const admin = require('firebase-admin');
+const serviceAccount = require('./kytfirebase.json'); // Replace with the path to your service account key JSON file
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+});
+
+
+
 
 const newDate = moment().format('lll');
 //Value KEY Generator for Podcast and Videos & Musics
@@ -52,7 +60,7 @@ console.log(generateString(10));
 
         exports.pachangPost = async(req, res) =>{
             try{
-                const {lucky_numbers,lucky_colour,presiding_deity,auspicious_dates,panchang_date,panchang_day,vikranm_samvat,shak_samvat,ion,season,month,side,p_date,nakshatra,yoga,rahukal,sunrise,sunset,directional,extra_1,extra_2,extra_3,extra_4,extra_5,extra_6,extra_7,extra_8,extra_9,extra_10,panchang_thumbnail,pandeet,heading,content} = req.body;
+                const {lucky_numbers,lucky_colour,presiding_deity,auspicious_dates,panchang_date,panchang_day,vikranm_samvat,shak_samvat,ion,season,month,side,p_date,nakshatra,yoga,rahukal,sunrise,sunset,directional,extra_1,extra_2,extra_3,extra_4,extra_5,extra_6,extra_7,extra_8,panchang_thumbnail,pandeet,} = req.body;
                 let uploadPanchang = new PanchangModel({
                     lucky_numbers: lucky_numbers, 
                     lucky_colour:lucky_colour,
@@ -74,23 +82,21 @@ console.log(generateString(10));
                     sunset:sunset,                                 
                     directional:directional,                        
                     extra_1:extra_1,                                   
-                    // extra_2: extra_2,                                   
-                    // extra_3:extra_3,                                
-                    // extra_4: extra_4,                                     
-                    // extra_5:extra_5,                                  
-                    // extra_6:extra_6,                                        
-                    // extra_7:extra_7,                             
-                    // extra_8:extra_8,              
-                    // extra_9:extra_9,                   
-                    // extra_10:extra_10,                                  
+                    extra_2: extra_2,                                   
+                    extra_3:extra_3,                                
+                    extra_4: extra_4,                                     
+                    extra_5:extra_5,                                  
+                    extra_6:extra_6,                                        
+                    extra_7:extra_7,                             
+                    extra_8:extra_8,                                              
                     panchang_thumbnail:panchang_thumbnail,
                     pandeet_name:pandeet,                                   
-                    update_date:'Hello World'                      
+                    update_date:newDate                      
                 });
                 await uploadPanchang.save();
 
 
-                res.send('Panchang Save Successfully.');
+                res.json(uploadPanchang);
             }catch(error){
                 res.status(400).json({message: error.message})
             }
@@ -755,7 +761,7 @@ exports.testOnePost = async(req, res, next) =>{
 
 
     //User Creations and Verify//
-    exports.authUser = async(req, res) =>{
+    exports.registerUser = async(req, res) =>{
         let mno = req.body;
         const userCheck = await UserModel.findOne({phone_no:mno.phone}).lean();
         if(userCheck.phone_no == mno.phone){
@@ -772,8 +778,31 @@ exports.testOnePost = async(req, res, next) =>{
             });
             let userSave = await userCreate.save();
             res.json(userSave);
-        
+    }
+    exports.verifyOtp = async(req, res) =>{
+        const mobile_no = req.body;
+        const mobile_otp = req.body;
+        const checkOtp = await OtpModel.findOne({$and:[{phone_no:mobile_no},{phone_otp:mobile_otp}]}).lean();
+        const falseData = {
+            resultFlag: 1,
+            message: "Success",
+            data: checkOtp
+          };
+        const trueData = {
+            resultFlag: 0,
+            message: "Not Match",
+            data: checkOtp
+          };
 
+          let text = "";
+          for(var i=0 ;i<checkOtp.length;i++) {
+              text = checkOtp[0].phone_no;
+          }
+          if(text){
+            res.json(falseData)
+            }else{
+            res.json(trueData);
+            }
     }
     
     exports.deleteVidoes = async(req, res) =>{
@@ -911,4 +940,16 @@ exports.testOnePost = async(req, res, next) =>{
         res.json(obj1);
     }
 
-
+    exports.panchangAPI = async(req, res) =>{
+        const pdate = req.query.pdate;
+        const panchangFetch = await PanchangModel.findOne({ p_date: pdate }).lean();
+        const resultFlag = panchangFetch ? 1 : 0;
+        const message = panchangFetch ? "Panchang Record Found" : "Panchang Record Not Found";
+        const responseData = {
+        resultFlag,
+        message,
+        ...(panchangFetch && { ...panchangFetch }),
+        };
+        res.json(responseData);
+    }
+    

@@ -70,6 +70,62 @@ const panchangSchema = new mongoose.Schema({
             type: String,
         }
     },
+    extra_2:{
+        heading:{
+            type: String,
+        },
+        content: {
+            type: String,
+        }
+    },
+    extra_3:{
+        heading:{
+            type: String,
+        },
+        content: {
+            type: String,
+        }
+    },
+    extra_4:{
+        heading:{
+            type: String,
+        },
+        content: {
+            type: String,
+        }
+    },
+    extra_5:{
+        heading:{
+            type: String,
+        },
+        content: {
+            type: String,
+        }
+    },
+    extra_6:{
+        heading:{
+            type: String,
+        },
+        content: {
+            type: String,
+        }
+    },
+    extra_7:{
+        heading:{
+            type: String,
+        },
+        content: {
+            type: String,
+        }
+    },
+    extra_8:{
+        heading:{
+            type: String,
+        },
+        content: {
+            type: String,
+        }
+    },
     panchang_thumbnail:{
         type: String,
     },

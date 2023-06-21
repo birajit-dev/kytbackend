@@ -235,14 +235,272 @@ podcast_thumbnail: String,
 podcast_duration: String,
 
 {
-    "podcast_title": "Podcast Title",
+    "podcast_title": "Podcast 1",
     "podcast_description": "test description",
-    "podcast_url": "podcast_title",
+    "podcast_url": "podcast_1",
     "podcast_category": "Shiv",
-    "podcast_path": "podcast.mp4",
-    "podcast_key": "sauwbsua823023b",
-    "podcast_thumbnail": "podcast_thumbanil.png",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Wgatw6744hFS",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
     "podcast_duration": "2:01 Min",
 
 }
+{
+    "podcast_title": "Podcast 1",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_1",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key1",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 2",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_2",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key2",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 3",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_3",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key3",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 4",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_4",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key4",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 5",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_5",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key5",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 6",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_6",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key6",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 7",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_7",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key7",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 8",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_8",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key8",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 9",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_9",
+    "podcast_category": "Shiv",
+"podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key9",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 10",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_10",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key10",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 11",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_11",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key11",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 12",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_12",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key12",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 13",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_13",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key13",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 14",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_14",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key14",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 15",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_15",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key15",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 16",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_16",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key16",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 17",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_17",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key17",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 18",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_18",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key18",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+},
+  {
+    "podcast_title": "Podcast 19",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_19",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key19",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  },
+  {
+    "podcast_title": "Podcast 20",
+    "podcast_description": "test description",
+    "podcast_url": "podcast_20",
+    "podcast_category": "Shiv",
+    "podcast_path": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast.mp4",
+    "podcast_key": "Key20",
+    "podcast_thumbnail": "https://northeastherald.sfo3.digitaloceanspaces.com/kyt/podcast_thumbnail.jpg",
+    "podcast_duration": "2:01 Min"
+  }
 
+
+
+  {
+    "lucky_numbers":"", 
+    "lucky_colour":"",
+    "presiding_deity":"",
+    "auspicious_dates":"",
+    "panchang_date":"",                                    
+    "panchang_day":"",                                      
+    "vikranm_samvat":"",
+    "shak_samvat":"",                                      
+    "ion":"",                                     
+    "season":"",                                       
+    "month":"",                                     
+    "side":"",                                     
+    "p_date":"",                               
+    "nakshatra":"",                                
+    "yoga":"",                                  
+    "rahukal":"",                                 
+    "sunrise":"",                             
+    "sunset":"",                                 
+    "directional":"",                        
+    "extra_1": {
+        "heading": "Extra 1 Heading",
+        "content": "Extra 1 Content"
+    },
+    "extra_2": {
+        "heading": "Extra 2 Heading",
+        "content": "Extra 2 Content"
+    },
+    "extra_3": {
+        "heading": "Extra 3 Heading",
+        "content": "Extra 3 Content"
+    },
+    "extra_4": {
+       "heading": "Extra 4 Heading",
+        "content": "Extra 4 Content"
+    },
+    "extra_5": {
+        "heading": "Extra 5 Heading",
+        "content": "Extra 5 Content"
+    },
+    "extra_6": {
+        "heading": "Extra 6 Heading",
+        "content": "Extra 6 Content"
+    },
+    "extra_7": {
+        "heading": "Extra 7 Heading",
+        "content": "Extra 7 Content"
+    },
+    "extra_8": {
+        "heading": "Extra 8 Heading",
+        "content": "Extra 8 Content"
+    },
+                              
+    "panchang_thumbnail":"",
+    "pandeet_name":""                                 
+    } 
