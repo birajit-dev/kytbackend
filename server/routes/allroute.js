@@ -147,7 +147,13 @@ router.get('/api/v1/mobile/getVideos', ApiController.categoryVideos);
 router.get('/api/v1/mobile/horoscopeGet', ApiController.horoscopeAPI);
 router.get('/api/v1/mobile/horoscopeCategories', ApiController.horoscopeCategoryAPI);
 router.get('/api/v1/mobile/panchang', ApiController.panchangAPI);
-//router.post('/api/v1/mobile/sendotp', ApiController.sentOTP);
+router.post('/api/v1/mobile/sendotp', ApiController.sendOTP);
+router.post('/api/v1/mobile/verifyotp', ApiController.VerifyOTP);
+router.post('/api/v1/mobile/resendotp', ApiController.resendOTP);
+
+
+
+
 
 
 

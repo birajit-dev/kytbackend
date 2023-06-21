@@ -15,6 +15,10 @@ const multerS3 = require('multer-s3');
 var moment = require('moment'); // require
 //Database Connection
 require('../model/database');
+const NodeCache = require('node-cache');
+
+const cache = new NodeCache();
+
 //Model Requirement
 const TestOnePost =  require('../model/testone');
 const PanchangModel = require('../model/panchangs');
@@ -35,6 +39,7 @@ const { json } = require('body-parser');
 const { rmSync } = require('fs');
 const admin = require('firebase-admin');
 const serviceAccount = require('./kytfirebase.json'); // Replace with the path to your service account key JSON file
+const user = require('../model/user');
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
@@ -952,4 +957,84 @@ exports.testOnePost = async(req, res, next) =>{
         };
         res.json(responseData);
     }
+
+
+
+
+
+    exports.sendOTP = async (req, res) => {
+        const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+        //const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
+        const otp = "1234";
+        const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+      
+        if (phoneCheck) {
+          // Phone number exists in the database
+          cache.set(phoneNumber, otp.toString(), 300);
+          console.log(otp);
+          res.json({ success: true, message: 'OTP sent successfully' });
+          console.log("match");
+        } else {
+          // Phone number doesn't exist in the database
+          const newDate = new Date(); // Replace with your desired date logic
+          const insertData = new UserModel({
+            phone_no: phoneNumber,
+            phone_otp: otp,
+            otp_session: otp,
+            update_date: newDate,
+          });
+          await insertData.save();
+          console.log("does not match");
+      
+          // Send the OTP via SMS using your preferred SMS gateway/provider
+          // Replace the following line with your actual SMS sending logic
+          // sendSMS(phoneNumber, `Your OTP is: ${otp}`);
+      
+          cache.set(phoneNumber, otp.toString(), 300);
+          console.log(otp);
+          res.json({ success: true, message: 'OTP sent successfully' });
+        }
+      };
+      
+      
+    
+    
+  
+        //Endpoint to resend OTP via SMS
+        exports.resendOTP = (req, res) => {
+            const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+        
+            const otp = cache.get(phoneNumber);
+        
+            if (otp) {
+            // Resend the OTP via SMS using your preferred SMS gateway/provider
+            // Replace the following line with your actual SMS sending logic
+            //sendSMS(phoneNumber, `Your OTP is: ${otp}`);
+            console.log("Your Resend OTP")
+            console.log(otp)
+            res.json({ success: true, message: 'OTP resent successfully' });
+            } else {
+            res.json({ success: false, message: 'OTP expired or not found' });
+            }
+        };
+  
+  // Endpoint to verify OTP
+        exports.VerifyOTP = (req, res) => {
+            const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+            const otp = req.body.otp; // Assuming the OTP is sent in the request body
+        
+            const cachedOTP = cache.get(phoneNumber);
+        
+            if (cachedOTP && cachedOTP === otp) {
+            // OTP matched, perform the necessary actions (e.g., login, account creation)
+        
+            // Remove the OTP from cache after successful verification
+            cache.del(phoneNumber);
+        
+            res.json({ success: true, message: 'OTP verified successfully' });
+            } else {
+            res.json({ success: false, message: 'Invalid OTP' });
+            }
+        };
+  
     
