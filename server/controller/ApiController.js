@@ -972,7 +972,12 @@ exports.testOnePost = async(req, res, next) =>{
           // Phone number exists in the database
           cache.set(phoneNumber, otp.toString(), 300);
           console.log(otp);
-          res.json({ success: true, message: 'OTP sent successfully' });
+          const obj1 = {
+            resultFlag: 1,
+            message: "OTP sent successfully",
+          };
+          res.json(obj1);
+
           console.log("match");
         } else {
           // Phone number doesn't exist in the database
@@ -992,7 +997,11 @@ exports.testOnePost = async(req, res, next) =>{
       
           cache.set(phoneNumber, otp.toString(), 300);
           console.log(otp);
-          res.json({ success: true, message: 'OTP sent successfully' });
+          const obj1 = {
+            resultFlag: 1,
+            message: "OTP sent successfully",
+          };
+          res.json(obj1);
         }
       };
       
@@ -1012,9 +1021,17 @@ exports.testOnePost = async(req, res, next) =>{
             //sendSMS(phoneNumber, `Your OTP is: ${otp}`);
             console.log("Your Resend OTP")
             console.log(otp)
-            res.json({ success: true, message: 'OTP resent successfully' });
+            const obj1 = {
+                resultFlag: 1,
+                message: "OTP resent successfully",
+              };
+              res.json(obj1);
             } else {
-            res.json({ success: false, message: 'OTP expired or not found' });
+                const obj2 = {
+                    resultFlag: 0,
+                    message: "OTP expired or not found",
+                  };
+                  res.json(obj2);
             }
         };
   
@@ -1030,10 +1047,19 @@ exports.testOnePost = async(req, res, next) =>{
         
             // Remove the OTP from cache after successful verification
             cache.del(phoneNumber);
+            const obj1 = {
+                resultFlag: 1,
+                message: "OTP verified successfully",
+              };
+            res.json(obj1);
         
             res.json({ success: true, message: 'OTP verified successfully' });
             } else {
-            res.json({ success: false, message: 'Invalid OTP' });
+                const obj2 = {
+                    resultFlag: 0,
+                    message: "Invalid OTP",
+                  };
+                  res.json(obj2);
             }
         };
   
