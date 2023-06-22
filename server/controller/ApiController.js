@@ -933,7 +933,7 @@ exports.testOnePost = async(req, res, next) =>{
 
     exports.panchangAPI = async(req, res) =>{
         const pdate = req.query.pdate;
-        const panchangFetch = await PanchangModel.findOne({ p_date: pdate }).lean();
+        const panchangFetch = await PanchangModel.findOne({ publish_date: pdate }).lean();
         const resultFlag = panchangFetch ? 1 : 0;
         const message = panchangFetch ? "Panchang Record Found" : "Panchang Record Not Found";
         const responseData = {
