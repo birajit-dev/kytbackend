@@ -1057,12 +1057,13 @@ exports.testOnePost = async(req, res, next) =>{
             const music_title = "Music for you";
             const mantras_title = "Mantras For You";
             const today_title = "Today Title";
+            const today_content_short_description ="short_content"
             const today_content = "Today Content";
-
             const obj1 = {
                 resultFlag: 1,
                 message: "For You Record Found",
                 today_title,
+                today_content_short_description,
                 today_content,
                 mantras_title,
                 mantrasList:mantra,
@@ -1166,7 +1167,7 @@ exports.testOnePost = async(req, res, next) =>{
               };
               res.json(obj1);
             }
-          };
+        };
           
           
           // Endpoint to resend OTP via SMS
@@ -1227,3 +1228,66 @@ exports.testOnePost = async(req, res, next) =>{
             }
           };
                   
+
+
+
+exports.senOTPWEB = async (req, res) => {
+  const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+  const otp = "1234";
+  const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+
+  if (phoneCheck) {
+    // Phone number exists in the database
+    await UserModel.updateOne({ phone_no: phoneNumber }, { $set: { phone_otp: otp } });
+
+    const obj1 = {
+      resultFlag: 1,
+      message: "OTP sent successfully",
+    };
+    res.json(obj1);
+  } else {
+    // Phone number doesn't exist in the database
+    const newDate = new Date(); // Replace with your desired date logic
+    const insertData = new UserModel({
+      phone_no: phoneNumber,
+      phone_otp: otp,
+      otp_session: otp,
+      update_date: newDate,
+    });
+    await insertData.save();
+
+    // Send the OTP via MSG91 SMS gateway
+    const msg91AuthKey = 'YOUR_MSG91_AUTH_KEY';
+    const msg91SenderId = 'YOUR_MSG91_SENDER_ID';
+    const msg91Route = '4'; // Promotional route
+    const msg91Url = `http://api.msg91.com/api/sendhttp.php?authkey=${msg91AuthKey}&mobiles=${phoneNumber}&message=${encodeURIComponent(`Your OTP is: ${otp}`)}&sender=${msg91SenderId}&route=${msg91Route}&country=91`;
+
+    request(msg91Url, function (error, response, body) {
+      if (!error && response.statusCode === 200) {
+        console.log(body); // Use body to handle the response from MSG91
+        const obj1 = {
+          resultFlag: 1,
+          message: "OTP sent successfully",
+        };
+        res.json(obj1);
+      } else {
+        console.error(error); // Handle the error occurred during the API request
+        const obj1 = {
+          resultFlag: 0,
+          message: "Failed to send OTP",
+        };
+        res.json(obj1);
+      }
+    });
+  }
+};
+
+    exports.settingPromotiona = async(req, res) =>{
+        const object1 = {
+            resultFlag: 1,
+            message: "Promotional Data Found",
+            promotional_2_thumbnail: "https://fastly.picsum.photos/id/237/200/300.jpg?hmac="
+        }
+        res.json(object1);
+    }
+
