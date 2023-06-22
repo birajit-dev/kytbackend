@@ -68,6 +68,8 @@ router.post('/api/v1/mobile/verifyotp', ApiController.VerifyOTP);
 router.post('/api/v1/mobile/resendotp', ApiController.resendOTP);
 router.get('/api/v1/mobile/foryou', ApiController.forYou);
 router.get('/api/v1/mobile/homescreen', ApiController.homeScreen);
+router.get('/api/v1/mobile/settingpromotional', ApiController.settingPromotional);
+
 
 
 

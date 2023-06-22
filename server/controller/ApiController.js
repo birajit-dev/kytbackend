@@ -1282,7 +1282,7 @@ exports.senOTPWEB = async (req, res) => {
   }
 };
 
-    exports.settingPromotiona = async(req, res) =>{
+    exports.settingPromotional = async(req, res) =>{
         const object1 = {
             resultFlag: 1,
             message: "Promotional Data Found",
