@@ -149,14 +149,28 @@ console.log(generateString(10));
         }
 
         exports.addVideos = async(req, res) =>{
-            try{
-                const addV = req.body;
+            
+            try{                
+            const addV = req.body;
+            //Viideo Key Generator
+            const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            function generateString(length) {
+                let result = ' ';
+                const charactersLength = characters.length;
+                for ( let i = 0; i < length; i++ ) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                return result;
+            }
+            const vKey = generateString(8);
+            //Video URL Generator
+            const vurl =  addV.videos_title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
                 let addVideos = new VideosModel({
                     videos_title: addV.videos_title,
                     videos_description: addV.videos_description,
                     videos_category: addV.videos_category,
-                    videos_url: addV.videos_url,
-                    videos_key: addV.videos_key,
+                    videos_url: vurl,
+                    videos_key: vKey,
                     videos_sub_category: addV.videos_sub_category,
                     videos_path: addV.videos_path,
                     videos_keyword: addV.videos_keyword,
