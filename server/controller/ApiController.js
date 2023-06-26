@@ -1305,3 +1305,22 @@ exports.senOTPWEB = async (req, res) => {
         res.json(object1);
     }
 
+
+
+    exports.updateVideosCategory = async(req, res) =>{
+        const getData = req.body;
+        VcategoriesModel.findByIdAndUpdate(getData.id, 
+            {   
+            vcategories_title: getData.vcategories_title,
+            categoriesId: getData.categoriesId,
+            vcategories_thumbnail: getData.vcategories_thumbnail,
+            update_date: newDate, 
+            }, function(err, data) {
+            if(err){
+                res.json("Something Went Wrong")
+            }
+            else{
+                res.json(data);
+            }
+            });
+    }

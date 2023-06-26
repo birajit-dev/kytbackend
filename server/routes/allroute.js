@@ -87,6 +87,12 @@ router.get('/mantra', WebController.mantraPage);
 
 
 
+//Update Data
+router.post('/api/v1/update/vcategory', ApiController.updateVideosCategory);
+
+
+
+
 
 
 
