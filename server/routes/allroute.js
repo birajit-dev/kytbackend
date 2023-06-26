@@ -73,6 +73,7 @@ router.get('/api/v1/mobile/settingpromotional', ApiController.settingPromotional
 
 
 
+
 router.get('/api/v1/optimise/videos', ApiController.videoOptimise);
 router.get('/otp', WebController.sentot);
 
@@ -89,6 +90,9 @@ router.get('/mantra', WebController.mantraPage);
 
 //Update Data
 router.post('/api/v1/update/vcategory', ApiController.updateVideosCategory);
+
+//Delete Data
+router.get('/api/v1/delete/vsubcategory', ApiController.deleteSubcategoryVideos);
 
 
 
