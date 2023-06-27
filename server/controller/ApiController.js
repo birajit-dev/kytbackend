@@ -322,11 +322,23 @@ console.log(generateString(10));
         exports.mantrasPost = async(req, res) =>{
             try{
                 const mantraData = req.body;
+                const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                function generateString(length) {
+                    let result = ' ';
+                    const charactersLength = characters.length;
+                    for ( let i = 0; i < length; i++ ) {
+                        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    }
+                    return result;
+                }
+                const vKey = generateString(9);
+                //Video URL Generator
+                const vurl =  mantraData.mantra_title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
                 let manatraAdd = new MantraModel({
                     mantra_title: mantraData.mantra_title,
                     mantra_path: mantraData.mantra_path,
-                    mantra_url: mantraData.mantra_url,
-                    mantra_key: mantraData.mantra_key,
+                    mantra_url: vurl,
+                    mantra_key: vKey,
                     mantra_category: mantraData.mantra_category,
                     mantra_sloak: mantraData.mantra_sloak,
                     mantra_thumbnail: mantraData.mantra_thumbnail,

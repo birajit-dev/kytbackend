@@ -1,20 +1,15 @@
-mantra_title: String,
-            mantra_path: String,
-            mantra_url: String,
-            mantra_key: String,
-            mantra_category: String,
-            mantra_sloak: String,
-            mantra_thumbnail: String,
-            mantra_duration: String,
-            mantra_publish: String,
+
 
 <form action="/api/v1/post/mantra" method="post">
 <input type="text" name="mantra_title" placeholder="mantra_title">
 <input type="text" name="mantra_path" placeholder="mantra_path">
-<input type="text" name="mantra_url" placeholder="mantra_url">
-<input type="text" name="mantra_key" placeholder="mantra_key">
-<input type="text" name="mantra_category" placeholder="mantra_category">
-<textarea name="mantra_sloak" placeholder="mantra_sloak"></textarea>
+<select name="mantra_category">
+<option value="kirshna_mantra">Krishna mantra</option>
+<option value="hanuman_mantra">Hanuman Chalisa</option>
+<option value="durga_mantra">Durga Mantra</option>
+<option value="shiva_mantra"> Shiva Mantra</option>
+</select>
+<textarea class="mytextarea" name="mantra_sloak" placeholder="mantra_sloak"></textarea>
 <input type="text" name="mantra_thumbnail" placeholder="mantra_thumbnail">
 <input type="text" name="mantra_duration" placeholder="mantra_duration">
 <input type="text" name="mantra_publish" placeholder="mantra_publish">
