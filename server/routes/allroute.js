@@ -83,6 +83,8 @@ router.get('/otp', WebController.sentot);
 router.get('/api/v1/web/deleteVideos', ApiController.deleteVidoes);
 router.get('/horoscope', WebController.horoscopePage);
 router.get('/mantra', WebController.mantraPage);
+router.get('/blogs', WebController.blogs);
+
 
 
 
@@ -91,6 +93,7 @@ router.get('/mantra', WebController.mantraPage);
 //Update Data
 router.post('/api/v1/update/vcategory', ApiController.updateVideosCategory);
 router.post('/api/v1/update/mantracategory', ApiController.mantraCategoryUpdate);
+router.post('/api/v1/post/blogss', ApiController.addBlogs);
 
 //Delete Data
 router.get('/api/v1/delete/vsubcategory', ApiController.deleteSubcategoryVideos);

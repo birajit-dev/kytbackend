@@ -76,7 +76,9 @@ const newDate = moment().format('lll');
     exports.sentot = async(req, res, next) => {
         res.render('otp');
     }
-
+    exports.blogs = async(req, res) =>{
+        res.render('blogs');
+    }
 
     
 

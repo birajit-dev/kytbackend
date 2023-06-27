@@ -33,6 +33,7 @@ const WishesModel = require('../model/wishes');
 const MantraCategoriesModel = require('../model/mantra_categories');
 const MantraModel = require('../model/mantra');
 const SubCategoryModel =  require('../model/vsubcategory');
+const BlogsModel = require('../model/blogs');
 const UserModel = require('../model/user');
 const { json } = require('body-parser');
 const { rmSync } = require('fs');
@@ -1404,4 +1405,19 @@ exports.senOTPWEB = async (req, res) => {
                     res.json("Videos Subcategory Deleted");
                 }
             }); 
+    }
+
+    exports.addBlogs = async(req, res) =>{
+        const add = req.body;
+        const addB = new BlogsModel({
+            title: add.title,
+            url: add.title,
+            description: add.description,
+            thumbnail: add.thumbnail,
+            category: add.category,
+            keyword: add.keyword,
+            update_date: newDate, 
+        });
+        const hh = await addB.save();
+        res.json(hh);
     }
