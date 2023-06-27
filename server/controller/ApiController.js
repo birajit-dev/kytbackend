@@ -193,14 +193,27 @@ console.log(generateString(10));
         exports.addMusic = async(req, res) =>{
             try{
                 const addM = req.body;
+                const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                function generateString(length) {
+                    let result = ' ';
+                    const charactersLength = characters.length;
+                    for ( let i = 0; i < length; i++ ) {
+                        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    }
+                    return result;
+                }
+                const vKey = generateString(9);
+                //Video URL Generator
+                const vurl =  addM.music_title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+
                 let adMusic = new MusicModel({
                     music_title: addM.music_title,
                     music_category: addM.music_category,
                     music_subcategory: addM.music_subcategory,
                     music_singer: addM.music_singer,
                     music_thumbnail: addM.music_thumbnail,
-                    music_url: addM.music_url,
-                    music_key: addM.music_key,
+                    music_url: vurl,
+                    music_key: vKey,
                     music_path: addM.music_path,
                     music_duration: addM.music_duration,
                     music_publisher: addM.music_publisher,
