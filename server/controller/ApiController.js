@@ -1342,6 +1342,19 @@ exports.senOTPWEB = async (req, res) => {
         });
     }
 
+    exports.musicDelete = async(req, res) =>{
+        let vid = req.query.id;
+        MusicModel.remove({_id:vid}, 
+            function(err, data) {
+                if(err){
+                    res.json("Videos Subcatory Deleted");
+                }
+                else{
+                    res.json("Videos Subcategory Deleted");
+                }
+        }); 
+    }
+
     exports.deleteSubcategoryVideos = async(req, res) =>{
         let vid = req.query.id;
         SubCategoryModel.remove({_id:vid}, 

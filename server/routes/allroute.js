@@ -94,7 +94,7 @@ router.post('/api/v1/update/mantracategory', ApiController.mantraCategoryUpdate)
 
 //Delete Data
 router.get('/api/v1/delete/vsubcategory', ApiController.deleteSubcategoryVideos);
-
+router.get('/api/v1/delete/deletemusic', ApiController.musicDelete);
 
 
 
