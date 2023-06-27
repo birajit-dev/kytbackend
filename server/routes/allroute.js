@@ -90,6 +90,7 @@ router.get('/mantra', WebController.mantraPage);
 
 //Update Data
 router.post('/api/v1/update/vcategory', ApiController.updateVideosCategory);
+router.post('/api/v1/update/mantracategory', ApiController.mantraCategoryUpdate);
 
 //Delete Data
 router.get('/api/v1/delete/vsubcategory', ApiController.deleteSubcategoryVideos);

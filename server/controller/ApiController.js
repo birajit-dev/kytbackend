@@ -1325,6 +1325,23 @@ exports.senOTPWEB = async (req, res) => {
             });
     }
 
+    exports.mantraCategoryUpdate = async(req, res) =>{
+        const getData = req.body;
+        MantraCategoriesModel.findByIdAndUpdate(getData.id,{
+            mantras_categories_title: getData.mantras_categories_title,
+            mantra_category_Id: getData.mantra_category_Id,
+            mantras_categories_thumbnail: getData.mantras_categories_thumbnail,
+            update_date: newDate,   
+        }, function(err, data) {
+            if(err){
+                res.json("Something Went Wrong")
+            }
+            else{
+                res.json(data);
+            }
+        });
+    }
+
     exports.deleteSubcategoryVideos = async(req, res) =>{
         let vid = req.query.id;
         SubCategoryModel.remove({_id:vid}, 
