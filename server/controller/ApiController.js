@@ -1392,3 +1392,16 @@ exports.senOTPWEB = async (req, res) => {
                 }
             }); 
     }
+
+    exports.deleteMantra = async(req, res) =>{
+        let vid = req.query.id;
+        MantraModel.remove({_id:vid}, 
+            function(err, data) {
+                if(err){
+                    res.json("Videos Subcatory Deleted");
+                }
+                else{
+                    res.json("Videos Subcategory Deleted");
+                }
+            }); 
+    }

@@ -1,15 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
 
+  <div class="container">
+    <form action="/api/v1/post/horoscope" method="post">
+      <div class="form-group">
+        <label for="horoscope_title">Title</label>
+        <input type="text" class="form-control" name="horoscope_title" placeholder="Title">
+      </div>
+      <div class="form-group">
+        <label for="horoscope_description">Description</label>
+        <textarea class="form-control mytextarea" name="horoscope_description" placeholder="Description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="horoscope_url">URL</label>
+        <input type="text" class="form-control" name="horoscope_url" placeholder="URL">
+      </div>
+      <div class="form-group">
+        <label for="horoscope_category">Category</label>
+        <input type="text" class="form-control" name="horoscope_category" placeholder="Category">
+      </div>
+      <div class="form-group">
+        <label for="horoscope_thumbnail">Thumbnail</label>
+        <input type="text" class="form-control" name="horoscope_thumbnail" placeholder="Thumbnail">
+      </div>
+      <div class="form-group">
+        <label for="horoscope_date">Date</label>
+        <input type="text" class="form-control" name="horoscope_date" placeholder="Date">
+      </div>
+      <div class="form-group">
+        <label for="horoscope_keyword">Keyword</label>
+        <input type="text" class="form-control" name="horoscope_keyword" placeholder="Keyword">
+      </div>
+      <div class="form-group">
+        <label for="horoscope_publish">Publish</label>
+        <input type="text" class="form-control" name="horoscope_publish" placeholder="Publish">
+      </div>
+      <input type="submit" class="btn btn-primary" name="submit" value="Post Horoscope">
+    </form>
+  </div>
 
+  <!-- Include Bootstrap JS (jQuery and Popper.js are required dependencies) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<form action="/api/v1/post/horoscope" method="post">
-<input type="text" name="horoscope_title" placeholder="Title"><br>
-<textarea name="horoscope_description" placeholder="description"></textarea>
-<input type="text" name="horoscope_url" placeholder="Url">
-<input type="text" name="horoscope_category" placeholder="Category">
-<input type="text" name="horoscope_thumbnail" placeholder="Thumbnail">
-<input type="text" name="horoscope_date" placeholder="Date">
-<input type="text" name="horoscope_keyword" placeholder="Keyword">
-<input type="text" name="horoscope_publish" placeholder="Publish">
-<input type="submit" name="submit" value="Post Horoscope">
-    
-</form>
+</body>
+</html>
