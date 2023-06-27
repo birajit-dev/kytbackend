@@ -1411,7 +1411,7 @@ exports.senOTPWEB = async (req, res) => {
         const add = req.body;
         const addB = new BlogsModel({
             title: add.title,
-            url: add.title,
+            url: add.url,
             description: add.description,
             thumbnail: add.thumbnail,
             category: add.category,
