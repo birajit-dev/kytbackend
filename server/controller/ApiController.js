@@ -1421,3 +1421,8 @@ exports.senOTPWEB = async (req, res) => {
         const hh = await addB.save();
         res.json(hh);
     }
+    
+    exports.checkAllVideo = async(req, res) =>{
+        const all = await VideosModel.find({}).lean();
+        res.json(all);
+    }
