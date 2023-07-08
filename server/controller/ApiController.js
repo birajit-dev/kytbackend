@@ -1426,3 +1426,62 @@ exports.senOTPWEB = async (req, res) => {
         const all = await VideosModel.find({}).lean();
         res.json(all);
     }
+
+
+    exports.videoList = async(req, res) =>{
+        const vall = await VideosModel.find({}).lean();
+        res.render('videolist',{
+            vall
+        })
+    }
+
+    exports.WebVideosUpdate = async(req,res) => {
+        const addV = req.body;
+        VideosModel.findByIdAndUpdate(addV.id, 
+            {   
+                    videos_title: addV.videos_title,
+                    videos_description: addV.videos_description,
+                    videos_category: addV.videos_category,
+                    videos_url: addV.vurl,
+                    videos_key: addV.vKey,
+                    videos_sub_category: addV.videos_sub_category,
+                    videos_path: addV.videos_path,
+                    videos_keyword: addV.videos_keyword,
+                    videos_temple_locate: addV.videos_temple_locate,         
+                    videos_thumbnail: addV.videos_thumbnail,
+                    videos_publisher: addV.videos_publisher,
+                    videos_publish: addV.videos_publish,
+                    videos_duration: addV.videos_duration,
+                    update_date: newDate,   
+            }, function(err, data) {
+            if(err){
+                res.json("Something Went Wrong")
+            }
+            else{
+                res.json(data);
+            }
+            });   
+    }
+
+
+
+    exports.WebVidoesDelete = async(req, res) =>{
+        let vid = req.query.id;
+        VideosModel.remove({_id:vid}, 
+            function(err, data) {
+                if(err){
+                    res.json("Videos Deleted");
+                }
+                else{
+                    res.json("Videos Deleted");
+                }
+            }); 
+    }
+
+    exports.WebVideoEdit = async(req, res) =>{
+        let vid = req.query.id;
+        const v = await VideosModel.findById(vid).lean();
+        res.render('videoedit',{
+            v
+        })
+    }

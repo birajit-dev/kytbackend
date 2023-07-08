@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+  <div class="container">
+    <form action="/web/videos/update" method="post">
+
+        <input type="hidden" name="id" value="{{v._id}}">
+        <input type="hidden" name="vurl" value="{{v.vurl}}">
+        <input type="hidden" name="videos_keyword" value="{{v.videos_keyword}}">
+
+        <input type="hidden" name="videos_temple_locate" value="{{v.videos_temple_locate}}">
+
+        <input type="hidden" name="videos_publisher" value="{{v.videos_publisher}}">
+
+        <input type="hidden" name="videos_publish" value="{{v.videos_publish}}">
+
+        <input type="hidden" name="vKey" value="{{v.vKey}}">
+
+
+    
+      <div class="form-group">
+        <label for="horoscope_title">Videos Title</label>
+        <input type="text" class="form-control" name="videos_title" placeholder="Title" value="{{v.videos_title}}">
+      </div>
+      <div class="form-group">
+        <label for="horoscope_description">Description</label>
+        <textarea class="form-control mytextarea" name="videos_description" placeholder="Description">{{v.videos_description}}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="horoscope_url">Videos Category</label>
+        <input type="text" class="form-control" name="videos_category" placeholder="URL" value="{{v.videos_category}}" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="horoscope_url">Videos Category</label>
+        <input type="text" class="form-control" name="videos_sub_category" value="{{v.videos_sub_category}}" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="horoscope_url">Videos Path</label>
+        <input type="text" class="form-control" name="videos_path" value="{{v.videos_path}}">
+      </div>
+
+      <div class="form-group">
+        <label for="horoscope_url">Videos Thumbnail</label>
+        <input type="text" class="form-control" name="videos_thumbnail" value="{{v.videos_thumbnail}}">
+      </div>
+
+     <div class="form-group">
+        <label for="horoscope_url">Videos Duration</label>
+        <input type="text" class="form-control" name="videos_duration" value="{{v.videos_duration}}">
+      </div>
+
+      <input type="submit" class="btn btn-primary" name="submit" value="Update Video">
+    </form>
+  </div>
+
+  <!-- Include Bootstrap JS (jQuery and Popper.js are required dependencies) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

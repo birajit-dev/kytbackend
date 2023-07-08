@@ -104,6 +104,12 @@ router.get('/api/v1/delete/deletemantra', ApiController.deleteMantra);
 
 
 
+router.get('/web/videolist', ApiController.videoList);
+router.get('/web/videos/delete', ApiController.WebVidoesDelete);
+router.get('/web/videos/edit', ApiController.WebVideoEdit);
+router.post('/web/videos/update', ApiController.WebVideosUpdate)
+
+
 
 
 

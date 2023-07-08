@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bootstrap Data Table Example</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <table class="table">
+            
+            
+            <thead>
+                <tr>
+                    <th>Videos Title</th>
+                    <th>Video Category</th>
+                    <th>Video Update</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each vall}}
+                <tr>
+                    <td>{{videos_title}}</td>
+                    <td>{{videos_category}}</td>
+                    <td>{{update_date}}</td>
+                    <td><a href="/web/videos/edit?id={{_id}}">Edit</a></td>
+                    <td><a href="/web/videos/delete?id={{_id}}">Delete</a></td>
+                </tr>
+                {{/each}}
+                
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
