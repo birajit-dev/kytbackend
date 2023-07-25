@@ -35,6 +35,11 @@ const MantraModel = require('../model/mantra');
 const SubCategoryModel =  require('../model/vsubcategory');
 const BlogsModel = require('../model/blogs');
 const UserModel = require('../model/user');
+const TempleModel = require('../model/templeInfo');
+
+
+
+
 const { json } = require('body-parser');
 const { rmSync } = require('fs');
 
@@ -1464,6 +1469,20 @@ exports.senOTPWEB = async (req, res) => {
     }
 
 
+    exports.podcastDelete = async(req, res) =>{
+        let vid = req.query.id;
+        PodcastModel.remove({_id:vid}, 
+            function(err, data) {
+                if(err){
+                    res.json("Podcast Can not Deleted.");
+                }
+                else{
+                    res.json("Podcast Deleted");
+                }
+            });    
+    }
+
+
 
     exports.WebVidoesDelete = async(req, res) =>{
         let vid = req.query.id;
@@ -1485,3 +1504,124 @@ exports.senOTPWEB = async (req, res) => {
             v
         })
     }
+
+    //Temples Information Controller
+    exports.templesAdd =  async(req, res) =>{
+        const data = req.body;
+        let addTemples = new TempleModel({
+            name: data.name,
+            summary: data.summary,
+            address: data.address,
+            latitude: data.latitude,
+            longitude: data.longitute,
+            about: data.about,
+            timing: data.timing,
+            temple_status: data.status,
+            temple_cover_photo: data.temple_cover_photo,
+            temple_round_photo: data.temple_round_photo,
+            temple_phone: data.temple_phone,
+            update_date: newDate,
+        });
+        let ds = addTemples.save();
+        res.json(ds);
+    }
+    exports.templesEdit = async(req, res) =>{
+        let data = req.body;
+        TempleModel.findByIdAndUpdate(data.id,{
+            name: data.name,
+            summary: data.summary,
+            address: data.address,
+            latitude: data.latitude,
+            longitude: data.longitute,
+            about: data.about,
+            timing: data.timing,
+            temple_status: data.status,
+            temple_cover_photo: data.temple_cover_photo,
+            temple_round_photo: data.temple_round_photo,
+            temple_phone: data.temple_phone,
+            update_date: newDate,
+        },function(err, data) {
+            if(err){
+                res.json("Something Went Wrong")
+            }
+            else{
+                res.json(data);
+            }
+            });
+    }
+    exports.templeDetele = async(req, res) =>{
+        let id = req.params.id;
+        TempleModel.remove({_id:id}, 
+            function(err, data) {
+                if(err){
+                    res.json("Temples Not Deleted");
+                }
+                else{
+                    res.json("Temples info Deleted");
+                }
+            });    
+    }
+    
+    exports.templeList = async (req, res) => {
+        const { latitude, longitude, page } = req.params;
+        const itemsPerPage = 10; // Number of items to display per page
+        const skip = (page - 1) * itemsPerPage; // Calculate the number of items to skip
+      
+        try {
+          const temples = await TempleModel.aggregate([
+            {
+              $geoNear: {
+                near: {
+                  type: 'Point',
+                  coordinates: [parseFloat(longitude), parseFloat(latitude)], // Note the order: [longitude, latitude]
+                },
+                distanceField: 'distance',
+                spherical: true,
+                distanceMultiplier: 0.001, // Convert meters to kilometers
+              },
+            },
+            {
+              $project: {
+                name: 1,
+                distance: 1,
+                summary: 1,
+                address: 1,
+                latitude: 1,
+                longitude: 1,
+                about: 1,
+                timing: 1,
+                temple_status: 1,
+                temple_cover_photo: 1,
+                temple_round_photo: 1,
+                temple_phone: 1,
+                update_date: { $toDate: '$update_date' }, // Assuming update_date is stored as a Date field
+              },
+            },
+            {
+              $skip: skip, // Skip the specified number of items
+            },
+            {
+              $limit: itemsPerPage, // Limit the number of items per page
+            },
+          ]);
+      
+          if (temples && temples.length > 0) {
+            temples.forEach((temple) => {
+              console.log('Nearest place:', temple.name);
+              console.log('Distance (km):', temple.distance);
+            });
+          } else {
+            console.log('No nearby places found.');
+          }
+      
+          res.json(temples); // Send the temples data as a JSON response
+        } catch (error) {
+          console.error('Error finding nearest place:', error);
+          res.status(500).json({ error: 'Internal server error' });
+        }
+      };
+      
+      
+    
+
+    

@@ -101,6 +101,7 @@ router.post('/api/v1/post/blogss', ApiController.addBlogs);
 router.get('/api/v1/delete/vsubcategory', ApiController.deleteSubcategoryVideos);
 router.get('/api/v1/delete/deletemusic', ApiController.musicDelete);
 router.get('/api/v1/delete/deletemantra', ApiController.deleteMantra);
+router.get('/api/v1/deleted/podcast', ApiController.podcastDelete);
 
 
 
