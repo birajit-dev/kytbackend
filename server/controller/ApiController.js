@@ -51,7 +51,7 @@ const newDate = moment().format('lll');
 //Value KEY Generator for Podcast and Videos & Musics
 const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 function generateString(length) {
-    let result = ' ';
+    let result = '';
     const charactersLength = characters.length;
     for ( let i = 0; i < length; i++ ) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -1525,7 +1525,7 @@ exports.senOTPWEB = async (req, res) => {
                 type: 'Point',
                 coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],
               },
-            temple_code: t_code,
+            temple_code:t_code,
             sunday: data.sunday,
             monday: data.monday,
             tuesday: data.tuesday,
