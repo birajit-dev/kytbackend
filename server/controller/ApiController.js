@@ -1674,6 +1674,28 @@ exports.senOTPWEB = async (req, res) => {
           res.status(500).json({ resultFlag: 0, message: 'Internal server error', data: [], totalCount: 0, totalPages: 0, currentPage: parseInt(page) });
         }
       };
+
+
+      exports.singleTemples = async (req, res) => {
+        const { id } = req.params; // Assuming the URL parameter is "id"
+        const temple_one = await TempleModel.findOne({ temple_code: id }).lean();
+        
+        if (temple_one && temple_one.temple_code) {
+          const responseData = {
+            resultFlag: 1,
+            message: "Temple Record Found",
+            ...temple_one,
+          };
+          res.json(responseData);
+        } else {
+          const responseData = {
+            resultFlag: 0,
+            message: "Temple Record Not Found",
+          };
+          res.json(responseData);
+        }
+      }
+      
       
       
       
