@@ -1677,8 +1677,9 @@ exports.senOTPWEB = async (req, res) => {
 
 
       exports.singleTemples = async (req, res) => {
-        const { id } = req.params; // Assuming the URL parameter is "id"
-        const temple_one = await TempleModel.findOne({ temple_code: id }).lean();
+        const { code } = req.query; // Assuming the URL parameter is "id"
+        const temple_one = await TempleModel.findOne({ temple_code: code }).lean();
+        console.log(code);
         
         if (temple_one && temple_one.temple_code) {
           const responseData = {
