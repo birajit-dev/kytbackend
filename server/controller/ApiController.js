@@ -1508,18 +1508,31 @@ exports.senOTPWEB = async (req, res) => {
     //Temples Information Controller
     exports.templesAdd =  async(req, res) =>{
         const data = req.body;
+        const t_code = generateString(12);
         let addTemples = new TempleModel({
             name: data.name,
             summary: data.summary,
             address: data.address,
             latitude: data.latitude,
-            longitude: data.longitute,
+            longitude: data.longitude,
             about: data.about,
-            timing: data.timing,
-            temple_status: data.status,
+            temple_status: data.temple_status,
             temple_cover_photo: data.temple_cover_photo,
             temple_round_photo: data.temple_round_photo,
             temple_phone: data.temple_phone,
+            status: data.status,
+            coordinates: {
+                type: 'Point',
+                coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],
+              },
+            temple_code: t_code,
+            sunday: data.sunday,
+            monday: data.monday,
+            tuesday: data.tuesday,
+            wednesday: data.wednesday,
+            thursday: data.thursday,
+            friday: data.friday,
+            satuarday: data.satuarday,
             update_date: newDate,
         });
         let ds = addTemples.save();
@@ -1532,13 +1545,20 @@ exports.senOTPWEB = async (req, res) => {
             summary: data.summary,
             address: data.address,
             latitude: data.latitude,
-            longitude: data.longitute,
+            longitude: data.longitude,
             about: data.about,
-            timing: data.timing,
-            temple_status: data.status,
+            temple_status: data.temple_status,
             temple_cover_photo: data.temple_cover_photo,
             temple_round_photo: data.temple_round_photo,
             temple_phone: data.temple_phone,
+            temple_code: data.t_code,
+            sunday: data.sunday,
+            monday: data.monday,
+            tuesday: data.tuesday,
+            wednesday: data.wednesday,
+            thursday: data.thursday,
+            friday: data.friday,
+            satuarday: data.satuarday,
             update_date: newDate,
         },function(err, data) {
             if(err){
@@ -1563,8 +1583,26 @@ exports.senOTPWEB = async (req, res) => {
     }
     
     exports.templeList = async (req, res) => {
-        const { latitude, longitude, page } = req.params;
+
+        // Create the 2dsphere index on the "coordinates" field
+        TempleModel.collection.createIndex({ coordinates: '2dsphere' }, (err) => {
+            if (err) {
+            console.error('Error creating 2dsphere index:', err);
+            } else {
+            console.log('2dsphere index created successfully.');
+            }
+        });  
+
+
+        const { latitude, longitude, page } = req.query; // Use req.query to access query parameters
         const itemsPerPage = 10; // Number of items to display per page
+      
+        // Validate the page parameter
+        if (isNaN(page) || page < 1) {
+          res.status(400).json({ error: 'Invalid page number. Page must be a positive integer.' });
+          return;
+        }
+      
         const skip = (page - 1) * itemsPerPage; // Calculate the number of items to skip
       
         try {
@@ -1589,10 +1627,10 @@ exports.senOTPWEB = async (req, res) => {
                 latitude: 1,
                 longitude: 1,
                 about: 1,
-                timing: 1,
                 temple_status: 1,
                 temple_cover_photo: 1,
                 temple_round_photo: 1,
+                temple_code: 1,
                 temple_phone: 1,
                 update_date: { $toDate: '$update_date' }, // Assuming update_date is stored as a Date field
               },
@@ -1606,20 +1644,38 @@ exports.senOTPWEB = async (req, res) => {
           ]);
       
           if (temples && temples.length > 0) {
+            console.log('Found nearby places.');
             temples.forEach((temple) => {
               console.log('Nearest place:', temple.name);
               console.log('Distance (km):', temple.distance);
             });
+      
+            res.json({
+              resultFlag: 1,
+              message: 'Nearby temples found',
+              data: temples,
+              totalCount: temples.length,
+              totalPages: Math.ceil(temples.length / itemsPerPage),
+              currentPage: parseInt(page),
+            });
           } else {
             console.log('No nearby places found.');
+            res.json({
+              resultFlag: 0,
+              message: 'No nearby places found.',
+              data: [],
+              totalCount: 0,
+              totalPages: 0,
+              currentPage: parseInt(page),
+            });
           }
-      
-          res.json(temples); // Send the temples data as a JSON response
         } catch (error) {
           console.error('Error finding nearest place:', error);
-          res.status(500).json({ error: 'Internal server error' });
+          res.status(500).json({ resultFlag: 0, message: 'Internal server error', data: [], totalCount: 0, totalPages: 0, currentPage: parseInt(page) });
         }
       };
+      
+      
       
       
     

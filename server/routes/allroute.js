@@ -41,6 +41,10 @@ router.post('/api/v1/post/musicadd', ApiController.addMusic);
 router.post('/api/v1/post/podcast', ApiController.podcastPost);
 router.post('/api/v1/post/wishes', ApiController.wishesPost);
 router.post('/api/v1/post/horoscope', ApiController.horoscopePost);
+//API for Temple Post
+router.post('/api/v1/post/templeadd', ApiController.templesAdd);
+router.post('/api/v1/edit/templesinfo', ApiController.templesEdit);
+
 
 
 
@@ -70,6 +74,8 @@ router.get('/api/v1/mobile/foryou', ApiController.forYou);
 router.get('/api/v1/mobile/homescreen', ApiController.homeScreen);
 router.get('/api/v1/mobile/settingpromotional', ApiController.settingPromotional);
 router.get('/api/v1/allvideos', ApiController.checkAllVideo);
+router.get('/api/v1/mobile/alltemple', ApiController.templeList);
+
 
 
 
