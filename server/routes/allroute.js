@@ -92,6 +92,7 @@ router.get('/api/v1/web/deleteVideos', ApiController.deleteVidoes);
 router.get('/horoscope', WebController.horoscopePage);
 router.get('/mantra', WebController.mantraPage);
 router.get('/blogs', WebController.blogs);
+router.get('/api/v1/delete/temple', ApiController.templeDetele);
 
 
 

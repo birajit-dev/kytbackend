@@ -1570,7 +1570,7 @@ exports.senOTPWEB = async (req, res) => {
             });
     }
     exports.templeDetele = async(req, res) =>{
-        let id = req.params.id;
+        let id = req.query;
         TempleModel.remove({_id:id}, 
             function(err, data) {
                 if(err){
