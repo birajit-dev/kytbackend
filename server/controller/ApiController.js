@@ -36,6 +36,7 @@ const SubCategoryModel =  require('../model/vsubcategory');
 const BlogsModel = require('../model/blogs');
 const UserModel = require('../model/user');
 const TempleModel = require('../model/templeInfo');
+const LoveMantraModel = require('../model/lovemantra');
 
 
 
@@ -1526,13 +1527,7 @@ exports.senOTPWEB = async (req, res) => {
                 coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],
               },
             temple_code:t_code,
-            sunday: data.sunday,
-            monday: data.monday,
-            tuesday: data.tuesday,
-            wednesday: data.wednesday,
-            thursday: data.thursday,
-            friday: data.friday,
-            satuarday: data.satuarday,
+            temple_timings:data.temple_timings,
             update_date: newDate,
         });
         let ds = addTemples.save();
@@ -1677,25 +1672,74 @@ exports.senOTPWEB = async (req, res) => {
 
 
       exports.singleTemples = async (req, res) => {
-        const { code } = req.query; // Assuming the URL parameter is "id"
-        const temple_one = await TempleModel.findOne({ temple_code: code }).lean();
-        console.log(code);
-        
-        if (temple_one && temple_one.temple_code) {
-          const responseData = {
-            resultFlag: 1,
-            message: "Temple Record Found",
-            ...temple_one,
-          };
-          res.json(responseData);
-        } else {
+        const { code } = req.query; // Assuming the URL parameter is "code"
+        const dayOfWeek = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+      
+        try {
+          const temple_one = await TempleModel.findOne({ temple_code: code }).lean();
+      
+          if (temple_one && temple_one.temple_code) {
+            // Set isToday to true for the current day and false for other days
+            temple_one.temple_timings.forEach((timing) => {
+              timing.isToday = timing.day === dayOfWeek;
+            });
+      
+            const responseData = {
+              resultFlag: 1,
+              message: "Temple Record Found",
+              ...temple_one,
+            };
+            res.json(responseData);
+          } else {
+            const responseData = {
+              resultFlag: 0,
+              message: "Temple Record Not Found",
+            };
+            res.json(responseData);
+          }
+        } catch (err) {
+          console.error(err);
           const responseData = {
             resultFlag: 0,
-            message: "Temple Record Not Found",
+            message: "Error occurred while fetching temple data",
           };
           res.json(responseData);
         }
+      };
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      exports.loveMantra = async(req, res) =>{
+        const {mnKey, mobile_no} = req.body;
+        let LoveMantra = new LoveMantraModel({
+            username: mobile_no,
+            mantra_key: mnKey,
+            update_date: newDate, 
+        });
+        let addL = LoveMantra.save();
+        res.json(addL);
       }
+
+      
+
+    
+
+
       
       
       

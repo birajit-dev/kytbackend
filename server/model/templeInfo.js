@@ -14,13 +14,12 @@ const templesSchema = new mongoose.Schema({
     temple_round_photo: String,
     temple_phone: Number,
     temple_code: String,
-    sunday: String,
-    monday: String,
-    tuesday: String,
-    wednesday: String,
-    thursday: String,
-    friday: String,
-    satuarday: String,
+    temple_timings: [
+      {
+        day: String,
+        timings: String,
+      }
+    ],
     coordinates: {
         type: { type: String, enum: ['Point'], default: 'Point' },
         coordinates: [Number], // [longitude, latitude]
