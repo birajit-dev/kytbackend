@@ -1518,6 +1518,7 @@ exports.senOTPWEB = async (req, res) => {
             longitude: data.longitude,
             about: data.about,
             temple_status: data.temple_status,
+            temple_status_text: data.temple_status_text,
             temple_cover_photo: data.temple_cover_photo,
             temple_round_photo: data.temple_round_photo,
             temple_phone: data.temple_phone,
