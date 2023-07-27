@@ -1579,7 +1579,6 @@ exports.senOTPWEB = async (req, res) => {
     }
     
     exports.templeList = async (req, res) => {
-
         // Create the 2dsphere index on the "coordinates" field
         TempleModel.collection.createIndex({ coordinates: '2dsphere' }, (err) => {
             if (err) {
@@ -1588,7 +1587,6 @@ exports.senOTPWEB = async (req, res) => {
             console.log('2dsphere index created successfully.');
             }
         });  
-
 
         const { latitude, longitude, page } = req.query; // Use req.query to access query parameters
         const itemsPerPage = 10; // Number of items to display per page
@@ -1617,13 +1615,14 @@ exports.senOTPWEB = async (req, res) => {
             {
               $project: {
                 name: 1,
-                distance: 1,
+                distance: { $toInt: '$distance' },
                 summary: 1,
                 address: 1,
                 latitude: 1,
                 longitude: 1,
                 about: 1,
                 temple_status: 1,
+                temple_status_text: 1,
                 temple_cover_photo: 1,
                 temple_round_photo: 1,
                 temple_code: 1,
