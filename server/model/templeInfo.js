@@ -9,7 +9,7 @@ const templesSchema = new mongoose.Schema({
     latitude: Number,
     longitude: Number,
     about: String,
-    temple_status: String,
+    temple_status: Boolean,
     temple_cover_photo: String,
     temple_round_photo: String,
     temple_phone: Number,
