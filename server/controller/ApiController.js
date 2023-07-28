@@ -37,12 +37,14 @@ const BlogsModel = require('../model/blogs');
 const UserModel = require('../model/user');
 const TempleModel = require('../model/templeInfo');
 const LoveMantraModel = require('../model/lovemantra');
+const PujaTemplesModel = require('../model/puja');
 
 
 
 
 const { json } = require('body-parser');
 const { rmSync } = require('fs');
+const puja = require('../model/puja');
 
 
 
@@ -1711,19 +1713,6 @@ exports.senOTPWEB = async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
       exports.loveMantra = async(req, res) =>{
         const {mnKey, mobile_no} = req.body;
         let LoveMantra = new LoveMantraModel({
@@ -1733,6 +1722,49 @@ exports.senOTPWEB = async (req, res) => {
         });
         let addL = LoveMantra.save();
         res.json(addL);
+      }
+
+
+
+      exports.pujaTemplesAdd = async(req, res) =>{
+        const data = req.body;
+        const t_code = generateString(16);
+        let PujaT = new PujaTemplesModel({
+            temple_name: data.temple_name,
+            summary: data.summary,
+            address: data.address,
+            puja_timing: data.puja_timing,
+            temple_thumbnail: data.temple_thumbnail,
+            puja_temple_code: t_code,
+            puja_services: data.puja_services,
+            update_date: newDate,
+        });
+        const save = PujaT.save();
+        res.json(save);
+      }
+
+      exports.packagesTempleList = async(req, res) =>{
+            const page = req.query.page || 1; // Current page number, defaulting to 1
+            const limit = req.query.limit || 10; // Number of records per page, defaulting to 10
+            const countPromise = PujaTemplesModel.countDocuments({});
+            const dataPromise = PujaTemplesModel.find({})
+            .sort({ p_temples_ids: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .lean();
+            const [totalRecords, packageservice] = await Promise.all([countPromise, dataPromise]);
+            const totalPages = Math.ceil(totalRecords / limit);
+            const resultFlag = packageservice.length > 0 ? 1 : 0;
+            const message = packageservice.length > 0 ? "Register Puja Records Found" : "Register Puja Record Not Found";
+            const responseData = {
+            resultFlag,
+            message,
+            data: packageservice,
+            totalCount: totalRecords,
+            totalPages,
+            currentPage: page,
+            };
+            res.json(responseData);
       }
 
       

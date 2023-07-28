@@ -44,7 +44,8 @@ router.post('/api/v1/post/horoscope', ApiController.horoscopePost);
 //API for Temple Post
 router.post('/api/v1/post/templeadd', ApiController.templesAdd);
 router.post('/api/v1/edit/templesinfo', ApiController.templesEdit);
-
+//Register for Puja//
+router.post('/api/v1/post/registerpuja', ApiController.pujaTemplesAdd);
 
 
 
@@ -76,6 +77,7 @@ router.get('/api/v1/mobile/settingpromotional', ApiController.settingPromotional
 router.get('/api/v1/allvideos', ApiController.checkAllVideo);
 router.get('/api/v1/mobile/alltemple', ApiController.templeList);
 router.get('/api/v1/mobile/singletemple', ApiController.singleTemples);
+router.get('/api/v1/mobile/registerpuja', ApiController.packagesTempleList);
 
 
 

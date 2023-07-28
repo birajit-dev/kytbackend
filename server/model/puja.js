@@ -6,6 +6,7 @@ const pujaSchema = new mongoose.Schema({
     temple_name: String,
     summary: String,
     address: String,
+    temple_thumbnail: String,
     puja_timing: String,
     puja_temple_code: String,
     puja_services: [
