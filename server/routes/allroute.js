@@ -84,6 +84,7 @@ router.get('/api/v1/mobile/registerpuja', ApiController.packagesTempleList);
 router.get('/api/v1/mobile/getmantralove', ApiController.loveMantraList);
 router.get('/api/v1/mobile/getpujapaymentdetails', ApiController.servicesDetailsPage);
 router.get('/api/v1/mobile/reels', ApiController.reelsGenerate);
+router.get('/api/v1/mobile/watchedvideos', ApiController.getRecentlyWatchedVideos);
 
 
 

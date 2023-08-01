@@ -2029,6 +2029,38 @@ exports.senOTPWEB = async (req, res) => {
         }
     };
 
+    exports.getRecentlyWatchedVideos = async (req, res) => {
+        try {
+            const { users } = req.query; // Extract the 'users' property from req.query
+            const watchedVideos = await WatchedVideoModel.find({ username: users }).lean();
+    
+            if (watchedVideos.length === 0) {
+                return res.status(200).json({ resultFlag: 0, message: "Vidoes Records not found", data: [] });
+            }
+    
+            // Get an array of unique videos_key from the watched videos
+            const uniqueVideoKeys = [...new Set(watchedVideos.map((video) => video.video_key))];
+    
+            // Find videos based on uniqueVideoKeys from the VideosModel
+            const videosList = await VideosModel.find({ videos_key: { $in: uniqueVideoKeys } }).lean();
+    
+            const response = {
+                resultFlag: 1,
+                message: "Vidoes Records found",
+                data: videosList,
+            };
+    
+            // Send the response
+            res.status(200).json(response);
+        } catch (err) {
+            // Handle any errors that might occur during the process
+            console.error('Error fetching mantra list:', err);
+            res.status(500).json({ error: 'Failed to fetch mantra list' });
+        }
+    };
+    
+    
+
 
 
 
