@@ -16,7 +16,6 @@ var moment = require('moment'); // require
 //Database Connection
 require('../model/database');
 const NodeCache = require('node-cache');
-
 const cache = new NodeCache();
 
 //Model Requirement
@@ -38,15 +37,14 @@ const UserModel = require('../model/user');
 const TempleModel = require('../model/templeInfo');
 const LoveMantraModel = require('../model/lovemantra');
 const PujaTemplesModel = require('../model/puja');
-
-
+const ReelsModel = require('../model/reels');
 
 
 const { json } = require('body-parser');
 const { rmSync } = require('fs');
 const puja = require('../model/puja');
-
-
+const reels = require('../model/reels');
+const user = require('../model/user');
 
 
 
@@ -1714,17 +1712,44 @@ exports.senOTPWEB = async (req, res) => {
 
 
       exports.loveMantra = async(req, res) =>{
-        const {mnKey, mobile_no} = req.body;
+        const data = req.body;
         let LoveMantra = new LoveMantraModel({
-            username: mobile_no,
-            mantra_key: mnKey,
+            username: data.username,
+            mantra_key: data.mantra_key,
             update_date: newDate, 
         });
         let addL = LoveMantra.save();
         res.json(addL);
       }
 
+      exports.loveMantraList = async (req, res) => {
+        try {
+          const { users } = req.query; // Extract the 'users' property from req.query
+          const mantraList = await LoveMantraModel.find({ username: users }).sort({ lovem_id: -1 }).lean();
+      
+          // Create an empty array to store the data
+          const mantraArray = [];
+      
+          // Add each mantra from the mantraList to the mantraArray
+          mantraList.forEach(mantra => {
+            mantraArray.push(mantra);
+          });
 
+        const anotherModelData = await MantraModel.find({ mantra_key: { $in: mantraArray.map(mantra => mantra.mantra_key) } }).lean();
+        const response = {
+            resultFlag: anotherModelData.length > 0 ? 1 : 0,
+            message: anotherModelData.length > 0 ? "Mantra Records found" : "Mantra Records not found",
+            data: anotherModelData,
+          };
+      
+          // Send the response
+          res.status(200).json(response);
+        } catch (err) {
+          // Handle any errors that might occur during the process
+          console.error('Error fetching mantra list:', err);
+          res.status(500).json({ error: 'Failed to fetch mantra list' });
+        }
+      };
 
       exports.pujaTemplesAdd = async(req, res) =>{
         const data = req.body;
@@ -1767,16 +1792,73 @@ exports.senOTPWEB = async (req, res) => {
             res.json(responseData);
       }
 
+      exports.servicesDetailsPage = async(req, res) =>{
+        try {
+            const packageServiceCode = req.query.scode;
+            const temple_code = req.query.tcode;
+            const users = req.query.user;
+            // Find the temples that contain the provided package_service_code
+            const templesWithPackageServiceCode = await PujaTemplesModel.find({ puja_services: { $elemMatch: { package_service_code: packageServiceCode } } }).lean();
+            if (templesWithPackageServiceCode.length === 0) {
+              return res.status(404).json({ message: 'No temples found with the provided package_service_code' });
+            }
+            // Send the found temples as the response
+                // Extract the desired data from the puja_services array
+            const packageServiceData = templesWithPackageServiceCode.map(temple => {
+                return temple.puja_services.find(service => service.package_service_code === packageServiceCode);
+            });
+            // Send the extracted data as the response
+            res.status(200).json(packageServiceData);
+          } catch (err) {
+            // Handle any errors that might occur during the process
+            console.error('Error fetching temples:', err);
+            res.status(500).json({ error: 'Failed to fetch temples' });
+          }
+      }
       
+      exports.reelsAdd = async(req, res) =>{
+            const data = req.body;
+            const r_code = generateString(20);
+            let addReels = new ReelsModel({
+                reels_name: data.reels_name,
+                reels_summary: data.reels_summary,
+                reels_path: data.reels_path,
+                reels_thumbnail: data.reels_thumbnail,
+                reels_code: r_code,
+                reels_category: data.reels_category,
+                update_date: newDate,
+            });
+            const saveReels = addReels.save();
+            res.json(saveReels);
+      }
 
-    
 
-
-      
-      
-      
-      
-      
-    
-
-    
+        exports.reelsGenerate = async (req, res) => {
+            try {
+                const { page, perPage } = req.query;
+                const pageNumber = parseInt(page) || 1;
+                const itemsPerPage = parseInt(perPage) || 10; // Set a default of 10 items per page
+                // Retrieve random data using aggregation pipeline
+                const reelsGet = await ReelsModel.aggregate([
+                { $sample: { size: itemsPerPage } },
+                { $project: { _id: 0 } }, // Exclude the _id field from the response
+                ]);
+                const resultFlag = reelsGet.length > 0 ? 1 : 0;
+                const message = resultFlag === 1 ? "Mantra Records found" : "No data found";
+                // Count total documents in the collection
+                const totalCount = await ReelsModel.countDocuments();
+                // Calculate total pages
+                const totalPages = Math.ceil(totalCount / itemsPerPage);
+                res.json({
+                resultFlag,
+                message,
+                data: reelsGet,
+                totalCount,
+                totalPages,
+                currentPage: pageNumber,
+                });
+            } catch (error) {
+                console.error("Error in reelsGenerate:", error);
+                res.status(500).json({ resultFlag: 0, message: "Internal server error" });
+            }
+        };

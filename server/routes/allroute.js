@@ -46,7 +46,10 @@ router.post('/api/v1/post/templeadd', ApiController.templesAdd);
 router.post('/api/v1/edit/templesinfo', ApiController.templesEdit);
 //Register for Puja//
 router.post('/api/v1/post/registerpuja', ApiController.pujaTemplesAdd);
-
+//Add to Mantra Favourite
+router.post('/api/v1/post/lovemantra', ApiController.loveMantra);
+//Post Reels
+router.post('/api/v1/post/reels', ApiController.reelsAdd);
 
 
 
@@ -78,8 +81,9 @@ router.get('/api/v1/allvideos', ApiController.checkAllVideo);
 router.get('/api/v1/mobile/alltemple', ApiController.templeList);
 router.get('/api/v1/mobile/singletemple', ApiController.singleTemples);
 router.get('/api/v1/mobile/registerpuja', ApiController.packagesTempleList);
-
-
+router.get('/api/v1/mobile/getmantralove', ApiController.loveMantraList);
+router.get('/api/v1/mobile/getpujapaymentdetails', ApiController.servicesDetailsPage);
+router.get('/api/v1/mobile/reels', ApiController.reelsGenerate);
 
 
 
