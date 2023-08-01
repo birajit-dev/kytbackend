@@ -2083,6 +2083,28 @@ exports.senOTPWEB = async (req, res) => {
         const getU = await VideosModel.find().lean();
         res.json(getU);
     }
+
+
+    exports.updateProfile = async(req, res) =>{
+        try {
+            const updatedUserData = req.body; // The updated user data sent in the request body
+            //const checkPhone = await UserModel.findOne({phone_no:updatedUserData.phone_no})
+            // Update the user data in the database
+            const updatedUser = await UserModel.findOneAndUpdate(
+                { phone_no: updatedUserData.phone_no },
+                updatedUserData,
+                { new: true, runValidators: true } // Set new to true to return the updated document and runValidators to validate the updated data
+            ).lean();
+            if (!updatedUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            // Send the updated user data as the response
+            res.status(200).json({ message: "User data updated successfully", data: updatedUser });
+        } catch (error) {
+            console.error('Error updating user data:', error);
+            res.status(500).json({ error: 'Failed to update user data' });
+        }        
+    }
     
     
     

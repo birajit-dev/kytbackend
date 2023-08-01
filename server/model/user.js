@@ -7,6 +7,9 @@ const userSchema = new mongoose.Schema({
     phone_no: Number,
     phone_otp: String,
     otp_session: String,
+    gender: String,
+    location: String,
+    user_code: String,
     update_date: String,
 });
 
