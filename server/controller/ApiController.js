@@ -2031,39 +2031,58 @@ exports.senOTPWEB = async (req, res) => {
 
     exports.getRecentlyWatchedVideos = async (req, res) => {
         try {
-            const { users } = req.query; // Extract the 'users' property from req.query
+            const { users, page, perPage } = req.query; // Extract the 'users', 'page', and 'perPage' properties from req.query
+            const pageNumber = parseInt(page) || 1;
+            const itemsPerPage = parseInt(perPage) || 10; // Set a default of 10 items per page
+    
             const watchedVideos = await WatchedVideoModel.find({ username: users }).lean();
     
             if (watchedVideos.length === 0) {
-                return res.status(200).json({ resultFlag: 0, message: "Vidoes Records not found", data: [] });
+                return res.status(200).json({ resultFlag: 0, message: "Videos Records not found", data: [] });
             }
     
             // Get an array of unique videos_key from the watched videos
             const uniqueVideoKeys = [...new Set(watchedVideos.map((video) => video.video_key))];
     
-            // Find videos based on uniqueVideoKeys from the VideosModel
-            const videosList = await VideosModel.find({ videos_key: { $in: uniqueVideoKeys } }).lean();
+            // Calculate the starting index and ending index for pagination
+            const startIndex = (pageNumber - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+    
+            // Slice the videosList based on the pagination range
+            const videosList = await VideosModel.find({ videos_key: { $in: uniqueVideoKeys } })
+                .skip(startIndex)
+                .limit(itemsPerPage)
+                .lean();
     
             const response = {
-                resultFlag: 1,
-                message: "Vidoes Records found",
+                resultFlag: videosList.length > 0 ? 1 : 0,
+                message: videosList.length > 0 ? "Videos Records found" : "No more data available",
                 data: videosList,
+                totalCount: uniqueVideoKeys.length,
+                totalPages: Math.ceil(uniqueVideoKeys.length / itemsPerPage),
+                currentPage: pageNumber,
             };
     
             // Send the response
             res.status(200).json(response);
         } catch (err) {
             // Handle any errors that might occur during the process
-            console.error('Error fetching mantra list:', err);
-            res.status(500).json({ error: 'Failed to fetch mantra list' });
+            console.error('Error fetching videos list:', err);
+            res.status(500).json({ error: 'Failed to fetch videos list' });
         }
     };
+
+
+
+
+    exports.getUser = async(req, res) =>{
+       const getU = await UserModel.find().lean();
+       res.json(getU);
+    }
     
     
-
-
-
-
+    
+    
 
 
 //-------------- API v2 ----------//
