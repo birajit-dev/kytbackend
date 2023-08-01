@@ -1845,7 +1845,7 @@ exports.senOTPWEB = async (req, res) => {
     exports.servicesDetailsPage = async (req, res) => {
         try {
           const packageServiceCode = req.query.scode;
-          const temple_code = req.query.tcode;
+          //const temple_code = req.query.tcode;
           const users = req.query.user;
       
           // Find the temples that contain the provided package_service_code
@@ -1929,32 +1929,43 @@ exports.senOTPWEB = async (req, res) => {
       }
 
 
-        exports.reelsGenerate = async (req, res) => {
-            try {
-                const { page, perPage } = req.query;
-                const pageNumber = parseInt(page) || 1;
-                const itemsPerPage = parseInt(perPage) || 10; // Set a default of 10 items per page
-                // Retrieve random data using aggregation pipeline
-                const reelsGet = await ReelsModel.aggregate([
-                { $sample: { size: itemsPerPage } },
+      exports.reelsGenerate = async (req, res) => {
+        try {
+            const { page, perPage } = req.query;
+            const pageNumber = parseInt(page) || 1;
+            const itemsPerPage = parseInt(perPage) || 10; // Set a default of 10 items per page
+    
+            // Count total documents in the collection
+            const totalCount = await ReelsModel.countDocuments();
+            // Calculate total pages
+            const totalPages = Math.ceil(totalCount / itemsPerPage);
+    
+            // Check if the requested page is out of range
+            if (pageNumber > totalPages) {
+                return res.status(404).json({ resultFlag: 0, message: "Page not found" });
+            }
+    
+            // Retrieve data using aggregation pipeline with skip and limit
+            const reelsGet = await ReelsModel.aggregate([
+                { $skip: (pageNumber - 1) * itemsPerPage },
+                { $limit: itemsPerPage },
                 { $project: { _id: 0 } }, // Exclude the _id field from the response
-                ]);
-                const resultFlag = reelsGet.length > 0 ? 1 : 0;
-                const message = resultFlag === 1 ? "Mantra Records found" : "No data found";
-                // Count total documents in the collection
-                const totalCount = await ReelsModel.countDocuments();
-                // Calculate total pages
-                const totalPages = Math.ceil(totalCount / itemsPerPage);
-                res.json({
+            ]);
+    
+            const resultFlag = reelsGet.length > 0 ? 1 : 0;
+            const message = resultFlag === 1 ? "Reels Records found" : "No data found";
+    
+            res.json({
                 resultFlag,
                 message,
                 data: reelsGet,
                 totalCount,
                 totalPages,
                 currentPage: pageNumber,
-                });
-            } catch (error) {
-                console.error("Error in reelsGenerate:", error);
-                res.status(500).json({ resultFlag: 0, message: "Internal server error" });
-            }
-        };
+            });
+        } catch (error) {
+            console.error("Error in reelsGenerate:", error);
+            res.status(500).json({ resultFlag: 0, message: "Internal server error" });
+        }
+    };
+    
