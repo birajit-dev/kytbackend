@@ -1764,6 +1764,29 @@ exports.senOTPWEB = async (req, res) => {
         }
       };
 
+
+      exports.deleteMantraLove = async (req, res) => {
+        try {
+            const { username, mantra_key } = req.body; // Extract the 'username' and 'key' properties from req.body
+    
+            // Find the LoveMantraModel data with the given username and key
+            const mantraLove = await LoveMantraModel.findOne({ username, mantra_key });
+    
+            if (!mantraLove) {
+                return res.status(404).json({ resultFlag: 0, message: "LoveMantraModel data not found" });
+            }
+    
+            // Delete the LoveMantraModel data
+            await LoveMantraModel.deleteOne({ username, mantra_key });
+    
+            return res.status(200).json({ resultFlag: 1, message: "LoveMantraModel data deleted successfully" });
+        } catch (error) {
+            console.error("Error deleting LoveMantraModel data:", error);
+            res.status(500).json({ resultFlag: 0, message: "Internal server error" });
+        }
+    };
+    
+
       exports.pujaTemplesAdd = async(req, res) =>{
         const data = req.body;
         const t_code = generateString(16);

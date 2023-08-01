@@ -50,7 +50,10 @@ router.post('/api/v1/post/registerpuja', ApiController.pujaTemplesAdd);
 router.post('/api/v1/post/lovemantra', ApiController.loveMantra);
 //Post Reels
 router.post('/api/v1/post/reels', ApiController.reelsAdd);
+//Put Method Update User
 router.put('/api/v1/mobile/updateuser', ApiController.updateProfile);
+//Delete Method//
+router.delete('/api/v1/mobile/removemantra', ApiController.deleteMantraLove);
 
 
 
