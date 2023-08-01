@@ -102,10 +102,6 @@ router.get('/api/v1/delete/temple', ApiController.templeDetele);
 
 
 
-
-
-
-
 //Update Data
 router.post('/api/v1/update/vcategory', ApiController.updateVideosCategory);
 router.post('/api/v1/update/mantracategory', ApiController.mantraCategoryUpdate);
@@ -116,6 +112,7 @@ router.get('/api/v1/delete/vsubcategory', ApiController.deleteSubcategoryVideos)
 router.get('/api/v1/delete/deletemusic', ApiController.musicDelete);
 router.get('/api/v1/delete/deletemantra', ApiController.deleteMantra);
 router.get('/api/v1/deleted/podcast', ApiController.podcastDelete);
+router.get('/api/v1/delete/pujatemple', ApiController.deletePujaTemple);
 
 
 

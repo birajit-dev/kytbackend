@@ -1779,6 +1779,19 @@ exports.senOTPWEB = async (req, res) => {
         res.json(save);
       }
 
+      exports.deletePujaTemple = async(req, res) =>{
+        let id = req.query.id;
+        PujaTemplesModel.remove({_id:id}, 
+            function(err, data) {
+                if(err){
+                    res.json("Temples Not Deleted");
+                }
+                else{
+                    res.json("Temples info Deleted");
+                }
+            }); 
+      }
+
       exports.packagesTempleList = async(req, res) =>{
             const page = req.query.page || 1; // Current page number, defaulting to 1
             const limit = req.query.limit || 10; // Number of records per page, defaulting to 10
@@ -1803,29 +1816,101 @@ exports.senOTPWEB = async (req, res) => {
             res.json(responseData);
       }
 
-      exports.servicesDetailsPage = async(req, res) =>{
+    //   exports.servicesDetailsPage = async(req, res) =>{
+    //     try {
+    //         const packageServiceCode = req.query.scode;
+    //         const temple_code = req.query.tcode;
+    //         const users = req.query.user;
+    //         // Find the temples that contain the provided package_service_code
+    //         const templesWithPackageServiceCode = await PujaTemplesModel.find({ puja_services: { $elemMatch: { package_service_code: packageServiceCode } } }).lean();
+    //         if (templesWithPackageServiceCode.length === 0) {
+    //           return res.status(404).json({ message: 'No temples found with the provided package_service_code' });
+    //         }
+    //         // Send the found temples as the response
+    //         // Extract the desired data from the puja_services array
+    //         const packageServiceData = templesWithPackageServiceCode.map(temple => {
+    //             return temple.puja_services.find(service => service.package_service_code === packageServiceCode);
+    //         });
+    //         // Send the extracted data as the response
+    //         res.status(200).json(packageServiceData);
+    //       } catch (err) {
+    //         // Handle any errors that might occur during the process
+    //         console.error('Error fetching temples:', err);
+    //         res.status(500).json({ error: 'Failed to fetch temples' });
+    //       }
+    //   }
+
+
+
+    exports.servicesDetailsPage = async (req, res) => {
         try {
-            const packageServiceCode = req.query.scode;
-            const temple_code = req.query.tcode;
-            const users = req.query.user;
-            // Find the temples that contain the provided package_service_code
-            const templesWithPackageServiceCode = await PujaTemplesModel.find({ puja_services: { $elemMatch: { package_service_code: packageServiceCode } } }).lean();
-            if (templesWithPackageServiceCode.length === 0) {
-              return res.status(404).json({ message: 'No temples found with the provided package_service_code' });
+          const packageServiceCode = req.query.scode;
+          const temple_code = req.query.tcode;
+          const users = req.query.user;
+      
+          // Find the temples that contain the provided package_service_code
+          const templesWithPackageServiceCode = await PujaTemplesModel.find({
+            puja_services: { $elemMatch: { package_service_code: packageServiceCode } },
+          }).lean();
+      
+          // Calculate the total package_discount_price and discount_amount
+          let totalPackageDiscountPrice = 0;
+          let totalDiscountAmount = 0;
+      
+          // Extract the desired data from the puja_services array, including package_extra_fee details
+          const packageServiceData = templesWithPackageServiceCode.map(temple => {
+            const pujaService = temple.puja_services.find(service => service.package_service_code === packageServiceCode);
+            if (pujaService) {
+              const packageExtraFeeData = pujaService.package_extra_fee.map(extraFee => {
+                if (!extraFee.isFree) {
+                  totalDiscountAmount += parseFloat(extraFee.discount_amount);
+                }
+                return {
+                  isFree: extraFee.isFree,
+                  fee_code: extraFee.fee_code,
+                  tittle: extraFee.tittle,
+                  amount: extraFee.amount,
+                  discount_amount: extraFee.discount_amount,
+                };
+              });
+      
+              totalPackageDiscountPrice += parseFloat(pujaService.package_discount_price);
+      
+              return {
+                temple_name: temple.temple_name,
+                package_name: pujaService.package_name,
+                package_price: pujaService.package_price,
+                package_discount_price: pujaService.package_discount_price,
+                package_details: pujaService.package_details,
+                package_service_code: pujaService.package_service_code,
+                package_extra_fee: packageExtraFeeData,
+              };
             }
-            // Send the found temples as the response
-            // Extract the desired data from the puja_services array
-            const packageServiceData = templesWithPackageServiceCode.map(temple => {
-                return temple.puja_services.find(service => service.package_service_code === packageServiceCode);
-            });
-            // Send the extracted data as the response
-            res.status(200).json(packageServiceData);
-          } catch (err) {
-            // Handle any errors that might occur during the process
-            console.error('Error fetching temples:', err);
-            res.status(500).json({ error: 'Failed to fetch temples' });
-          }
-      }
+          });
+      
+          // Calculate the total price after discounts
+          const totalPriceAfterDiscounts = totalPackageDiscountPrice + totalDiscountAmount;
+      
+          // Check if there is data available or not and set the resultFlag accordingly
+          const resultFlag = packageServiceData.length > 0 ? 1 : 0;
+          const message = resultFlag === 1 ? "Payment Summary Records found" : "No records found";
+      
+          // Send the extracted data and total price as the response
+          res.status(200).json({
+            resultFlag,
+            message,
+            data: packageServiceData,
+            totalPriceAfterDiscounts,
+          });
+        } catch (err) {
+          // Handle any errors that might occur during the process
+          console.error('Error fetching temples:', err);
+          res.status(500).json({ resultFlag: 0, message: 'Failed to fetch temples', data: [] });
+        }
+      };
+      
+      
+      
 
       exports.reelsAdd = async(req, res) =>{
             const data = req.body;

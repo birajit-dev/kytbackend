@@ -16,6 +16,14 @@ const pujaSchema = new mongoose.Schema({
             package_discount_price: String,
             package_details: String,
             package_service_code: String,
+            package_extra_fee:[{
+                    isFree: Boolean,
+                    fee_code: String,
+                    tittle: String,
+                    amount: String,
+                    discount_amount: String
+            }
+            ]
         }
     ],
     update_date: String,
