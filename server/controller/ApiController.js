@@ -1129,6 +1129,11 @@ exports.testOnePost = async(req, res, next) =>{
             const Mahatma = await VideosModel.find({videos_category:'mahatma'}).sort({videos_id:-1}).limit(5).lean();
             const Shakti = await VideosModel.find({videos_category:'shakti'}).sort({videos_id:-1}).limit(5).lean();
             
+            const reelsGet = await ReelsModel.aggregate([
+                { $sample: { size: 10 } },
+                { $project: { _id: 0 } }, // Exclude the _id field from the response
+              ]);
+            
             const object1 = {
                resultFlag: 1,
                message: "Homescreen Records Found",
@@ -1168,6 +1173,12 @@ exports.testOnePost = async(req, res, next) =>{
                     "categoryId":"shakti",
                     "list": Shakti,
                 },
+                {
+                    "title": "Shorts",
+                    "viewtype": "shorts",
+                    "categoryId":"shorts",
+                    "list": reelsGet,   
+                }
                ]
             }
             res.json(object1);
@@ -1803,7 +1814,7 @@ exports.senOTPWEB = async (req, res) => {
               return res.status(404).json({ message: 'No temples found with the provided package_service_code' });
             }
             // Send the found temples as the response
-                // Extract the desired data from the puja_services array
+            // Extract the desired data from the puja_services array
             const packageServiceData = templesWithPackageServiceCode.map(temple => {
                 return temple.puja_services.find(service => service.package_service_code === packageServiceCode);
             });
@@ -1815,7 +1826,7 @@ exports.senOTPWEB = async (req, res) => {
             res.status(500).json({ error: 'Failed to fetch temples' });
           }
       }
-      
+
       exports.reelsAdd = async(req, res) =>{
             const data = req.body;
             const r_code = generateString(20);
