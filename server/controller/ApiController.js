@@ -2112,6 +2112,53 @@ exports.senOTPWEB = async (req, res) => {
 
 
 //-------------- API v2 ----------//
+// exports.playVideoV2 = async (req, res) => {
+//     try {
+//         const user = req.query.user;
+//         const vkey = req.query.vkey;
+
+//         // Check if the user exists in the UserModel
+//         const userExists = await UserModel.exists({ phone_no: user });
+
+//         if (!userExists) {
+//             return res.status(404).json({ resultFlag: 0, message: "User Not Found" });
+//         }
+
+
+//         // Find the video based on vkey and project only required fields
+//         const watch_videos = await VideosModel.findOne(
+//             {
+//                 $and: [
+//                     { videos_key: vkey },
+//                     { videos_category: { $exists: true } }, // Ensure videos_category exists
+//                 ],
+//             },
+//             {
+//                 videos_url: 0,
+//                 videos_keyword: 0,
+//                 videos_temple_locate: 0,
+//                 videos_key: 0,
+//                 videos_publish: 0,
+//             }
+//         ).lean();
+
+//         if (watch_videos) {
+//             let sVi = new WatchedVideoModel({
+//                 username: user,
+//                 video_key: vkey,
+//                 update_date: newDate,
+//             });
+//             sVi.save();
+//             return res.json({ resultFlag: 1, message: "Video Found", ...watch_videos });
+//         } else {
+//             return res.json({ resultFlag: 0, message: "Video Not Found" });
+//         }
+//     } catch (error) {
+//         res.status(500).json({ resultFlag: 0, message: "Internal server error" });
+//     }
+// };
+
+
 exports.playVideoV2 = async (req, res) => {
     try {
         const user = req.query.user;
@@ -2123,7 +2170,6 @@ exports.playVideoV2 = async (req, res) => {
         if (!userExists) {
             return res.status(404).json({ resultFlag: 0, message: "User Not Found" });
         }
-
 
         // Find the video based on vkey and project only required fields
         const watch_videos = await VideosModel.findOne(
@@ -2146,10 +2192,28 @@ exports.playVideoV2 = async (req, res) => {
             let sVi = new WatchedVideoModel({
                 username: user,
                 video_key: vkey,
-                update_date: newDate,
+                update_date: new Date(),
             });
             sVi.save();
-            return res.json({ resultFlag: 1, message: "Video Found", ...watch_videos });
+
+            // Get related videos based on the same videos_category
+            const relatedVideos = await VideosModel.find(
+                {
+                    $and: [
+                        { videos_key: { $ne: vkey } }, // Exclude the current video
+                        { videos_category: watch_videos.videos_category }, // Get videos with the same videos_category
+                    ],
+                },
+                {
+                    videos_url: 0,
+                    videos_keyword: 0,
+                    videos_temple_locate: 0,
+                    videos_key: 0,
+                    videos_publish: 0,
+                }
+            ).limit(5).lean();
+
+            return res.json({ resultFlag: 1, message: "Video Found", ...watch_videos, relatedVideos });
         } else {
             return res.json({ resultFlag: 0, message: "Video Not Found" });
         }
@@ -2157,5 +2221,3 @@ exports.playVideoV2 = async (req, res) => {
         res.status(500).json({ resultFlag: 0, message: "Internal server error" });
     }
 };
-
-    
