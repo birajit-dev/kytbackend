@@ -2079,6 +2079,10 @@ exports.senOTPWEB = async (req, res) => {
        const getU = await UserModel.find().lean();
        res.json(getU);
     }
+    exports.getVideosall = async(req, res) =>{
+        const getU = await VideosModel.find().lean();
+        res.json(getU);
+    }
     
     
     
