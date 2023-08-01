@@ -1180,6 +1180,34 @@ exports.testOnePost = async(req, res, next) =>{
                     "viewtype": "shorts",
                     "categoryId":"shorts",
                     "list": reelsGet,   
+                },
+                {
+                    "title": "Bholenath",
+                    "description": "Image descriptions",
+                    "viewtype": "photos",
+                    "categoryId": "bolenath_photos",
+                    "list": [
+                        {
+                            "_id" : "1",
+                            "videos_title" : "Image 1",
+                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/Nabhi Kamal.jpg"
+                        },
+                        {
+                            "_id" : "2",
+                            "videos_title" : "Image 2",
+                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/Kapilmuni.jpg"
+                        },
+                        {
+                            "_id" : "3",
+                            "videos_title" : "Image 3",
+                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/Nabhi Kamal.jpg"
+                        },
+                        {
+                            "_id" : "4",
+                            "videos_title" : "Image 4",
+                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/Kapilmuni.jpg"
+                        }
+                    ]
                 }
                ]
             }
