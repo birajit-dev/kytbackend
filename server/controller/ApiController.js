@@ -38,6 +38,7 @@ const TempleModel = require('../model/templeInfo');
 const LoveMantraModel = require('../model/lovemantra');
 const PujaTemplesModel = require('../model/puja');
 const ReelsModel = require('../model/reels');
+const WatchedVideoModel =  require('../model/watchedvideos');
 
 
 const { json } = require('body-parser');
@@ -2027,4 +2028,57 @@ exports.senOTPWEB = async (req, res) => {
             res.status(500).json({ resultFlag: 0, message: "Internal server error" });
         }
     };
+
+
+
+
+
+
+//-------------- API v2 ----------//
+exports.playVideoV2 = async (req, res) => {
+    try {
+        const user = req.query.user;
+        const vkey = req.query.vkey;
+
+        // Check if the user exists in the UserModel
+        const userExists = await UserModel.exists({ phone_no: user });
+
+        if (!userExists) {
+            return res.status(404).json({ resultFlag: 0, message: "User Not Found" });
+        }
+
+
+        // Find the video based on vkey and project only required fields
+        const watch_videos = await VideosModel.findOne(
+            {
+                $and: [
+                    { videos_key: vkey },
+                    { videos_category: { $exists: true } }, // Ensure videos_category exists
+                ],
+            },
+            {
+                videos_url: 0,
+                videos_keyword: 0,
+                videos_temple_locate: 0,
+                videos_key: 0,
+                videos_publish: 0,
+            }
+        ).lean();
+
+        if (watch_videos) {
+            let sVi = new WatchedVideoModel({
+                username: user,
+                video_key: vkey,
+                update_date: newDate,
+            });
+            sVi.save();
+            return res.json({ resultFlag: 1, message: "Video Found", ...watch_videos });
+        } else {
+            return res.json({ resultFlag: 0, message: "Video Not Found" });
+        }
+    } catch (error) {
+        res.status(500).json({ resultFlag: 0, message: "Internal server error" });
+    }
+};
+
     

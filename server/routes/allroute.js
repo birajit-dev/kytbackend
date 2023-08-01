@@ -128,7 +128,8 @@ router.post('/web/videos/update', ApiController.WebVideosUpdate)
 
 
 
-
+//API V2/
+router.get('/api/v2/mobile/watchVidoes', ApiController.playVideoV2);
 
 
 
