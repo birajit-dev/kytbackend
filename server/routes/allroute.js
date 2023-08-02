@@ -51,9 +51,9 @@ router.post('/api/v1/post/lovemantra', ApiController.loveMantra);
 //Post Reels
 router.post('/api/v1/post/reels', ApiController.reelsAdd);
 //Put Method Update User
-router.put('/api/v1/mobile/updateuser', ApiController.updateProfile);
+router.post('/api/v1/mobile/updateuser', ApiController.updateProfile);
 //Delete Method//
-router.delete('/api/v1/mobile/removemantra', ApiController.deleteMantraLove);
+router.post('/api/v1/mobile/removemantra', ApiController.deleteMantraLove);
 
 
 
@@ -89,6 +89,10 @@ router.get('/api/v1/mobile/getmantralove', ApiController.loveMantraList);
 router.get('/api/v1/mobile/getpujapaymentdetails', ApiController.servicesDetailsPage);
 router.get('/api/v1/mobile/reels', ApiController.reelsGenerate);
 router.get('/api/v1/mobile/watchedvideos', ApiController.getRecentlyWatchedVideos);
+router.get('/api/v1/mobile/getprofile', ApiController.getProfile);
+
+
+//Extra
 router.get('/api/v1/admin/getUser', ApiController.getUser);
 router.get('/api/v1/admin/allvideos', ApiController.getVideosall);
 

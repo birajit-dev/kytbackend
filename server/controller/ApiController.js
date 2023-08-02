@@ -2126,14 +2126,6 @@ exports.senOTPWEB = async (req, res) => {
 
 
 
-    exports.getUser = async(req, res) =>{
-       const getU = await UserModel.find().lean();
-       res.json(getU);
-    }
-    exports.getVideosall = async(req, res) =>{
-        const getU = await VideosModel.find().lean();
-        res.json(getU);
-    }
 
 
     exports.updateProfile = async(req, res) =>{
@@ -2157,6 +2149,27 @@ exports.senOTPWEB = async (req, res) => {
         }        
     }
     
+
+// Assuming you have imported the required modules and defined the UserModel properly
+
+    // Assuming you have imported the required modules and defined the UserModel properly
+
+    exports.getProfile = async (req, res) => {
+        try {
+            const user = req.query.user;
+            const getUserDetails = await UserModel.findOne({ phone_no: user }, { phone_otp: 0, otp_session: 0, users_id: 0 }).lean();
+            if (getUserDetails) {
+                res.json({ resultFlag: 1, message: "User Record Found", ...getUserDetails });
+            } else {
+                res.status(404).json({ resultFlag: 0, message: "User not found" });
+            }
+        } catch (err) {
+            // Handle any potential errors that might occur during the database query
+            res.status(500).json({ resultFlag: 0, message: "Internal Server Error" });
+        }
+    };
+
+
     
     
     
@@ -2272,3 +2285,15 @@ exports.playVideoV2 = async (req, res) => {
         res.status(500).json({ resultFlag: 0, message: "Internal server error" });
     }
 };
+
+
+
+
+exports.getUser = async(req, res) =>{
+    const getU = await UserModel.find().lean();
+    res.json(getU);
+ }
+ exports.getVideosall = async(req, res) =>{
+     const getU = await VideosModel.find().lean();
+     res.json(getU);
+ }
