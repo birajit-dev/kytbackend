@@ -2139,10 +2139,10 @@ exports.senOTPWEB = async (req, res) => {
                 { new: true, runValidators: true } // Set new to true to return the updated document and runValidators to validate the updated data
             ).lean();
             if (!updatedUser) {
-                return res.status(404).json({ message: "User not found" });
+                return res.status(404).json({ resultFlag: 0, message: "User not found" });
             }
             // Send the updated user data as the response
-            res.status(200).json({ message: "User data updated successfully", data: updatedUser });
+            res.status(200).json({ resultFlag: 1, message: "User data updated successfully", data: updatedUser });
         } catch (error) {
             console.error('Error updating user data:', error);
             res.status(500).json({ error: 'Failed to update user data' });
