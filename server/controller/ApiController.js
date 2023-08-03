@@ -2227,7 +2227,7 @@ exports.playVideoV2 = async (req, res) => {
     try {
         const user = req.query.user;
         const vkey = req.query.vkey;
-
+        const promotiona_banner = "https://kytstorage.b-cdn.net/Thumbnails/Temples%20Info/temple_1.jpg";
         // Check if the user exists in the UserModel
         const userExists = await UserModel.exists({ phone_no: user });
 
@@ -2277,7 +2277,7 @@ exports.playVideoV2 = async (req, res) => {
                 }
             ).limit(5).lean();
 
-            return res.json({ resultFlag: 1, message: "Video Found", ...watch_videos, relatedVideos });
+            return res.json({ resultFlag: 1, message: "Video Found", ...watch_videos, relatedVideos, promotiona_banner });
         } else {
             return res.json({ resultFlag: 0, message: "Video Not Found" });
         }
