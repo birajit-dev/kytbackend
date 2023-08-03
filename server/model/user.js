@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     otp_session: String,
     gender: String,
     location: String,
+    horoscope: String,
     user_code: String,
     update_date: String,
 });

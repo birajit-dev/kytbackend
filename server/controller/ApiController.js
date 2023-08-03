@@ -2164,6 +2164,7 @@ exports.senOTPWEB = async (req, res) => {
                 gender: "",
                 location: "",
                 username: "",
+                horoscope: "",
                 ...getUserDetails,
             };
     
@@ -2369,4 +2370,3 @@ exports.senOTPWEB = async (req, res) => {
                 res.status(500).json({ resultFlag: 0, message: "Internal server error" });
             }
         };
-        
