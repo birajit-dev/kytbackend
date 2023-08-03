@@ -2223,49 +2223,24 @@ exports.senOTPWEB = async (req, res) => {
 // };
 
 
-exports.playVideoV2 = async (req, res) => {
-    try {
-        const user = req.query.user;
-        const vkey = req.query.vkey;
-        const promotional_banner = "https://kytstorage.b-cdn.net/Thumbnails/Temples%20Info/temple_1.jpg";
-        // Check if the user exists in the UserModel
-        const userExists = await UserModel.exists({ phone_no: user });
+    exports.playVideoV2 = async (req, res) => {
+        try {
+            const user = req.query.user;
+            const vkey = req.query.vkey;
+            const promotional_banner = "https://kytstorage.b-cdn.net/Thumbnails/Temples%20Info/temple_1.jpg";
+            // Check if the user exists in the UserModel
+            const userExists = await UserModel.exists({ phone_no: user });
 
-        if (!userExists) {
-            return res.status(404).json({ resultFlag: 0, message: "User Not Found" });
-        }
-
-        // Find the video based on vkey and project only required fields
-        const watch_videos = await VideosModel.findOne(
-            {
-                $and: [
-                    { videos_key: vkey },
-                    { videos_category: { $exists: true } }, // Ensure videos_category exists
-                ],
-            },
-            {
-                videos_url: 0,
-                videos_keyword: 0,
-                videos_temple_locate: 0,
-                videos_key: 0,
-                videos_publish: 0,
+            if (!userExists) {
+                return res.status(404).json({ resultFlag: 0, message: "User Not Found" });
             }
-        ).lean();
 
-        if (watch_videos) {
-            let sVi = new WatchedVideoModel({
-                username: user,
-                video_key: vkey,
-                update_date: new Date(),
-            });
-            sVi.save();
-
-            // Get related videos based on the same videos_category
-            const relatedVideos = await VideosModel.find(
+            // Find the video based on vkey and project only required fields
+            const watch_videos = await VideosModel.findOne(
                 {
                     $and: [
-                        { videos_key: { $ne: vkey } }, // Exclude the current video
-                        { videos_category: watch_videos.videos_category }, // Get videos with the same videos_category
+                        { videos_key: vkey },
+                        { videos_category: { $exists: true } }, // Ensure videos_category exists
                     ],
                 },
                 {
@@ -2275,25 +2250,43 @@ exports.playVideoV2 = async (req, res) => {
                     videos_key: 0,
                     videos_publish: 0,
                 }
-            ).limit(5).lean();
+            ).lean();
 
-            return res.json({ resultFlag: 1, message: "Video Found", ...watch_videos, relatedVideos, promotional_banner });
-        } else {
-            return res.json({ resultFlag: 0, message: "Video Not Found" });
+            if (watch_videos) {
+                let sVi = new WatchedVideoModel({
+                    username: user,
+                    video_key: vkey,
+                    update_date: new Date(),
+                });
+                sVi.save();
+
+                // Get related videos based on the same videos_category
+                const relatedVideos = await VideosModel.find(
+                    {
+                        $and: [
+                            { videos_key: { $ne: vkey } }, // Exclude the current video
+                            { videos_category: watch_videos.videos_category }, // Get videos with the same videos_category
+                        ],
+                    }
+                ).limit(5).lean();
+
+                return res.json({ resultFlag: 1, message: "Video Found", ...watch_videos, relatedVideos, promotional_banner });
+            } else {
+                return res.json({ resultFlag: 0, message: "Video Not Found" });
+            }
+            } catch (error) {
+                res.status(500).json({ resultFlag: 0, message: "Internal server error" });
+            }
+        };
+
+
+
+
+        exports.getUser = async(req, res) =>{
+            const getU = await UserModel.find().lean();
+            res.json(getU);
         }
-    } catch (error) {
-        res.status(500).json({ resultFlag: 0, message: "Internal server error" });
-    }
-};
-
-
-
-
-exports.getUser = async(req, res) =>{
-    const getU = await UserModel.find().lean();
-    res.json(getU);
- }
- exports.getVideosall = async(req, res) =>{
-     const getU = await VideosModel.find().lean();
-     res.json(getU);
- }
+        exports.getVideosall = async(req, res) =>{
+            const getU = await VideosModel.find().lean();
+            res.json(getU);
+        }
