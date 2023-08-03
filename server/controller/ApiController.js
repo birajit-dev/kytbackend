@@ -2347,7 +2347,7 @@ exports.senOTPWEB = async (req, res) => {
                         if ('videos_duration' in video) {
                             return video;
                         } else {
-                            return { ...video, videos_duration: null };
+                            return { ...video, videos_duration: "" };
                         }
                     });
         
