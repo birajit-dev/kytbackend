@@ -2158,8 +2158,17 @@ exports.senOTPWEB = async (req, res) => {
         try {
             const user = req.query.user;
             const getUserDetails = await UserModel.findOne({ phone_no: user }, { phone_otp: 0, otp_session: 0, users_id: 0 }).lean();
+    
+            // Set default values for gender, location, and username if they are not available
+            const userDetailsWithDefaults = {
+                gender: "",
+                location: "",
+                username: "",
+                ...getUserDetails,
+            };
+    
             if (getUserDetails) {
-                res.json({ resultFlag: 1, message: "User Record Found", ...getUserDetails });
+                res.json({ resultFlag: 1, message: "User Record Found", ...userDetailsWithDefaults });
             } else {
                 res.status(404).json({ resultFlag: 0, message: "User not found" });
             }
@@ -2168,6 +2177,7 @@ exports.senOTPWEB = async (req, res) => {
             res.status(500).json({ resultFlag: 0, message: "Internal Server Error" });
         }
     };
+    
 
 
     
