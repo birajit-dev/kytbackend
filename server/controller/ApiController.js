@@ -1830,7 +1830,7 @@ exports.senOTPWEB = async (req, res) => {
             const mantraLove = await LoveMantraModel.findOne({ username, mantra_key });
     
             if (!mantraLove) {
-                return res.status(404).json({ resultFlag: 0, message: "LoveMantraModel data not found" });
+                return res.status(200).json({ resultFlag: 0, message: "Love MantraModel data not found" });
             }
     
             // Delete the LoveMantraModel data
@@ -2626,6 +2626,25 @@ exports.senOTPWEB = async (req, res) => {
               res.status(500).json({ resultFlag: 0, error: 'Failed to generate Razorpay order' });
             }
           };
+
+
+          //Razorpay Payment Success or Failure Status Update//
+            exports.razorpayPaymentStatusUpdate = async (req, res) => {
+                const { order_id, payment_id, user, status, status_message } = req.body;
+                //Cckec order_id and user are there in OrderModel
+                const existingOrder = await OrderModel.findOne({ razorpay_order_id: order_id, order_user_id: user });
+                if (!existingOrder) {
+                    //send response
+                    return res.status(404).json({ resultFlag: 0, error: 'Order not found' });
+                }
+                //Update data in OrderModel by order.id and user
+                let updateData = OrderModel.findbyIdAndUpdate({ razorpay_order_id: order_id, order_user_id: user }, {
+                    "razorpay_payment_id": payment_id,
+                    "payment_status": "status",
+                    "update_date": new Date(),
+                });
+                res.json(updateData);
+            }
           
 
           
