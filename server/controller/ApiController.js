@@ -2606,11 +2606,8 @@ exports.senOTPWEB = async (req, res) => {
                   res.status(500).json({ error: 'Failed to create Razorpay order' });
                 } else {
                   // Send the order ID and totalPrice to the mobile app in the response
-                  const amountData = {
-                    total_price: totalPriceAfterDiscounts,
-                    currency: "INR",
-                  };
-                  res.status(200).json({ order_id: order.id, amount: amountData, user_id: user, description });
+                
+                  res.status(200).json({ order_id: order.id, total_amount: totalPriceAfterDiscounts, currency: "INR",user_id: user, description });
                 }
               });
             } catch (err) {
