@@ -2628,23 +2628,35 @@ exports.senOTPWEB = async (req, res) => {
           };
 
 
-          //Razorpay Payment Success or Failure Status Update//
-            exports.razorpayPaymentStatusUpdate = async (req, res) => {
-                const { order_id, payment_id, user, status, status_message } = req.body;
-                //Cckec order_id and user are there in OrderModel
-                const existingOrder = await OrderModel.findOne({ razorpay_order_id: order_id, order_user_id: user });
-                if (!existingOrder) {
-                    //send response
-                    return res.status(404).json({ resultFlag: 0, error: 'Order not found' });
-                }
-                //Update data in OrderModel by order.id and user
-                let updateData = OrderModel.findbyIdAndUpdate({ razorpay_order_id: order_id, order_user_id: user }, {
-                    "razorpay_payment_id": payment_id,
-                    "payment_status": "status",
-                    "update_date": new Date(),
-                });
-                res.json(updateData);
+          exports.razorpayPaymentStatusUpdate = async (req, res) => {
+            try {
+              const { order_id, payment_id, user, status, status_message } = req.body;
+          
+              // Check if order_id and user are present in OrderModel
+              const existingOrder = await OrderModel.findOne({ razorpay_order_id: order_id, order_user_id: user });
+              if (!existingOrder) {
+                return res.status(200).json({ resultFlag: 0, error: 'Order not found' });
+              }
+          
+              // Check if payment_status is already set to "success"
+              if (existingOrder.payment_status === "success") {
+                return res.json({ resultFlag: 1, message: 'Payment status already updated to success' });
+              }
+          
+              // Update data in OrderModel by order.id and user
+              existingOrder.razorpay_payment_id = payment_id;
+              existingOrder.payment_status = status;
+              existingOrder.update_date = new Date();
+              await existingOrder.save();
+          
+              res.json({ resultFlag: 1, message: 'Payment status updated successfully' });
+            } catch (err) {
+              console.error('Error updating payment status:', err);
+              res.status(500).json({ resultFlag: 0, error: 'Failed to update payment status' });
             }
+          };
+          
+          
           
 
           

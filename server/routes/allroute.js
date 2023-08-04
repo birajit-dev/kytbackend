@@ -55,6 +55,8 @@ router.post('/api/v1/mobile/updateuser', ApiController.updateProfile);
 //Delete Method//
 router.post('/api/v1/mobile/removemantra', ApiController.deleteMantraLove);
 
+router.post('/api/v1/mobile/razorpay/getupdate', ApiController.razorpayPaymentStatusUpdate)
+
 
 
 
