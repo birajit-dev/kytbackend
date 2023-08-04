@@ -2542,7 +2542,7 @@ exports.senOTPWEB = async (req, res) => {
 
           exports.razorpayGenerateOrder = async (req, res) => {
             try {
-              const { amount, packageServiceCode, user } = req.body;
+              const { packageServiceCode, user } = req.body;
           
               const existingUser = await UserModel.findOne({ phone_no: user });
           
@@ -2580,7 +2580,8 @@ exports.senOTPWEB = async (req, res) => {
                     (total, fee) => total + (fee.isFree ? 0 : parseFloat(fee.discount_amount)),
                     0
             );
-          
+                    
+            const description = 'Puja Booking for' +templeData.temple_name+ 'for package' +pujaService.package_name;
               // Perform validation on the 'amount' if required
               // For example, check if the amount is a valid number, greater than zero, etc.
               const instance = new Razorpay({
@@ -2605,7 +2606,7 @@ exports.senOTPWEB = async (req, res) => {
                   res.status(500).json({ error: 'Failed to create Razorpay order' });
                 } else {
                   // Send the order ID and totalPrice to the mobile app in the response
-                  res.status(200).json({ order_id: order.id, total_price: totalPriceAfterDiscounts });
+                  res.status(200).json({ order_id: order.id, amount, currency: "INR", user_id: user, description});
                 }
               });
             } catch (err) {
