@@ -2590,7 +2590,7 @@ exports.senOTPWEB = async (req, res) => {
               });
           
               const orderOptions = {
-                amount: totalPriceAfterDiscounts * 100, // Convert amount to paise (1 INR = 100 paise)
+                amount: 10 * 100, // Convert amount to paise (1 INR = 100 paise)
                 currency: "INR",
                 receipt: "receipt#1",
                 notes: {
