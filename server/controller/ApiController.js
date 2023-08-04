@@ -2552,36 +2552,36 @@ exports.senOTPWEB = async (req, res) => {
           
               const templesWithPackageServiceCode = await PujaTemplesModel.find({
                 puja_services: { $elemMatch: { package_service_code: packageServiceCode } },
-            }).lean();
-    
-            if (templesWithPackageServiceCode.length === 0) {
+              }).lean();
+          
+              if (templesWithPackageServiceCode.length === 0) {
                 return res.status(404).json({ resultFlag: 0, message: "No records found" });
-            }
-    
-            // Extract the first temple data
-            const templeData = templesWithPackageServiceCode[0];
-    
-            // Extract the package data from the first temple that matches the packageServiceCode
-            const pujaService = templeData.puja_services.find(
+              }
+          
+              // Extract the first temple data
+              const templeData = templesWithPackageServiceCode[0];
+          
+              // Extract the package data from the first temple that matches the packageServiceCode
+              const pujaService = templeData.puja_services.find(
                 (service) => service.package_service_code === packageServiceCode
-            );
-    
-            const packageExtraFeeData = pujaService.package_extra_fee.map((extraFee) => ({
+              );
+          
+              const packageExtraFeeData = pujaService.package_extra_fee.map((extraFee) => ({
                 isFree: extraFee.isFree,
                 fee_code: extraFee.fee_code,
                 tittle: extraFee.tittle,
                 amount: extraFee.amount,
                 discount_amount: extraFee.discount_amount,
-            }));
-    
-            const totalPriceAfterDiscounts =
+              }));
+          
+              const totalPriceAfterDiscounts =
                 parseFloat(pujaService.package_discount_price) +
                 packageExtraFeeData.reduce(
-                    (total, fee) => total + (fee.isFree ? 0 : parseFloat(fee.discount_amount)),
-                    0
-            );
-                    
-            const description = 'Puja Booking for' +templeData.temple_name+ 'for package' +pujaService.package_name;
+                  (total, fee) => total + (fee.isFree ? 0 : parseFloat(fee.discount_amount)),
+                  0
+                );
+          
+              const description = 'Puja Booking for' + templeData.temple_name + 'for package' + pujaService.package_name;
               // Perform validation on the 'amount' if required
               // For example, check if the amount is a valid number, greater than zero, etc.
               const instance = new Razorpay({
@@ -2606,7 +2606,11 @@ exports.senOTPWEB = async (req, res) => {
                   res.status(500).json({ error: 'Failed to create Razorpay order' });
                 } else {
                   // Send the order ID and totalPrice to the mobile app in the response
-                  res.status(200).json({ order_id: order.id, amount: "as" , currency: "INR", user_id: user, description});
+                  const amountData = {
+                    total_price: totalPriceAfterDiscounts,
+                    currency: "INR",
+                  };
+                  res.status(200).json({ order_id: order.id, amount: amountData, user_id: user, description });
                 }
               });
             } catch (err) {
