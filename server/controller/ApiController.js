@@ -2027,7 +2027,7 @@ exports.senOTPWEB = async (req, res) => {
                 packageExtraFeeData.reduce(
                     (total, fee) => total + (fee.isFree ? 0 : parseFloat(fee.discount_amount)),
                     0
-                );
+            );
     
             // Prepare the response
             const response = {
@@ -2542,7 +2542,7 @@ exports.senOTPWEB = async (req, res) => {
 
           exports.razorpayGenerateOrder = async (req, res) => {
             try {
-              const { amount, package_code, user } = req.body;
+              const { amount, packageServiceCode, user } = req.body;
           
               const existingUser = await UserModel.findOne({ phone_no: user });
           
@@ -2550,23 +2550,36 @@ exports.senOTPWEB = async (req, res) => {
                 return res.status(404).json({ error: 'User not found' });
               }
           
-              // Find the temples that contain the provided package_service_code
               const templesWithPackageServiceCode = await PujaTemplesModel.find({
-                puja_services: { $elemMatch: { package_service_code: package_code } },
-              }).lean();
-          
-              // Calculate the total price by summing package_discount_price and discount_amount
-              let totalPrice = 0;
-              templesWithPackageServiceCode.forEach((temple) => {
-                temple.puja_services.forEach((service) => {
-                  if (service.package_service_code === package_code) {
-                    const packageDiscountPrice = service.package_discount_price || 0;
-                    const isFree = service.package_extra_fee && service.package_extra_fee.isFree || false;
-                    const discountAmount = isFree ? 0 : (service.package_extra_fee && service.package_extra_fee.discount_amount) || 0;
-                    totalPrice += (packageDiscountPrice + discountAmount);
-                  }
-                });
-              });
+                puja_services: { $elemMatch: { package_service_code: packageServiceCode } },
+            }).lean();
+    
+            if (templesWithPackageServiceCode.length === 0) {
+                return res.status(404).json({ resultFlag: 0, message: "No records found" });
+            }
+    
+            // Extract the first temple data
+            const templeData = templesWithPackageServiceCode[0];
+    
+            // Extract the package data from the first temple that matches the packageServiceCode
+            const pujaService = templeData.puja_services.find(
+                (service) => service.package_service_code === packageServiceCode
+            );
+    
+            const packageExtraFeeData = pujaService.package_extra_fee.map((extraFee) => ({
+                isFree: extraFee.isFree,
+                fee_code: extraFee.fee_code,
+                tittle: extraFee.tittle,
+                amount: extraFee.amount,
+                discount_amount: extraFee.discount_amount,
+            }));
+    
+            const totalPriceAfterDiscounts =
+                parseFloat(pujaService.package_discount_price) +
+                packageExtraFeeData.reduce(
+                    (total, fee) => total + (fee.isFree ? 0 : parseFloat(fee.discount_amount)),
+                    0
+            );
           
               // Perform validation on the 'amount' if required
               // For example, check if the amount is a valid number, greater than zero, etc.
@@ -2576,7 +2589,7 @@ exports.senOTPWEB = async (req, res) => {
               });
           
               const orderOptions = {
-                amount: 10 * 100, // Convert amount to paise (1 INR = 100 paise)
+                amount: totalPriceAfterDiscounts * 100, // Convert amount to paise (1 INR = 100 paise)
                 currency: "INR",
                 receipt: "receipt#1",
                 notes: {
@@ -2592,7 +2605,7 @@ exports.senOTPWEB = async (req, res) => {
                   res.status(500).json({ error: 'Failed to create Razorpay order' });
                 } else {
                   // Send the order ID and totalPrice to the mobile app in the response
-                  res.status(200).json({ order_id: order.id, total_price: totalPrice });
+                  res.status(200).json({ order_id: order.id, total_price: totalPriceAfterDiscounts });
                 }
               });
             } catch (err) {
