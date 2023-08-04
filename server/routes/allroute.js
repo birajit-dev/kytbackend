@@ -104,7 +104,7 @@ router.get('/api/v1/mobile/getprofile', ApiController.getProfile);
 
 
 //Razorpay//
-router.post('/api/v1/mobile/razorpay', ApiController.razorpayGenerateOrder);
+router.post('/api/v1/mobile/razorpay/orders', ApiController.razorpayGenerateOrder);
 
 
 //Extra

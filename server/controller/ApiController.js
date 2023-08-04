@@ -18,6 +18,9 @@ require('../model/database');
 const NodeCache = require('node-cache');
 const cache = new NodeCache();
 
+//Razorpay Payment Gateway
+const Razorpay = require('razorpay');
+
 //Model Requirement
 const TestOnePost =  require('../model/testone');
 const PanchangModel = require('../model/panchangs');
@@ -39,7 +42,7 @@ const LoveMantraModel = require('../model/lovemantra');
 const PujaTemplesModel = require('../model/puja');
 const ReelsModel = require('../model/reels');
 const WatchedVideoModel =  require('../model/watchedvideos');
-const Razorpay = require('razorpay');
+const OrderModel = require('../model/orderstatus');
 
 
 const { json } = require('body-parser');
@@ -2539,7 +2542,32 @@ exports.senOTPWEB = async (req, res) => {
 
           exports.razorpayGenerateOrder = async (req, res) => {
             try {
-              const { amount } = req.body; // Assuming the mobile app sends the amount in the request body
+              const { amount, package_code, user } = req.body;
+          
+              const existingUser = await UserModel.findOne({ phone_no: user });
+          
+              if (!existingUser) {
+                return res.status(404).json({ error: 'User not found' });
+              }
+          
+              // Find the temples that contain the provided package_service_code
+              const templesWithPackageServiceCode = await PujaTemplesModel.find({
+                puja_services: { $elemMatch: { package_service_code: package_code } },
+              }).lean();
+          
+              // Calculate the total price by summing package_discount_price and discount_amount
+              let totalPrice = 0;
+              templesWithPackageServiceCode.forEach((temple) => {
+                temple.puja_services.forEach((service) => {
+                  if (service.package_service_code === package_code) {
+                    const packageDiscountPrice = service.package_discount_price || 0;
+                    const isFree = service.package_extra_fee && service.package_extra_fee.isFree || false;
+                    const discountAmount = isFree ? 0 : (service.package_extra_fee && service.package_extra_fee.discount_amount) || 0;
+                    totalPrice += (packageDiscountPrice + discountAmount);
+                  }
+                });
+              });
+          
               // Perform validation on the 'amount' if required
               // For example, check if the amount is a valid number, greater than zero, etc.
               const instance = new Razorpay({
@@ -2548,7 +2576,7 @@ exports.senOTPWEB = async (req, res) => {
               });
           
               const orderOptions = {
-                amount: amount * 100, // Convert amount to paise (1 INR = 100 paise)
+                amount: totalPrice * 100, // Convert amount to paise (1 INR = 100 paise)
                 currency: "INR",
                 receipt: "receipt#1",
                 notes: {
@@ -2563,8 +2591,8 @@ exports.senOTPWEB = async (req, res) => {
                   console.error('Error creating Razorpay order:', error);
                   res.status(500).json({ error: 'Failed to create Razorpay order' });
                 } else {
-                  // Send the order ID to the mobile app in the response
-                  res.status(200).json({ order_id: order.id });
+                  // Send the order ID and totalPrice to the mobile app in the response
+                  res.status(200).json({ order_id: order.id, total_price: totalPrice });
                 }
               });
             } catch (err) {
@@ -2572,7 +2600,4 @@ exports.senOTPWEB = async (req, res) => {
               res.status(500).json({ error: 'Failed to generate Razorpay order' });
             }
           };
-                
-          
-        
           
