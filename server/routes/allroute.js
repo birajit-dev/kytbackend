@@ -101,6 +101,12 @@ router.get('/api/v1/mobile/watchedvideos', ApiController.getRecentlyWatchedVideo
 router.get('/api/v1/mobile/getprofile', ApiController.getProfile);
 
 
+
+
+//Razorpay//
+router.post('/api/v1/mobile/razorpay', ApiController.razorpayGenerateOrder);
+
+
 //Extra
 router.get('/api/v1/admin/getUser', ApiController.getUser);
 router.get('/api/v1/admin/allvideos', ApiController.getVideosall);
