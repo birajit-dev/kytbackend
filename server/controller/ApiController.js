@@ -2612,8 +2612,9 @@ exports.senOTPWEB = async (req, res) => {
           
                   res.status(200).json({
                     resultFlag: 1, // Success, order created
+                    message: 'Razorpay order created successfully',
                     order_id: order.id,
-                    total_amount: totalPriceAfterDiscounts,
+                    total_amount: totalPriceAfterDiscounts * 100,
                     currency: "INR",
                     user_id: user,
                     description
