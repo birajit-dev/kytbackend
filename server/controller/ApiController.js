@@ -1752,16 +1752,33 @@ exports.senOTPWEB = async (req, res) => {
 
 
 
-      exports.loveMantra = async(req, res) =>{
+      exports.loveMantra = async (req, res) => {
         const data = req.body;
-        let LoveMantra = new LoveMantraModel({
+        try {
+          // Assuming LoveMantraModel is a mongoose model for the database
+          let LoveMantra = new LoveMantraModel({
             username: data.username,
             mantra_key: data.mantra_key,
-            update_date: newDate, 
-        });
-        let addL = LoveMantra.save();
-        res.json(addL);
-      }
+            update_date: new Date(), // Use new Date() to get the current date and time
+          });
+          let addL = await LoveMantra.save();
+      
+          // Success response
+          res.json({
+            resultFlag: 1,
+            message: "Love Mantra added successfully!",
+            data: addL, // If you want to return the added LoveMantra data
+          });
+        } catch (error) {
+          // Error response
+          res.json({
+            resultFlag: 0,
+            message: "Failed to add Love Mantra.",
+            error: error.message, // Optional: You can include the error message for debugging purposes
+          });
+        }
+      };
+      
 
       exports.loveMantraList = async (req, res) => {
         try {
@@ -1775,12 +1792,19 @@ exports.senOTPWEB = async (req, res) => {
           mantraList.forEach(mantra => {
             mantraArray.push(mantra);
           });
-
-        const anotherModelData = await MantraModel.find({ mantra_key: { $in: mantraArray.map(mantra => mantra.mantra_key) } }).lean();
-        const response = {
-            resultFlag: anotherModelData.length > 0 ? 1 : 0,
-            message: anotherModelData.length > 0 ? "Mantra Records found" : "Mantra Records not found",
-            data: anotherModelData,
+      
+          const anotherModelData = await MantraModel.find({ mantra_key: { $in: mantraArray.map(mantra => mantra.mantra_key) } }).lean();
+      
+          // Add the 'is_favorite_mantra' property to each item in 'anotherModelData'
+          const updatedAnotherModelData = anotherModelData.map(item => ({
+            ...item,
+            is_favorite_mantra: true,
+          }));
+      
+          const response = {
+            resultFlag: updatedAnotherModelData.length > 0 ? 1 : 0,
+            message: updatedAnotherModelData.length > 0 ? "Mantra Records found" : "Mantra Records not found",
+            data: updatedAnotherModelData,
           };
       
           // Send the response
@@ -1791,6 +1815,7 @@ exports.senOTPWEB = async (req, res) => {
           res.status(500).json({ error: 'Failed to fetch mantra list' });
         }
       };
+      
 
 
       exports.deleteMantraLove = async (req, res) => {
