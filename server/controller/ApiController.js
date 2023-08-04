@@ -2620,9 +2620,6 @@ exports.senOTPWEB = async (req, res) => {
 
 
 
-
-          const Razorpay = require('razorpay');
-
           exports.testRazor = async (req, res) => {
             try {
               const { amount } = req.body; // Assuming the mobile app sends the amount in the request body
