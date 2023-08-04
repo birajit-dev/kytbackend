@@ -2590,7 +2590,7 @@ exports.senOTPWEB = async (req, res) => {
               });
           
               const orderOptions = {
-                amount: 10 * 100, // Convert amount to paise (1 INR = 100 paise)
+                amount: totalPriceAfterDiscounts * 100, // Convert amount to paise (1 INR = 100 paise)
                 currency: "INR",
                 receipt: "receipt#1",
                 notes: {
@@ -2606,7 +2606,7 @@ exports.senOTPWEB = async (req, res) => {
                   res.status(500).json({ error: 'Failed to create Razorpay order' });
                 } else {
                   // Send the order ID and totalPrice to the mobile app in the response
-                  res.status(200).json({ order_id: order.id, amount, currency: "INR", user_id: user, description});
+                  res.status(200).json({ order_id: order.id, totalPriceAfterDiscounts, currency: "INR", user_id: user, description});
                 }
               });
             } catch (err) {
