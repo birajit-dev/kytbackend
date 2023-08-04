@@ -2589,7 +2589,7 @@ exports.razorpayGenerateOrder = async (req, res) => {
       }
     };
 
-    instance.orders.create(orderOptions, async (error, order) => {
+    instance.orders.create(orderOptions, (error, order) => {
       if (error) {
         console.error('Error creating Razorpay order:', error);
         return res.status(500).json({ resultFlag: 0, error: 'Failed to create Razorpay order' });
@@ -2607,7 +2607,7 @@ exports.razorpayGenerateOrder = async (req, res) => {
           update_date: new Date(),
         });
 
-        await newOrder.save();
+        newOrder.save();
 
         res.status(200).json({
           resultFlag: 1, // Success, order created
