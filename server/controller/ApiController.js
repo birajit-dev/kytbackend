@@ -2540,7 +2540,6 @@ exports.senOTPWEB = async (req, res) => {
 
           
 
-          const Razorpay = require('razorpay');
 
 exports.razorpayGenerateOrder = async (req, res) => {
   try {
