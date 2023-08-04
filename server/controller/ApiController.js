@@ -2446,4 +2446,42 @@ exports.senOTPWEB = async (req, res) => {
               res.status(500).json({ error: 'Failed to fetch mantra list by category' });
             }
           };
+
+
+          exports.mantraListenIdv2 = async (req, res) => {
+            const user = req.query.user;
+            const mantraKey = req.query.mantraKey;
+            const manstraStream = await MantraModel.findOne({ mantra_key: mantraKey }).lean();
+            
+            try {
+              const loveMantra = await LoveMantraModel.findOne({ username: user, mantra_key: mantraKey }).lean();
+          
+              if (manstraStream) {
+                if (loveMantra) {
+                  manstraStream.is_favorite_mantra = true;
+                } else {
+                  manstraStream.is_favorite_mantra = false;
+                }
+          
+                const obj1 = {
+                  resultFlag: 1,
+                  message: "Mantra Audio Found",
+                };
+                
+                const object_false = {
+                  resultFlag: 0,
+                  message: "Mantra Audio Not Found",
+                };
+                
+                const responseObj = manstraStream.mantra_category ? { ...obj1, ...manstraStream } : object_false;
+                res.json(responseObj);
+              } else {
+                res.json(object_false);
+              }
+            } catch (err) {
+              console.error('Error fetching mantra by key:', err);
+              res.status(500).json({ error: 'Failed to fetch mantra by key' });
+            }
+          };
+          
           

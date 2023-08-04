@@ -64,7 +64,11 @@ router.get('/api/v1/mobile/podcastwatch', ApiController.podcastView);
 router.get('/api/v1/mobile/mantracategoies', ApiController.mantraCategoryView);
 router.get('/api/v1/mobile/mantra', ApiController.mantraByCategory);
 router.get('/api/v2/mobile/mantra', ApiController.mantraByCategoryV2);
+
 router.get('/api/v1/mobile/mantraListen', ApiController.mantraListenId);
+router.get('/api/v2/mobile/mantraListen', ApiController.mantraListenIdv2);
+
+
 router.get('/api/v1/mobile/musiccategories', ApiController.MusicCategories);
 router.get('/api/v1/mobile/musicbycategory', ApiController.MusicFilter);
 router.get('/api/v1/mobile/music', ApiController.MusicListen);
