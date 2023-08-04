@@ -2395,3 +2395,55 @@ exports.senOTPWEB = async (req, res) => {
                 res.status(500).json({ resultFlag: 0, message: "Internal server error" });
             }
         };
+
+
+
+
+
+
+
+        exports.mantraByCategoryV2 = async (req, res) => {
+            const user = req.query.user;
+            const mantraId = req.query.category;
+            const page = req.query.page || 1; // Current page number, defaulting to 1
+            const limit = req.query.limit || 10; // Number of records per page, defaulting to 10
+            const skip = (page - 1) * limit;
+            
+            try {
+              const countPromise = MantraModel.countDocuments({ mantra_category: mantraId });
+              const dataPromise = MantraModel.find({ mantra_category: mantraId })
+                .sort({ mantra_id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .lean();
+                
+              const loveMantras = await LoveMantraModel.find({ username: user }).lean();
+              const [totalRecords, mantrabycategory] = await Promise.all([countPromise, dataPromise]);
+          
+              // Function to check if a mantra_key is present in the LoveMantraModel
+              const isFavoriteMantra = (mantraKey) => loveMantras.some(mantra => mantra.mantra_key === mantraKey);
+          
+              // Add 'is_favorite_mantra' property to each mantra in mantrabycategory based on its presence in LoveMantraModel
+              const mantrabycategoryWithFavorites = mantrabycategory.map(mantra => ({
+                ...mantra,
+                is_favorite_mantra: isFavoriteMantra(mantra.mantra_key),
+              }));
+          
+              const totalPages = Math.ceil(totalRecords / limit);
+              const resultFlag = mantrabycategoryWithFavorites.length > 0 ? 1 : 0;
+              const message = mantrabycategoryWithFavorites.length > 0 ? "Mantra Records Found" : "Mantra Records Not Found";
+              const responseData = {
+                resultFlag,
+                message,
+                data: mantrabycategoryWithFavorites,
+                totalCount: totalRecords,
+                totalPages,
+                currentPage: page,
+              };
+              res.json(responseData);
+            } catch (err) {
+              console.error('Error fetching mantra list by category:', err);
+              res.status(500).json({ error: 'Failed to fetch mantra list by category' });
+            }
+          };
+          
