@@ -2483,5 +2483,56 @@ exports.senOTPWEB = async (req, res) => {
               res.status(500).json({ error: 'Failed to fetch mantra by key' });
             }
           };
+
+
+
+          exports.forYouV2 = async (req, res) => {
+            const user = req.query.user;
+            const mantra = await MantraModel.find({}).sort({ mantra_id: -1 }).limit(4).lean();
+            const music = await MusicModel.find({}).sort({ music_id: -1 }).limit(8).lean();
           
+            try {
+              // Fetching the LoveMantraModel data for the specified user
+              const loveMantras = await LoveMantraModel.find({ username: user }).lean();
+          
+              // Create a Set of mantra keys from LoveMantraModel for faster lookup
+              const favoriteMantraKeys = new Set(loveMantras.map(mantra => mantra.mantra_key));
+          
+              // Add 'is_favorite_mantra' property to each mantra in mantrasList
+              const mantrasListWithFavorites = mantra.map(mantraItem => ({
+                ...mantraItem,
+                is_favorite_mantra: favoriteMantraKeys.has(mantraItem.mantra_key),
+              }));
+          
+              const promotional_title = "Promotional Title";
+              const promotional_thumbnail = "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=";
+              const music_title = "Music for you";
+              const mantras_title = "Mantras For You";
+              const today_title = "Today Title";
+              const today_content_short_description = "short_content";
+              const today_content = "Today Content";
+          
+              const obj1 = {
+                resultFlag: 1,
+                message: "For You Record Found",
+                today_title,
+                today_content_short_description,
+                today_content,
+                mantras_title,
+                mantrasList: mantrasListWithFavorites, // Use the updated mantrasList with is_favorite_mantra property
+                promotional_title,
+                promotional_thumbnail,
+                music_title,
+                musicList: music,
+              };
+          
+              res.json(obj1);
+            } catch (err) {
+              console.error('Error fetching data for "For You":', err);
+              res.status(500).json({ error: 'Failed to fetch data for "For You"' });
+            }
+          };
+          
+          
+        
           
