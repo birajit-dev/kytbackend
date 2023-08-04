@@ -2621,35 +2621,43 @@ exports.senOTPWEB = async (req, res) => {
 
 
 
-exports.testRazor = async (req, res) => {
-  try {
-    const instance = new Razorpay({
-      key_id: 'rzp_test_xmAF4mhT1iSMZ6',
-      key_secret: 'xMZwdj0bpvk0w2GPhbGd77ty'
-    });
+          const Razorpay = require('razorpay');
 
-    const orderOptions = {
-      amount: 500 * 100, // Amount in paise (e.g., 50000 paise = ₹500)
-      currency: "INR",
-      receipt: "receipt#1",
-      notes: {
-        key1: "value3",
-        key2: "value2"
-      }
-    };
-
-    instance.orders.create(orderOptions, (error, order) => {
-      if (error) {
-        // Handle error if any
-        console.error('Error creating Razorpay order:', error);
-        res.status(500).json({ error: 'Failed to create Razorpay order' });
-      } else {
-        // Send the order ID to the mobile app in the response
-        res.status(200).json({ order_id: order.id });
-      }
-    });
-  } catch (err) {
-    console.error('Error generating Razorpay order:', err);
-    res.status(500).json({ error: 'Failed to generate Razorpay order' });
-  }
-};
+          exports.testRazor = async (req, res) => {
+            try {
+              const { amount } = req.body; // Assuming the mobile app sends the amount in the request body
+          
+              // Perform validation on the 'amount' if required
+              // For example, check if the amount is a valid number, greater than zero, etc.
+          
+              const instance = new Razorpay({
+                key_id: 'rzp_test_xmAF4mhT1iSMZ6',
+                key_secret: 'xMZwdj0bpvk0w2GPhbGd77ty'
+              });
+          
+              const orderOptions = {
+                amount: amount * 100, // Convert amount to paise (1 INR = 100 paise)
+                currency: "INR",
+                receipt: "receipt#1",
+                notes: {
+                  key1: "value3",
+                  key2: "value2"
+                }
+              };
+          
+              instance.orders.create(orderOptions, (error, order) => {
+                if (error) {
+                  // Handle error if any
+                  console.error('Error creating Razorpay order:', error);
+                  res.status(500).json({ error: 'Failed to create Razorpay order' });
+                } else {
+                  // Send the order ID to the mobile app in the response
+                  res.status(200).json({ order_id: order.id });
+                }
+              });
+            } catch (err) {
+              console.error('Error generating Razorpay order:', err);
+              res.status(500).json({ error: 'Failed to generate Razorpay order' });
+            }
+          };
+          
