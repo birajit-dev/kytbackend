@@ -2672,3 +2672,10 @@ exports.senOTPWEB = async (req, res) => {
             }
           };
           
+
+
+          //Get All Order details
+            exports.getAllOrderDetails = async (req, res) => {
+                const uu = await OrderModel.find();
+                res.json(uu);
+            }
