@@ -2540,102 +2540,92 @@ exports.senOTPWEB = async (req, res) => {
 
           
 
-          exports.razorpayGenerateOrder = async (req, res) => {
-            try {
-              const { packageServiceCode, user } = req.body;
-          
-              const existingUser = await UserModel.findOne({ phone_no: user });
-          
-              if (!existingUser) {
-                return res.status(404).json({ resultFlag: 0, error: 'User not found' });
-              }
-          
-              const templesWithPackageServiceCode = await PujaTemplesModel.find({
-                puja_services: { $elemMatch: { package_service_code: packageServiceCode } },
-              }).lean();
-          
-              if (templesWithPackageServiceCode.length === 0) {
-                return res.status(404).json({ resultFlag: 0, message: "No records found" });
-              }
-          
-              // Extract the first temple data
-              const templeData = templesWithPackageServiceCode[0];
-          
-              // Extract the package data from the first temple that matches the packageServiceCode
-              const pujaService = templeData.puja_services.find(
-                (service) => service.package_service_code === packageServiceCode
-              );
-          
-              const packageExtraFeeData = pujaService.package_extra_fee.map((extraFee) => ({
-                isFree: extraFee.isFree,
-                fee_code: extraFee.fee_code,
-                tittle: extraFee.tittle,
-                amount: extraFee.amount,
-                discount_amount: extraFee.discount_amount,
-              }));
-          
-              const totalPriceAfterDiscounts =
-                parseFloat(pujaService.package_discount_price) +
-                packageExtraFeeData.reduce(
-                  (total, fee) => total + (fee.isFree ? 0 : parseFloat(fee.discount_amount)),
-                  0
-                );
-          
-              const description = 'Puja Booking for' + templeData.temple_name + 'for package' + pujaService.package_name;
-              // Perform validation on the 'amount' if required
-              // For example, check if the amount is a valid number, greater than zero, etc.
-              const instance = new Razorpay({
-                key_id: 'rzp_test_xmAF4mhT1iSMZ6',
-                key_secret: 'xMZwdj0bpvk0w2GPhbGd77ty'
-              });
-          
-              const orderOptions = {
-                amount: totalPriceAfterDiscounts * 100, // Convert amount to paise (1 INR = 100 paise)
-                currency: "INR",
-                receipt: "receipt#1",
-                notes: {
-                  key1: "value3",
-                  key2: "value2"
-                }
-              };
-          
-              instance.orders.create(orderOptions, (error, order) => {
-                if (error) {
-                  // Handle error if any
-                  console.error('Error creating Razorpay order:', error);
-                  res.status(500).json({ resultFlag: 0, error: 'Failed to create Razorpay order' });
-                } else {
-                  // Send the order ID and totalPrice to the mobile app in the response
-                  //Now add data to Model
-                  const newOrder = new OrderModel({
-                    order_user_id: user,
-                    order_user_phone: user,
-                    package_service_code: packageServiceCode,
-                    order_amount: totalPriceAfterDiscounts,
-                    razorpay_order_id: order.id,
-                    razorpay_payment_id: "",
-                    payment_status: "Pending",
-                    payment_description: description,
-                    payment_date: newDate,
-                    update_date: newDate,
-                  });
-                  newOrder.save();
-          
-                  res.status(200).json({
-                    resultFlag: 1, // Success, order created
-                    order_id: order.id,
-                    total_amount: totalPriceAfterDiscounts,
-                    currency: "INR",
-                    user_id: user,
-                    description
-                  });
-                }
-              });
-            } catch (err) {
-              console.error('Error generating Razorpay order:', err);
-              res.status(500).json({ resultFlag: 0, error: 'Failed to generate Razorpay order' });
-            }
-          };
+          const Razorpay = require('razorpay');
+
+exports.razorpayGenerateOrder = async (req, res) => {
+  try {
+    const { packageServiceCode, user } = req.body;
+
+    const existingUser = await UserModel.findOne({ phone_no: user });
+
+    if (!existingUser) {
+      return res.status(404).json({ resultFlag: 0, error: 'User not found' });
+    }
+
+    const templeData = await PujaTemplesModel.findOne({
+      'puja_services.package_service_code': packageServiceCode
+    }).lean();
+
+    if (!templeData) {
+      return res.status(404).json({ resultFlag: 0, message: "No records found" });
+    }
+
+    const pujaService = templeData.puja_services.find(
+      (service) => service.package_service_code === packageServiceCode
+    );
+
+    const packageExtraFeeData = pujaService.package_extra_fee;
+
+    const totalPriceAfterDiscounts =
+      parseFloat(pujaService.package_discount_price) +
+      packageExtraFeeData.reduce(
+        (total, fee) => total + (fee.isFree ? 0 : parseFloat(fee.discount_amount)),
+        0
+      );
+
+    const description = `Puja Booking for ${templeData.temple_name} for package ${pujaService.package_name}`;
+
+    const instance = new Razorpay({
+      key_id: 'YOUR_KEY_ID',
+      key_secret: 'YOUR_SECRET'
+    });
+
+    const orderOptions = {
+      amount: totalPriceAfterDiscounts * 100, // Convert amount to paise (1 INR = 100 paise)
+      currency: "INR",
+      receipt: "receipt#1",
+      notes: {
+        key1: "value3",
+        key2: "value2"
+      }
+    };
+
+    instance.orders.create(orderOptions, async (error, order) => {
+      if (error) {
+        console.error('Error creating Razorpay order:', error);
+        return res.status(500).json({ resultFlag: 0, error: 'Failed to create Razorpay order' });
+      } else {
+        const newOrder = new OrderModel({
+          order_user_id: user,
+          order_user_phone: user,
+          package_service_code: packageServiceCode,
+          order_amount: totalPriceAfterDiscounts,
+          razorpay_order_id: order.id,
+          razorpay_payment_id: "",
+          payment_status: "Pending",
+          payment_description: description,
+          payment_date: new Date(),
+          update_date: new Date(),
+        });
+
+        await newOrder.save();
+
+        res.status(200).json({
+          resultFlag: 1, // Success, order created
+          order_id: order.id,
+          total_amount: totalPriceAfterDiscounts,
+          currency: "INR",
+          user_id: user,
+          description
+        });
+      }
+    });
+  } catch (err) {
+    console.error('Error generating Razorpay order:', err);
+    res.status(500).json({ resultFlag: 0, error: 'Failed to generate Razorpay order' });
+  }
+};
+
           
           
 
