@@ -54,8 +54,10 @@ router.post('/api/v1/post/reels', ApiController.reelsAdd);
 router.post('/api/v1/mobile/updateuser', ApiController.updateProfile);
 //Delete Method//
 router.post('/api/v1/mobile/removemantra', ApiController.deleteMantraLove);
+router.post('/api/v1/mobile/razorpay/getupdate', ApiController.razorpayPaymentStatusUpdate);
 
-router.post('/api/v1/mobile/razorpay/getupdate', ApiController.razorpayPaymentStatusUpdate)
+//Trending Article//
+router.post('/api/v1/post/trendingarticle', ApiController.addPost);
 
 
 

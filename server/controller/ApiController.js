@@ -43,6 +43,7 @@ const PujaTemplesModel = require('../model/puja');
 const ReelsModel = require('../model/reels');
 const WatchedVideoModel =  require('../model/watchedvideos');
 const OrderModel = require('../model/orderstatus');
+const PostModel  = require('../model/post');
 
 
 const { json } = require('body-parser');
@@ -1134,7 +1135,7 @@ exports.testOnePost = async(req, res, next) =>{
             const Rishi = await VideosModel.find({videos_category:'rishi'}).sort({videos_id:-1}).limit(5).lean();
             const Mahatma = await VideosModel.find({videos_category:'mahatma'}).sort({videos_id:-1}).limit(5).lean();
             const Shakti = await VideosModel.find({videos_category:'shakti'}).sort({videos_id:-1}).limit(5).lean();
-            
+            const trendingPost = await PostModel.find({}).sort({post_id:-1}).limit(5).lean();
             const reelsGet = await ReelsModel.aggregate([
                 { $sample: { size: 10 } },
                 { $project: { _id: 0 } }, // Exclude the _id field from the response
@@ -1212,7 +1213,13 @@ exports.testOnePost = async(req, res, next) =>{
                             "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/Kapilmuni.jpg"
                         }
                     ]
+                },{
+                    "title": "Trending Articles",
+                    "viewtype": "trendingArticles",
+                    "categoryId": "trendingArticles",
+                    "list": trendingPost
                 }
+                
                ]
             }
             res.json(object1);
@@ -1373,14 +1380,14 @@ exports.senOTPWEB = async (req, res) => {
   }
 };
 
-    exports.settingPromotional = async(req, res) =>{
-        const object1 = {
-            resultFlag: 1,
-            message: "Promotional Data Found",
-            promotional_2_thumbnail: "https://fastly.picsum.photos/id/237/200/300.jpg?hmac="
-        }
-        res.json(object1);
-    }
+  exports.settingPromotional = async(req, res) =>{
+      const object1 = {
+          resultFlag: 1,
+          message: "Promotional Data Found",
+          promotional_2_thumbnail: "https://fastly.picsum.photos/id/237/200/300.jpg?hmac="
+      }
+      res.json(object1);
+  }
 
 
 
@@ -2711,3 +2718,20 @@ exports.senOTPWEB = async (req, res) => {
                 const uu = await OrderModel.find();
                 res.json(uu);
             }
+
+            //Post Model
+            exports.addPost = async (req, res) => {
+                const post = new PostModel({
+                    article_title: req.body.article_title,
+                    article_thumbnail: req.body.article_thumbnail,
+                    article_link: req.body.article_link,
+                    update_date: newDate
+                });
+                const savedPost = await post.save();
+                res.json(savedPost);
+            }
+            exports.deteletPost = async (req, res) => {
+                const uu = await PostModel.remove({ _id: req.params.postId });
+                res.json(uu);
+            }
+            
