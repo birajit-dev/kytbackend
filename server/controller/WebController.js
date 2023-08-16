@@ -22,7 +22,8 @@ const TestOnePost =  require('../model/testone');
 const PanchangModel = require('../model/panchangs');
 const PandeetModel = require('../model/pandeet');
 const VideosCategory = require('../model/videos_categories');
-const  MusicCategoryModel = require('../model/music_categories');
+const MusicCategoryModel = require('../model/music_categories');
+const ReelsModel = require('../model/reels');
 const newDate = moment().format('lll');
 
 
@@ -80,6 +81,16 @@ const newDate = moment().format('lll');
         res.render('blogs');
     }
 
+    exports.reelsPost = async(req, res) =>{
+        res.render('reels');
+    }
+
+    exports.getAllReels = async(req, res) =>{
+        const reels = await ReelsModel.find({}).lean();
+        res.render('allreels',{
+            reels
+        });
+    }
     
 
 

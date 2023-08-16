@@ -44,6 +44,7 @@ const ReelsModel = require('../model/reels');
 const WatchedVideoModel =  require('../model/watchedvideos');
 const OrderModel = require('../model/orderstatus');
 const PostModel  = require('../model/post');
+const PanchangV2Model = require('../model/panchangv2');
 
 
 const { json } = require('body-parser');
@@ -2546,9 +2547,6 @@ exports.senOTPWEB = async (req, res) => {
           
 
           
-
-
-
           exports.razorpayGenerateOrder = async (req, res) => {
             try {
               const { packageServiceCode, user } = req.body;
@@ -2735,3 +2733,41 @@ exports.senOTPWEB = async (req, res) => {
                 res.json(uu);
             }
             
+
+
+            exports.panchangv2Post = async(req, res) =>{
+              //insert data to PanchangV2Model
+              const panchangv2 = new PanchangV2Model({
+                panchang_thumbnail: req.body.panchang_thumbnail,
+                panchang_title: req.body.panchang_title,
+                panchang_time: req.body.panchang_time,
+                slon: req.body.slon,
+                mlon: req.body.mlon,
+                tithinum: req.body.tithinum,
+                tithi: req.body.tithi,
+                paksha: req.body.paksha,
+                tithiTill: req.body.tithiTill,
+                nakshatra: req.body.nakshatra,
+                nakshatraTill: req.body.nakshatraTill,
+                yoga: req.body.yoga,
+                karana: req.body.karana,
+                rashi: req.body.rashi,
+                publish_date: req.body.publish_date,
+                update_date: newDate
+              });
+              const savedPanchangv2 = await panchangv2.save();
+              res.json(savedPanchangv2);
+            }
+
+            exports.panchangAPIV2 = async(req, res) =>{
+              const pdate = req.query.pdate;
+              const panchangFetch = await PanchangV2Model.findOne({ publish_date: pdate }).lean();
+              const resultFlag = panchangFetch ? 1 : 0;
+              const message = panchangFetch ? "Panchang Record Found" : "Panchang Record Not Found";
+              const responseData = {
+              resultFlag,
+              message,
+              ...(panchangFetch && { ...panchangFetch }),
+              };
+              res.json(responseData);
+          }

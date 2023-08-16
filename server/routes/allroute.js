@@ -7,13 +7,16 @@ const ApiController = require('../controller/ApiController');
 const WebController = require('../controller/WebController');
 
 
-router.get('/', WebController.homePage); // HOMEPAGE
+router.get('/as', WebController.homePage); // HOMEPAGE
 
 
 //Test Page//
 router.get('/admin/user/birajit', ApiController.testPage);
 router.post('/api/v1/testone', ApiController.testOnePost);
 router.post('/api/v1/post/panchangs', ApiController.pachangPost);
+router.post('/api/v2/post/panchangs', ApiController.panchangv2Post);
+
+
 //----- Know Your Temple --//
 router.get('/api/v1/pandeet', WebController.pandeetPage);
 router.post('/api/v1/post/pandeet', ApiController.pandeetPost);
@@ -84,6 +87,7 @@ router.get('/api/v1/mobile/getVideos', ApiController.categoryVideos);
 router.get('/api/v1/mobile/horoscopeGet', ApiController.horoscopeAPI);
 router.get('/api/v1/mobile/horoscopeCategories', ApiController.horoscopeCategoryAPI);
 router.get('/api/v1/mobile/panchang', ApiController.panchangAPI);
+router.get('/api/v2/mobile/panchang', ApiController.panchangAPIV2);
 router.post('/api/v1/mobile/sendotp', ApiController.sendOTP);
 router.post('/api/v1/mobile/verifyotp', ApiController.VerifyOTP);
 router.post('/api/v1/mobile/resendotp', ApiController.resendOTP);
@@ -185,7 +189,9 @@ router.get('/api/v2/mobile/watchVidoes', ApiController.playVideoV2);
 
 
 
-
+//Web Routes//
+router.get('/', WebController.reelsPost);
+router.get('/allreels', WebController.getAllReels);
 
 
 
