@@ -91,6 +91,7 @@ router.get('/api/v2/mobile/panchang', ApiController.panchangAPIV2);
 router.post('/api/v1/mobile/sendotp', ApiController.sendOTP);
 router.post('/api/v1/mobile/verifyotp', ApiController.VerifyOTP);
 router.post('/api/v1/mobile/resendotp', ApiController.resendOTP);
+router.post('/api/v1/reels/delete', ApiController.reelsDelete);
 
 router.get('/api/v1/mobile/foryou', ApiController.forYou);
 router.get('/api/v2/mobile/foryou', ApiController.forYouV2);

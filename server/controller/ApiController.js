@@ -2077,6 +2077,14 @@ exports.senOTPWEB = async (req, res) => {
       }
 
 
+      exports.reelsDelete = async(req, res) =>{
+        const data = req.body;
+        const reels_code = data.reels_code;
+        const reelsDelete = await ReelsModel.deleteOne({reels_code: reels_code});
+        res.json(reelsDelete);
+      }
+
+
       exports.reelsGenerate = async (req, res) => {
         try {
             const { page, perPage } = req.query;
