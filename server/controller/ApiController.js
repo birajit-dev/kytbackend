@@ -17,6 +17,7 @@ var moment = require('moment'); // require
 require('../model/database');
 const NodeCache = require('node-cache');
 const cache = new NodeCache();
+const axios = require('axios');
 
 //Razorpay Payment Gateway
 const Razorpay = require('razorpay');
@@ -1228,55 +1229,173 @@ exports.testOnePost = async(req, res, next) =>{
   
     
 
+        // exports.sendOTP = async (req, res) => {
+        //     const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+        //     const otp = Math.floor(100000 + Math.random() * 9000); // Generate a 6-digit OTP
+        //     //const otp = "1234";
+        //     const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+
+        //     const apiKey = 'Your apiKey';
+        //     const numbers = [918123456789, 918987654321];
+        //     const sender = 'TXTLCL';
+        //     const message = 'This is your message';
+
+        //     const data = {
+        //         apikey: apiKey,
+        //         numbers: numbers.join(','),
+        //         sender: sender,
+        //         message: message
+        //     };
+
+        //     axios.post('https://api.textlocal.in/send/', data)
+        //         .then(response => {
+        //             console.log(response.data);
+        //             res.send(response.data); // Send the Textlocal response as the HTTP response
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //             res.status(500).send('Error sending SMS'); // Send an error response in case of failure
+        //         });
+          
+        //     if (phoneCheck) {
+        //       // Phone number exists in the database
+        //       await UserModel.updateOne({ phone_no: phoneNumber }, { $set: { phone_otp: otp } });
+        //       console.log(otp);
+        //       const obj1 = {
+        //         resultFlag: 1,
+        //         message: "OTP sent successfully",
+        //       };
+        //       res.json(obj1);
+        //     } else {
+        //       // Phone number doesn't exist in the database
+        //       const newDate = new Date(); // Replace with your desired date logic
+        //       const insertData = new UserModel({
+        //         phone_no: phoneNumber,
+        //         phone_otp: otp,
+        //         otp_session: otp,
+        //         update_date: newDate,
+        //       });
+        //       await insertData.save();
+        //       console.log("does not match");
+          
+        //       // Send the OTP via SMS using your preferred SMS gateway/provider
+        //       // Replace the following line with your actual SMS sending logic
+        //       // sendSMS(phoneNumber, `Your OTP is: ${otp}`);
+          
+        //       console.log(otp);
+        //       const obj1 = {
+        //         resultFlag: 1,
+        //         message: "OTP sent successfully",
+        //       };
+        //       res.json(obj1);
+        //     }
+        // };
+
+
+
+
         exports.sendOTP = async (req, res) => {
-            const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
-            //const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
-            const otp = "1234";
-            const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+              const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+              const otp = Math.floor(1000 + Math.random() * 9000); // Generate a 6-digit OTP
+              let responseObj;
+
+              //Textlocal Sender
+              const apiKey = 'NGE0NjM1NGY0NjQ5NzE3MjU4NzEzNDQxNzgzOTZiMzE=';
+              const sender = 'MCBEMD';
+              const message = `Your OTP for M Cube Media Forum is ${otp}. Please do not share your OTP with anyone. Thank you.`;
+              const numbers = [phoneNumber];
+
+              // const data = {
+              //     apikey: apiKey,
+              //     numbers: numbers.join(','),
+              //     sender: sender,
+              //     message: message
+              // };
+
+              const data = `apikey=${apiKey}&numbers=${numbers}&sender=${sender}&message=${message}`;
+
+              axios.get(`https://api.textlocal.in/send/?${data}`)
+                  .then(response => {
+                      console.log(response.data);
+                  })
+                  .catch(error => {
+                      console.error(error);
+                  });
+
+              //const otp = "1234";
+              const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+
+            
+              if (phoneCheck) {
+                // Phone number exists in the database
+                await UserModel.updateOne({ phone_no: phoneNumber }, { $set: { phone_otp: otp } });
+                console.log(otp);
+                const obj1 = {
+                  resultFlag: 1,
+                  message: "OTP sent successfully",
+                };
+                res.json(obj1);
+              } else {
+                // Phone number doesn't exist in the database
+                const newDate = new Date(); // Replace with your desired date logic
+                const insertData = new UserModel({
+                  phone_no: phoneNumber,
+                  phone_otp: otp,
+                  otp_session: otp,
+                  update_date: newDate,
+                });
+                await insertData.save();
+                console.log("does not match");
+            
+                // Send the OTP via SMS using your preferred SMS gateway/provider
+                // Replace the following line with your actual SMS sending logic
+                // sendSMS(phoneNumber, `Your OTP is: ${otp}`);
+            
+                console.log(otp);
+                const obj1 = {
+                  resultFlag: 1,
+                  message: "OTP sent successfully",
+                };
+                res.json(obj1);
+              }
+          };
           
-            if (phoneCheck) {
-              // Phone number exists in the database
-              await UserModel.updateOne({ phone_no: phoneNumber }, { $set: { phone_otp: otp } });
-              console.log(otp);
-              const obj1 = {
-                resultFlag: 1,
-                message: "OTP sent successfully",
-              };
-              res.json(obj1);
-            } else {
-              // Phone number doesn't exist in the database
-              const newDate = new Date(); // Replace with your desired date logic
-              const insertData = new UserModel({
-                phone_no: phoneNumber,
-                phone_otp: otp,
-                otp_session: otp,
-                update_date: newDate,
-              });
-              await insertData.save();
-              console.log("does not match");
-          
-              // Send the OTP via SMS using your preferred SMS gateway/provider
-              // Replace the following line with your actual SMS sending logic
-              // sendSMS(phoneNumber, `Your OTP is: ${otp}`);
-          
-              console.log(otp);
-              const obj1 = {
-                resultFlag: 1,
-                message: "OTP sent successfully",
-              };
-              res.json(obj1);
-            }
-        };
-          
+        
           
           // Endpoint to resend OTP via SMS
           exports.resendOTP = async (req, res) => {
             const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
           
             const phoneData = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+            let responseObj;
+
+            const otp = Math.floor(1000 + Math.random() * 9000); // Generate a 6-digit OTP
+
+
+              //Textlocal Sender
+              const apiKey = 'NGE0NjM1NGY0NjQ5NzE3MjU4NzEzNDQxNzgzOTZiMzE=';
+              const sender = 'MCBEMD';
+              const message = `Your OTP for M Cube Media Forum is ${otp}. Please do not share your OTP with anyone. Thank you.`;
+              const numbers = [phoneNumber];
+
+              // const data = {
+              //     apikey: apiKey,
+              //     numbers: numbers.join(','),
+              //     sender: sender,
+              //     message: message
+              // };
+
+              const data = `apikey=${apiKey}&numbers=${numbers}&sender=${sender}&message=${message}`;
+
+              axios.get(`https://api.textlocal.in/send/?${data}`)
+                  .then(response => {
+                      console.log(response.data);
+                  })
+                  .catch(error => {
+                      console.error(error);
+                  });
           
             if (phoneData) {
-              const otp = "1234"; // Generate a new OTP
               await UserModel.updateOne({ phone_no: phoneNumber }, { $set: { phone_otp: otp } });
           
               // Resend the OTP via SMS using your preferred SMS gateway/provider
