@@ -1291,74 +1291,123 @@ exports.testOnePost = async(req, res, next) =>{
         //     }
         // };
 
+        
+
+        
+
+exports.sendOTP = async (req, res) => {
+    const phoneNumber = req.body.phoneNumber;
+    const otp = phoneNumber === '1234567890' ? '1234' : Math.floor(1000 + Math.random() * 9000);
+
+    const apiKey = 'NGE0NjM1NGY0NjQ5NzE3MjU4NzEzNDQxNzgzOTZiMzE=';
+    const sender = 'MCBEMD';
+    const message = `Your OTP for M Cube Media Forum is ${otp}. Please do not share your OTP with anyone. Thank you.`;
+    const numbers = [phoneNumber];
+
+    const data = `apikey=${apiKey}&numbers=${numbers}&sender=${sender}&message=${message}`;
+
+    try {
+        await axios.get(`https://api.textlocal.in/send/?${data}`);
+        
+        const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+        if (phoneCheck) {
+            await UserModel.updateOne({ phone_no: phoneNumber }, { $set: { phone_otp: otp } });
+        } else {
+            const newDate = new Date();
+            const insertData = new UserModel({
+                phone_no: phoneNumber,
+                phone_otp: otp,
+                otp_session: otp,
+                update_date: newDate,
+            });
+            await insertData.save();
+        }
+        
+        const responseObj = {
+            resultFlag: 1,
+            message: "OTP sent successfully",
+        };
+        res.json(responseObj);
+    } catch (error) {
+        console.error(error);
+        const responseObj = {
+            resultFlag: 0,
+            message: "Failed to send OTP",
+        };
+        res.status(500).json(responseObj);
+    }
+};
 
 
 
-        exports.sendOTP = async (req, res) => {
-              const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
-              const otp = Math.floor(1000 + Math.random() * 9000); // Generate a 6-digit OTP
-              let responseObj;
+        // exports.sendOTP = async (req, res) => {
+        //       const phoneNumber = req.body.phoneNumber; // Assuming the phone number is sent in the request body
+        //       const otp = Math.floor(1000 + Math.random() * 9000); // Generate a 6-digit OTP
+        //       let responseObj;
 
-              //Textlocal Sender
-              const apiKey = 'NGE0NjM1NGY0NjQ5NzE3MjU4NzEzNDQxNzgzOTZiMzE=';
-              const sender = 'MCBEMD';
-              const message = `Your OTP for M Cube Media Forum is ${otp}. Please do not share your OTP with anyone. Thank you.`;
-              const numbers = [phoneNumber];
+        //       //test phone number
+        //       //const phoneNumber = "919999999999";
+        //       //now condition if phone number get from request body then send static otp
 
-              // const data = {
-              //     apikey: apiKey,
-              //     numbers: numbers.join(','),
-              //     sender: sender,
-              //     message: message
-              // };
+        //       //Textlocal Sender
+        //       const apiKey = '';
+        //       const sender = 'MCBEMD';
+        //       const message = `Your OTP for M Cube Media Forum is ${otp}. Please do not share your OTP with anyone. Thank you.`;
+        //       const numbers = [phoneNumber];
 
-              const data = `apikey=${apiKey}&numbers=${numbers}&sender=${sender}&message=${message}`;
+        //       // const data = {
+        //       //     apikey: apiKey,
+        //       //     numbers: numbers.join(','),
+        //       //     sender: sender,
+        //       //     message: message
+        //       // };
 
-              axios.get(`https://api.textlocal.in/send/?${data}`)
-                  .then(response => {
-                      console.log(response.data);
-                  })
-                  .catch(error => {
-                      console.error(error);
-                  });
+        //       const data = `apikey=${apiKey}&numbers=${numbers}&sender=${sender}&message=${message}`;
 
-              //const otp = "1234";
-              const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+        //       axios.get(`https://api.textlocal.in/send/?${data}`)
+        //           .then(response => {
+        //               console.log(response.data);
+        //           })
+        //           .catch(error => {
+        //               console.error(error);
+        //           });
 
+
+        //       //const otp = "1234";
+        //       const phoneCheck = await UserModel.findOne({ phone_no: phoneNumber }).lean();
+        //       if (phoneCheck) {
+        //         // Phone number exists in the database
+        //         await UserModel.updateOne({ phone_no: phoneNumber }, { $set: { phone_otp: otp } });
+        //         console.log(otp);
+        //         const obj1 = {
+        //           resultFlag: 1,
+        //           message: "OTP sent successfully",
+        //         };
+        //         res.json(obj1);
+        //       } else {
+        //         // Phone number doesn't exist in the database
+        //         const newDate = new Date(); // Replace with your desired date logic
+        //         const insertData = new UserModel({
+        //           phone_no: phoneNumber,
+        //           phone_otp: otp,
+        //           otp_session: otp,
+        //           update_date: newDate,
+        //         });
+        //         await insertData.save();
+        //         console.log("does not match");
             
-              if (phoneCheck) {
-                // Phone number exists in the database
-                await UserModel.updateOne({ phone_no: phoneNumber }, { $set: { phone_otp: otp } });
-                console.log(otp);
-                const obj1 = {
-                  resultFlag: 1,
-                  message: "OTP sent successfully",
-                };
-                res.json(obj1);
-              } else {
-                // Phone number doesn't exist in the database
-                const newDate = new Date(); // Replace with your desired date logic
-                const insertData = new UserModel({
-                  phone_no: phoneNumber,
-                  phone_otp: otp,
-                  otp_session: otp,
-                  update_date: newDate,
-                });
-                await insertData.save();
-                console.log("does not match");
+        //         // Send the OTP via SMS using your preferred SMS gateway/provider
+        //         // Replace the following line with your actual SMS sending logic
+        //         // sendSMS(phoneNumber, `Your OTP is: ${otp}`);
             
-                // Send the OTP via SMS using your preferred SMS gateway/provider
-                // Replace the following line with your actual SMS sending logic
-                // sendSMS(phoneNumber, `Your OTP is: ${otp}`);
-            
-                console.log(otp);
-                const obj1 = {
-                  resultFlag: 1,
-                  message: "OTP sent successfully",
-                };
-                res.json(obj1);
-              }
-          };
+        //         console.log(otp);
+        //         const obj1 = {
+        //           resultFlag: 1,
+        //           message: "OTP sent successfully",
+        //         };
+        //         res.json(obj1);
+        //       }
+        //   };
           
         
           
