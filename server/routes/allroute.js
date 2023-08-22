@@ -12,6 +12,7 @@ router.get('/as', WebController.homePage); // HOMEPAGE
 
 //Test Page//
 router.get('/admin/user/birajit', ApiController.testPage);
+
 router.post('/api/v1/testone', ApiController.testOnePost);
 router.post('/api/v1/post/panchangs', ApiController.pachangPost);
 router.post('/api/v2/post/panchangs', ApiController.panchangv2Post);
@@ -24,6 +25,7 @@ router.post('/api/v1/post/pandeet', ApiController.pandeetPost);
 //router.post('/api/v1/post/panchang')
 //Videos
 router.post('/api/v1/post/videoes', ApiController.addVideos);
+router.post('/api/v1/post/videos/update', ApiController.updateVideo);
 //router.get('/api/v1/videos', WebController.videosPage);
 router.post('/api/v1/post/videos_categories', ApiController.addVcategories);
 router.post('/api/v1/post/vsubcatory', ApiController.addVsubCategory);
@@ -239,6 +241,7 @@ router.get('/music/edit', WebController.editMusic);
 router.get('/allvideos', WebController.getAllVidoes);
 router.get('/videos/add', WebController.videosPost);
 router.get('/api/subcategories/:category', ApiController.getVideosSubcatory);
+router.get('/videos/edit', WebController.editVideos);
 
 router.get('/reels/edit', WebController.editReels);
 

@@ -1,0 +1,144 @@
+<div class="br-mainpanel">
+    <div class="br-pagebody">
+        <div class="br-section-wrapper">
+            <h6 class="tx-gray-800 tx-uppercase tx-bold tx-14 mg-b-10">Videos Post</h6>
+            <form action="/api/v1/post/videos/update" method="POST">
+            <input type="hidden" name="_id" value="{{singleVideo._id}}">
+                <div class="form-layout form-layout-1">
+                    <div class="row mg-b-25">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="form-control-label">Video Title: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="text" name="videos_title" value="{{singleVideo.videos_title}}" placeholder="Video Title">
+                            </div>
+                        </div><!-- col-4 -->
+                           <div class="col-lg-4">
+    <div class="form-group mg-b-10-force">
+        <label class="form-control-label">Videos Category: <span class="tx-danger">*</span></label>
+        <select class="form-control select2" data-placeholder="Videos Category" name="videos_category" id="videosCategory" onchange="populateSubcategories(this)">
+            <option value="{{singleVideo.videos_category}}" selected>{{singleVideo.videos_category}}</option>
+            {{#each category}}
+            <option value="{{categoriesId}}">{{vcategories_title}}</option>
+            {{/each}}
+        </select>
+    </div>
+</div><!-- col-4 -->
+
+<div class="col-lg-4">
+    <div class="form-group mg-b-10-force">
+        <label class="form-control-label">Videos Sub-Category: <span class="tx-danger">*</span></label>
+        <select class="form-control select2" data-placeholder="Videos Category" name="videos_sub_category" id="videosSubCategory">
+            <option value="{{singleVideo.videos_category}}" selected>{{singleVideo.videos_category}}</option>
+            <option label="Choose Sub-Category"></option>
+        </select>
+    </div>
+</div><!-- col-4 -->
+                            <!-- ... Previous HTML code ... -->
+
+<script>
+  function populateSubcategories(selectElement) {
+    const selectedCategory = selectElement.value;
+    const videosSubCategorySelect = document.getElementById('videosSubCategory');
+    videosSubCategorySelect.innerHTML = '<option label="Choose Sub-Category"></option>';
+
+    if (selectedCategory !== '') {
+      fetch(`https://knowyourtemples.in/api/subcategories/${selectedCategory}`)
+        .then(response => response.json())
+        .then(subCats => {
+          console.log(subCats); // Check if subcategories are correctly parsed
+          subCats.forEach(subCat => {
+            const option = document.createElement('option');
+            option.value = subCat.subcategory_Id;
+            option.textContent = subCat.subcategory_title;
+            videosSubCategorySelect.appendChild(option);
+          });
+        })
+        .catch(error => console.error(error));
+    }
+  }
+
+  // Automatically populate sub-categories when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    const videosCategorySelect = document.getElementById('videosCategory');
+    populateSubcategories(videosCategorySelect);
+  });
+</script>
+
+                        <!-- ... More fields ... -->
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="form-control-label">Video Path: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="text" name="videos_path" value="{{singleVideo.videos_path}}" placeholder="Video Path">
+                            </div>
+                        </div><!-- col-4 -->
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="form-control-label">Video Thumbnail: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="text" name="videos_thumbnail" value="{{singleVideo.videos_thumbnail}}" placeholder="Video Thumbnail">
+                            </div>
+                        </div><!-- col-4 -->
+
+                        <!-- ... More fields ... -->
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="form-control-label">Video Publisher: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="text" name="videos_publisher" value="{{singleVideo.videos_publisher}}" placeholder="Video Publisher">
+                            </div>
+                        </div><!-- col-4 -->
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="form-control-label">Video Publish: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="text" name="videos_publish" value="{{singleVideo.videos_publish}}" placeholder="Video Publish">
+                            </div>
+                        </div><!-- col-4 -->
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="form-control-label">Video Duration: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="text" name="videos_duration" value="{{singleVideo.videos_duration}}">
+                            </div>
+                        </div><!-- col-4 -->
+
+                        <!-- ... More fields ... -->
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="form-control-label">Video Keyword: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="text" name="videos_keyword" value="{{singleVideo.videos_keyword}}" placeholder="Video Keyword">
+                            </div>
+                        </div><!-- col-4 -->
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="form-control-label">Video Temple Location: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="text" name="videos_temple_locate" value="{{singleVideo.videos_temple_locate}}" placeholder="Video Temple Location">
+                            </div>
+                        </div><!-- col-4 -->
+
+                        <!-- ... More fields ... -->
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="form-control-label">Video Description: <span class="tx-danger">*</span></label>
+                                <textarea class="form-control" name="videos_description" placeholder="Video Description">{{singleVideo.videos_description}}</textarea>
+                            </div>
+                        </div><!-- col-4 -->
+
+                        <!-- ... More fields ... -->
+
+                    </div><!-- row -->
+
+                    <div class="form-layout-footer">
+                        <button class="btn btn-info" type="submit">Post Video</button>
+                    </div><!-- form-layout-footer -->
+                </div><!-- form-layout -->
+            </form>
+        </div><!-- br-section-wrapper -->
+    </div><!-- br-pagebody -->
+</div>
+</body>
+</html>

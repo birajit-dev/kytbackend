@@ -164,7 +164,6 @@ console.log(generateString(10));
         }
 
         exports.addVideos = async(req, res) =>{
-            
             try{                
             const addV = req.body;
             //Viideo Key Generator
@@ -1161,11 +1160,24 @@ exports.testOnePost = async(req, res, next) =>{
             const music = await MusicModel.find({}).sort({music_id:-1}).limit(8).lean();
             const promotional_title = "Promotional Title";
             const promotional_thumbnail = "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=";
+            const user_id = req.query.user;
+            //now check from user is he have save data or not
+            const horoscopeUser = await UserModel.findOne({user_id:user_id}).lean();
+            //now get data from horoscopeUser
+            const horoscopeData = await HoroscopeModel.findOne({horoscope_category:horoscopeUser.horoscope}).lean();
+            //now only take horoscope title and description from horoscopeData
+            const horoscope_title = horoscopeData.horoscope_title;
+            const horoscope_description = horoscopeData.horoscope_description;
+
+            //now make short limit of horoscope_description
+            //const today_content_short_description = horoscope_description.substring(0, 100);
+
+
             const music_title = "Music for you";
             const mantras_title = "Mantras For You";
-            const today_title = "Today Title";
-            const today_content_short_description ="short_content"
-            const today_content = "Today Content";
+            const today_title = horoscope_title;
+            const today_content_short_description = horoscope_description.substring(0, 100);
+            const today_content = horoscope_description;
             const obj1 = {
                 resultFlag: 1,
                 message: "For You Record Found",
@@ -3100,3 +3112,21 @@ exports.senOTPWEB = async (req, res) => {
                 res.status(500).json({ message: 'Error fetching subcategories.' });
             }
           }
+          
+          exports.updateVideo = async (req, res) => {
+            try {
+                const videoId = req.body._id; // Assuming you pass the video ID in the URL
+                const updateData = req.body;
+                
+                // Update video based on the videoId
+                const updatedVideo = await VideosModel.findByIdAndUpdate(videoId, updateData, { new: true });
+        
+                if (!updatedVideo) {
+                    return res.status(404).json({ message: 'Video not found' });
+                }
+        
+                res.json(updatedVideo);
+            } catch (error) {
+                res.status(400).json({ message: error.message });
+            }
+        }

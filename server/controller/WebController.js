@@ -133,7 +133,17 @@ const newDate = moment().format('lll');
             videos, category
         });
     }
+
+    exports.editVideos = async(req, res) =>{
+        const category = await VideosCategoryModel.find({}).lean();
+        const singleVideo = await VideosModel.findOne({ _id: req.query.id }).lean();
+        res.render('videos_edit',{
+            singleVideo,
+            category
+        });
+    }
     
+
     
     
     
