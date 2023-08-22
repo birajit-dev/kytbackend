@@ -47,7 +47,7 @@
           console.log(subCats); // Check if subcategories are correctly parsed
           subCats.forEach(subCat => {
             const option = document.createElement('option');
-            option.value = subCat.subcategory_title;
+            option.value = subCat.subcategory_Id;
             option.textContent = subCat.subcategory_title;
             videosSubCategorySelect.appendChild(option);
           });
