@@ -3093,7 +3093,7 @@ exports.senOTPWEB = async (req, res) => {
           exports.getVideosSubcatory = async(req, res) =>{
             const category = req.params.category;
             try {
-                const subCats = await SubCategoryModel.find({ parentCategory: category }).select('subcategory_title','subcategory_Id');
+                const subCats = await SubCategoryModel.find({ parentCategory: category });
                 res.json(subCats);
             } catch (error) {
                 console.error(error);
