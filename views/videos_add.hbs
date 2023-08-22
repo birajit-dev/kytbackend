@@ -32,29 +32,37 @@
         </select>
     </div>
 </div><!-- col-4 -->
-                            <script>
-                              const videosCategorySelect = document.getElementById('videosCategory');
-                              const videosSubCategorySelect = document.getElementById('videosSubCategory');
+                            <!-- ... Previous HTML code ... -->
 
-                              videosCategorySelect.addEventListener('change', () => {
-                                  const selectedCategory = videosCategorySelect.value;
-                                  videosSubCategorySelect.innerHTML = '<option label="Choose Sub-Category"></option>';
+<script>
+    const videosCategorySelect = document.getElementById('videosCategory');
+    const videosSubCategorySelect = document.getElementById('videosSubCategory');
 
-                                  if (selectedCategory !== '') {
-                                      fetch(`/api/subcategories/${selectedCategory}`)
-                                          .then(response => response.json())
-                                          .then(subCats => {
-                                              subCats.forEach(subCat => {
-                                                  const option = document.createElement('option');
-                                                  option.value = subCat.subcategory_title;
-                                                  option.textContent = subCat.subcategory_title;
-                                                  videosSubCategorySelect.appendChild(option);
-                                              });
-                                          })
-                                          .catch(error => console.error(error));
-                                  }
-                              });
-                          </script>
+    videosCategorySelect.addEventListener('change', () => {
+        const selectedCategory = videosCategorySelect.value;
+        videosSubCategorySelect.innerHTML = '<option label="Choose Sub-Category"></option>';
+
+        if (selectedCategory !== '') {
+            fetch(`/api/subcategories/${selectedCategory}`)
+                .then(response => response.json())
+                .then(subCats => {
+                    subCats.forEach(subCat => {
+                        const option = document.createElement('option');
+                        option.value = subCat.subcategory_title;
+                        option.textContent = subCat.subcategory_title;
+                        videosSubCategorySelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error(error));
+        }
+    });
+
+    // Automatically populate sub-categories when the page loads
+    videosCategorySelect.dispatchEvent(new Event('change'));
+</script>
+
+<!-- ... Rest of the HTML code ... -->
+
 
                             <!-- Add more input fields as needed -->
 
