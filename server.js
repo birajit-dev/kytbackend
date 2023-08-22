@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const cors = require('cors'); // Import the cors middleware
 //var sassMiddleware = require('node-sass-middleware')
 var path = require('path');
 const app = express();
@@ -9,7 +10,13 @@ var bodyParser = require('body-parser');
 
 
 const oneDay = 1000 * 60 * 60 * 24;
+app.use(cors());
+const corsOptions = {
+  origin: 'https://knowyourtemples.in',
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
 
 app.use(sessions({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
