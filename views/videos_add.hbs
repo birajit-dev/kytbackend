@@ -15,7 +15,7 @@
                            <div class="col-lg-4">
     <div class="form-group mg-b-10-force">
         <label class="form-control-label">Videos Category: <span class="tx-danger">*</span></label>
-        <select class="form-control select2" data-placeholder="Videos Category" name="videos_category" id="videosCategory">
+        <select class="form-control select2" data-placeholder="Videos Category" name="videos_category" id="videosCategory" onchange="populateSubcategories(this)">
             <option label="Choose Category"></option>
             {{#each category}}
             <option value="{{categoriesId}}">{{vcategories_title}}</option>
@@ -35,31 +35,32 @@
                             <!-- ... Previous HTML code ... -->
 
 <script>
-    const videosCategorySelect = document.getElementById('videosCategory');
+  function populateSubcategories(selectElement) {
+    const selectedCategory = selectElement.value;
     const videosSubCategorySelect = document.getElementById('videosSubCategory');
+    videosSubCategorySelect.innerHTML = '<option label="Choose Sub-Category"></option>';
 
-    videosCategorySelect.addEventListener('change', () => {
-        const selectedCategory = videosCategorySelect.value;
-        videosSubCategorySelect.innerHTML = '<option label="Choose Sub-Category"></option>';
+    if (selectedCategory !== '') {
+      fetch(`https://knowyourtemples.in/api/subcategories/${selectedCategory}`)
+        .then(response => response.json())
+        .then(subCats => {
+          console.log(subCats); // Check if subcategories are correctly parsed
+          subCats.forEach(subCat => {
+            const option = document.createElement('option');
+            option.value = subCat.subcategory_title;
+            option.textContent = subCat.subcategory_title;
+            videosSubCategorySelect.appendChild(option);
+          });
+        })
+        .catch(error => console.error(error));
+    }
+  }
 
-        if (selectedCategory !== '') {
-            fetch(`/api/subcategories/${selectedCategory}`)
-                .then(response => response.json())
-                .then(subCats => {
-                    console.log(subCats); // Check if subcategories are correctly parsed
-                    subCats.forEach(subCat => {
-                        const option = document.createElement('option');
-                        option.value = subCat.subcategory_title;
-                        option.textContent = subCat.subcategory_title;
-                        videosSubCategorySelect.appendChild(option);
-                    });
-                })
-                .catch(error => console.error(error));
-        }
-    });
-
-    // Automatically populate sub-categories when the page loads
-    videosCategorySelect.dispatchEvent(new Event('change'));
+  // Automatically populate sub-categories when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    const videosCategorySelect = document.getElementById('videosCategory');
+    populateSubcategories(videosCategorySelect);
+  });
 </script>
 
 <!-- ... Rest of the HTML code ... -->
