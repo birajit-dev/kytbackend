@@ -21,18 +21,23 @@
         <table class="table table-bordered table-colored table-primary">
             <thead>
               <tr>
-                <th class="wd-10p">Reels Title</th>
-                <th class="wd-35p">Reels Date</th>
-                <th class="wd-35p">Action</th>
+                <th class="wd-40p">Reels Title</th>
+                <th class="wd-15p">Reels Code</th>
+                <th class="wd-10p">Reels Date</th>
+                <th class="wd-10p">Action</th>
+                <th class="wd-10p">Delete</th>
+
+
               </tr>
             </thead>
             <tbody>
               {{#each reels}}
               <tr>
-                <td>{{reels_name}}</td>
+                <td style="font-weight: 700;">{{reels_name}}</td>
+                <td>{{reels_code}}</td>
                 <td>{{update_date}}</td>
-                <td><button class="btn btn-teal btn-block mg-b-10">Teal</button></td>
-                <td><button class="btn btn-danger btn-block mg-b-10">Danger</button></td>
+                <td><a href="/reels/edit?id={{_id}}" class="btn btn-teal btn-block mg-b-10">Edit</a></td>
+                <td><a href="/reels/delete?id={{_id}}" class="btn btn-danger btn-block mg-b-10">Delete</a></td>
               </tr>
               {{/each}}
               
