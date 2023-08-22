@@ -2788,21 +2788,13 @@ exports.senOTPWEB = async (req, res) => {
 
 
           exports.forYouV2 = async (req, res) => {
-            const user = req.query.user;
+            const user_id = req.query.user; // Assuming the query parameter name is user_id
             const mantra = await MantraModel.find({}).sort({ mantra_id: -1 }).limit(4).lean();
             const music = await MusicModel.find({}).sort({ music_id: -1 }).limit(8).lean();
-
-            //now check from user is he have save data or not
-            const horoscopeUser = await UserModel.findOne({phone_no:user_id}).lean();
-            //now get data from horoscopeUser
-            const horoscopeData = await HoroscopeModel.findOne({horoscope_category:horoscopeUser.horoscope}).lean();
-            //now only take horoscope title and description from horoscopeData
-            const horoscope_title = horoscopeData.horoscope_title;
-            const horoscope_description = horoscopeData.horoscope_description;
           
             try {
               // Fetching the LoveMantraModel data for the specified user
-              const loveMantras = await LoveMantraModel.find({ username: user }).lean();
+              const loveMantras = await LoveMantraModel.find({ username: user_id }).lean();
           
               // Create a Set of mantra keys from LoveMantraModel for faster lookup
               const favoriteMantraKeys = new Set(loveMantras.map(mantra => mantra.mantra_key));
@@ -2813,15 +2805,23 @@ exports.senOTPWEB = async (req, res) => {
                 is_favorite_mantra: favoriteMantraKeys.has(mantraItem.mantra_key),
               }));
           
+              // Now check if the user has saved data
+              const horoscopeUser = await UserModel.findOne({ phone_no: user_id }).lean();
+          
+              // Now get data from horoscopeUser
+              const horoscopeData = await HoroscopeModel.findOne({ horoscope_category: horoscopeUser.horoscope }).lean();
+          
+              // Now only take horoscope title and description from horoscopeData
+              const today_title = horoscopeData.horoscope_title;
+              const today_content_short_description = horoscopeData.horoscope_description.substring(0, 200);
+              const today_content = horoscopeData.horoscope_description;
+          
               const promotional_title = "Promotional Title";
               const promotional_thumbnail = "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=";
               const music_title = "Music for you";
               const mantras_title = "Mantras For You";
-              const today_title = horoscope_title;
-              const today_content_short_description = horoscope_description.substring(0, 200);
-              const today_content = horoscope_description;
           
-              const obj1 = {
+              const responseObj = {
                 resultFlag: 1,
                 message: "For You Record Found",
                 today_title,
@@ -2835,12 +2835,13 @@ exports.senOTPWEB = async (req, res) => {
                 musicList: music,
               };
           
-              res.json(obj1);
+              res.json(responseObj);
             } catch (err) {
               console.error('Error fetching data for "For You":', err);
               res.status(500).json({ error: 'Failed to fetch data for "For You"' });
             }
           };
+          
           
 
           
