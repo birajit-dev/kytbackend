@@ -24,7 +24,7 @@ router.post('/api/v1/post/pandeet', ApiController.pandeetPost);
 //router.post('/api/v1/post/panchang')
 //Videos
 router.post('/api/v1/post/videoes', ApiController.addVideos);
-router.get('/api/v1/videos', WebController.videosPage);
+//router.get('/api/v1/videos', WebController.videosPage);
 router.post('/api/v1/post/videos_categories', ApiController.addVcategories);
 router.post('/api/v1/post/vsubcatory', ApiController.addVsubCategory);
 router.get('/api/v1/vcategory', WebController.addVc);
@@ -235,6 +235,10 @@ router.get('/allreels', WebController.getAllReels);
 router.get('/music/add', WebController.musicPost);
 router.get('/allmusic', WebController.getAllMusic);
 router.get('/music/edit', WebController.editMusic);
+
+router.get('/allvideos', WebController.getAllVidoes);
+router.get('/videos/add', WebController.videosPost);
+router.get('/api/subcategories/:category', ApiController.getVideosSubcatory);
 
 router.get('/reels/edit', WebController.editReels);
 

@@ -21,7 +21,8 @@ require('../model/database');
 const TestOnePost =  require('../model/testone');
 const PanchangModel = require('../model/panchangs');
 const PandeetModel = require('../model/pandeet');
-const VideosCategory = require('../model/videos_categories');
+const VideosCategoryModel = require('../model/videos_categories');
+const VideosModel = require('../model/kytvideos');
 const MusicCategoryModel = require('../model/music_categories');
 const MusicModel = require('../model/music');
 const ReelsModel = require('../model/reels');
@@ -35,12 +36,7 @@ const newDate = moment().format('lll');
             pandeetName
         });
     }
-    exports.videosPage = async(req, res) =>{
-        const vCname = await VideosCategory.find({}).lean();
-        res.render('videos_add',{
-            vCname
-        });
-    }
+
     exports.addVc = async(req, res) =>{
         res.render('vcategory_add');
     }
@@ -82,9 +78,7 @@ const newDate = moment().format('lll');
         res.render('blogs');
     }
 
-    exports.reelsPost = async(req, res) =>{
-        res.render('reels');
-    }
+
 
     exports.getAllReels = async(req, res) =>{
         const reels = await ReelsModel.find({}).lean();
@@ -92,16 +86,9 @@ const newDate = moment().format('lll');
             reels
         });
     }
-
-    exports.musicPost = async(req, res) =>{
-        const music_categories = await MusicCategoryModel.find({}).lean();
-        res.render('music',{
-            music_categories
-        });
+    exports.reelsPost = async(req, res) =>{
+        res.render('reels');
     }
-
-    
-    
     exports.editReels = async(req, res) =>{
         const reels = await ReelsModel.findOne({_id: req.query.id}).lean();
         res.render('edit_reels',{
@@ -115,7 +102,12 @@ const newDate = moment().format('lll');
             music
         });
     }
-
+    exports.musicPost = async(req, res) =>{
+        const music_categories = await MusicCategoryModel.find({}).lean();
+        res.render('music',{
+            music_categories
+        });
+    }
     exports.editMusic = async(req, res) =>{
         //edit music model
         const music_categories = await MusicCategoryModel.find({}).lean();
@@ -123,6 +115,22 @@ const newDate = moment().format('lll');
         res.render('music_edit',{
             singleMusic,
             music_categories
+        });
+    }
+
+    exports.getAllVidoes = async(req, res) =>{
+        const category = await VideosCategoryModel.find({}).lean();
+        const videos = await VideosModel.find({}).lean();
+        res.render('videos_all',{
+            videos, category
+        });
+    }
+
+    exports.videosPost = async(req, res) =>{
+        const category = await VideosCategoryModel.find({}).lean();
+        const videos = await VideosModel.find({}).lean();
+        res.render('videos_add',{
+            videos, category
         });
     }
     

@@ -3087,3 +3087,16 @@ exports.senOTPWEB = async (req, res) => {
           }
           
           }
+
+
+          //Get Subcategories
+          exports.getVideosSubcatory = async(req, res) =>{
+            const category = req.params.category;
+            try {
+                const subCats = await SubCategoryModel.find({ parentCategory: category }).select('subcategory_title');
+                res.json(subCats);
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ message: 'Error fetching subcategories.' });
+            }
+          }
