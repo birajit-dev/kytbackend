@@ -1213,7 +1213,7 @@ exports.testOnePost = async(req, res, next) =>{
                         {
                             "_id" : "4",
                             "videos_title" : "Image 4",
-                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/Kapilmuni.jpg"
+                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/DAILY%20Post/22-08-2023/16713937223_3ade5734fa_k_4.jpg"
                         }
                     ]
                 },{
