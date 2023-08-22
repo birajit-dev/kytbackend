@@ -39,8 +39,19 @@ router.get('/api/v1/get/videoscategories', ApiController.videoesCategories);
 //API for post//
 router.post('/api/v1/post/mantracategory', ApiController.mantraCategoriesPost);
 router.post('/api/v1/post/mantra', ApiController.mantrasPost);
+
+
+
+
+
+
 router.post('/api/v1/post/musiccategories', ApiController.addMcategories);
 router.post('/api/v1/post/musicadd', ApiController.addMusic);
+router.post('/api/v1/post/music/update', ApiController.updateMusic);
+router.get('/api/v1/get/music/delete', ApiController.deleteMusic);
+
+
+
 router.post('/api/v1/post/podcast', ApiController.podcastPost);
 router.post('/api/v1/post/wishes', ApiController.wishesPost);
 router.post('/api/v1/post/horoscope', ApiController.horoscopePost);
@@ -54,7 +65,13 @@ router.post('/api/v1/post/lovemantra', ApiController.loveMantra);
 
 
 
-//Post Reels
+
+
+
+
+
+
+//Reels API
 router.post('/api/v1/post/reels', ApiController.reelsAdd);
 router.post('/api/v1/post/reels/update', ApiController.reelsUpdate);
 router.get('/api/v1/get/reels/delete', ApiController.reelsDeleteGET);
@@ -88,9 +105,17 @@ router.get('/api/v1/mobile/mantraListen', ApiController.mantraListenId);
 router.get('/api/v2/mobile/mantraListen', ApiController.mantraListenIdv2);
 
 
+
+
+
 router.get('/api/v1/mobile/musiccategories', ApiController.MusicCategories);
 router.get('/api/v1/mobile/musicbycategory', ApiController.MusicFilter);
 router.get('/api/v1/mobile/music', ApiController.MusicListen);
+
+
+
+
+
 router.get('/api/v1/mobile/wishes', ApiController.wishesAPI);
 router.get('/api/v1/mobile/vcategory', ApiController.videoesCategories);
 router.get('/api/v1/mobile/vsubcategory', ApiController.subCategoryVideos);
@@ -209,6 +234,8 @@ router.get('/', WebController.reelsPost);
 router.get('/allreels', WebController.getAllReels);
 router.get('/music/add', WebController.musicPost);
 router.get('/allmusic', WebController.getAllMusic);
+router.get('/music/edit', WebController.editMusic);
+
 router.get('/reels/edit', WebController.editReels);
 
 

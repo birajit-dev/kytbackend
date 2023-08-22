@@ -241,6 +241,57 @@ console.log(generateString(10));
             }
         }
 
+
+        exports.updateMusic = async (req, res) => {
+          try {
+              const updateM = req.body;
+              const { _id } = updateM;
+              // Find the existing music entry by music_key
+              const existingMusic = await MusicModel.findOne({ _id });
+              if (!existingMusic) {
+                  return res.status(404).json({ message: 'Music entry not found.' });
+              }
+              // Update the fields with new data
+              existingMusic.music_title = updateM.music_title;
+              existingMusic.music_category = updateM.music_category;
+              existingMusic.music_subcategory = updateM.music_subcategory;
+              existingMusic.music_singer = updateM.music_singer;
+              existingMusic.music_thumbnail = updateM.music_thumbnail;
+              existingMusic.music_path = updateM.music_path;
+              existingMusic.music_duration = updateM.music_duration;
+              existingMusic.music_publisher = updateM.music_publisher;
+              existingMusic.update_date = newDate; // Update the update_date
+      
+              // Save the updated music entry
+              const updatedMusic = await existingMusic.save();
+      
+              res.json(updatedMusic);
+          } catch (error) {
+              console.error(error);
+              res.status(500).json({ message: 'An error occurred while updating the music entry.' });
+          }
+      };
+
+
+      exports.deleteMusic = async (req, res) => {
+        const _id  = req.query.id;
+    
+        try {
+            // Find and delete the reel entry by reels_code
+            const deletedReels = await MusicModel.findOneAndDelete({ _id });
+    
+            if (!deletedReels) {
+                return res.status(404).json({ message: 'Music entry not found.' });
+            }
+    
+            res.json({ message: 'Music entry deleted successfully.' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'An error occurred while deleting the reel entry.' });
+        }
+    };
+      
+
         exports.addMcategories = async(req, res) =>{
             try{
                 const addMc = req.body;

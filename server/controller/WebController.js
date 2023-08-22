@@ -99,6 +99,8 @@ const newDate = moment().format('lll');
             music_categories
         });
     }
+
+    
     
     exports.editReels = async(req, res) =>{
         const reels = await ReelsModel.findOne({_id: req.query.id}).lean();
@@ -114,6 +116,15 @@ const newDate = moment().format('lll');
         });
     }
 
+    exports.editMusic = async(req, res) =>{
+        //edit music model
+        const music_categories = await MusicCategoryModel.find({}).lean();
+        const singleMusic = await MusicModel.findOne({_id: req.query.id}).lean();
+        res.render('music_edit',{
+            singleMusic,
+            music_categories
+        });
+    }
     
     
     

@@ -6,14 +6,15 @@
       <div class="br-pagebody">
         <div class="br-section-wrapper">
           <h6 class="tx-gray-800 tx-uppercase tx-bold tx-14 mg-b-10">Reels Post</h6>
-        <form action="/api/v1/post/musicadd" method="POST">
+        <form action="/api/v1/post/music/update" method="POST">
+        <input type="hidden" name="_id" value="{{singleMusic._id}}">
           <div class="form-layout form-layout-1">
             <div class="row mg-b-25">
 
               <div class="col-lg-4">
                 <div class="form-group">
                   <label class="form-control-label">Music Title: <span class="tx-danger">*</span></label>
-                  <input class="form-control" type="text" name="music_title" value="" placeholder="Shorts Title">
+                  <input class="form-control" type="text" name="music_title" value="{{singleMusic.music_title}}">
                 </div>
               </div><!-- col-4 -->
 
@@ -21,7 +22,7 @@
                 <div class="form-group mg-b-10-force">
                   <label class="form-control-label">Music Category: <span class="tx-danger">*</span></label>
                   <select class="form-control select2" data-placeholder="Shorts Category" name="music_category">
-                    <option label="Choose Category"></option>
+                    <option value="{{singleMusic.music_category}}" selected>{{singleMusic.music_category}}</option>
                     {{#each music_categories}}
                     <option value="{{mcategories_Id}}">{{mcategories_title}}</option>
                     {{/each}}
@@ -33,7 +34,7 @@
                 <div class="form-group mg-b-10-force">
                   <label class="form-control-label">Music Sub-Category: <span class="tx-danger">*</span></label>
                   <select class="form-control select2" data-placeholder="Shorts Category" name="music_subcategory">
-                    <option label="Choose Sub-Category"></option>
+                    <option value="{{singleMusic.music_subcategory}}" selected>{{singleMusic.music_subcategory}}</option>
                     <option value="chalisa">Chalisa</option>
                     <option value="paath">Paath</option>
                     <option value="aarti">Aarti</option>
@@ -47,7 +48,7 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label class="form-control-label">Music Singer: <span class="tx-danger">*</span></label>
-                  <input class="form-control" type="text" name="music_singer" placeholder="Music Singer">
+                  <input class="form-control" type="text" name="music_singer" value="{{singleMusic.music_singer}}">
                 </div>
               </div><!-- col-4 -->
 
@@ -55,14 +56,14 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label class="form-control-label">Thumbnail Path: <span class="tx-danger">*</span></label>
-                  <input class="form-control" type="text" name="music_thumbnail" placeholder="Music Thumbnail">
+                  <input class="form-control" type="text" name="music_thumbnail" value="{{singleMusic.music_thumbnail}}">
                 </div>
               </div><!-- col-4 -->
 
               <div class="col-lg-4">
                 <div class="form-group mg-b-10-force">
                   <label class="form-control-label">Music Path: <span class="tx-danger">*</span></label>
-                  <input class="form-control" type="text" name="music_path" placeholder="Music Path">
+                  <input class="form-control" type="text" name="music_path" value="{{singleMusic.music_path}}">
                 </div>
               </div><!-- col-8 -->
 
@@ -70,7 +71,7 @@
               <div class="col-lg-4">
                 <div class="form-group mg-b-10-force">
                   <label class="form-control-label">Music Duration: <span class="tx-danger">*</span></label>
-                  <input class="form-control" type="text" name="music_duration" placeholder="Music Duration">
+                  <input class="form-control" type="text" name="music_duration" value="{{singleMusic.music_duration}}">
                 </div>
               </div><!-- col-8 -->
 
@@ -80,7 +81,7 @@
             <div class="col-lg-4">
                 <div class="form-group mg-b-10-force">
                   <label class="form-control-label">Music Publisher: <span class="tx-danger">*</span></label>
-                  <input class="form-control" type="text" name="music_publisher" placeholder="Music Publisher">
+                  <input class="form-control" type="text" name="music_publisher" value="{{singleMusic.music_publisher}}">
                 </div>
               </div><!-- col-8 -->
 
@@ -88,7 +89,7 @@
             </div><!-- row -->
 
             <div class="form-layout-footer">
-              <button class="btn btn-info" type="submit">Music Post</button>
+              <button class="btn btn-info" type="submit">Music Update</button>
             </div><!-- form-layout-footer -->
           </div><!-- form-layout -->
           </form>
