@@ -195,6 +195,7 @@ router.get('/api/v2/mobile/watchVidoes', ApiController.playVideoV2);
 //Web Routes//
 router.get('/', WebController.reelsPost);
 router.get('/allreels', WebController.getAllReels);
+router.get('/music', WebController.musicPost);
 
 
 

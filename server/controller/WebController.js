@@ -91,6 +91,13 @@ const newDate = moment().format('lll');
             reels
         });
     }
+
+    exports.musicPost = async(req, res) =>{
+        const music_categories = await MusicCategoryModel.find({}).lean();
+        res.render('music',{
+            music_categories
+        });
+    }
     
 
 

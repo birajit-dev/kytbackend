@@ -1,0 +1,102 @@
+    <div class="br-mainpanel">
+  .
+
+
+
+      <div class="br-pagebody">
+        <div class="br-section-wrapper">
+          <h6 class="tx-gray-800 tx-uppercase tx-bold tx-14 mg-b-10">Reels Post</h6>
+        <form action="/api/v1/post/musicadd" method="POST">
+          <div class="form-layout form-layout-1">
+            <div class="row mg-b-25">
+
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label">Music Title: <span class="tx-danger">*</span></label>
+                  <input class="form-control" type="text" name="music_title" value="" placeholder="Shorts Title">
+                </div>
+              </div><!-- col-4 -->
+
+              <div class="col-lg-4">
+                <div class="form-group mg-b-10-force">
+                  <label class="form-control-label">Music Category: <span class="tx-danger">*</span></label>
+                  <select class="form-control select2" data-placeholder="Shorts Category" name="reels_category">
+                    <option label="Choose Category"></option>
+                    {{#each music_categories}}
+                    <option value="{{mcategories_Id}}">{{mcategories_title}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div><!-- col-4 -->
+
+              <div class="col-lg-4">
+                <div class="form-group mg-b-10-force">
+                  <label class="form-control-label">Music Sub-Category: <span class="tx-danger">*</span></label>
+                  <select class="form-control select2" data-placeholder="Shorts Category" name="reels_category">
+                    <option label="Choose Sub-Category"></option>
+                    <option value="chalisa">Chalisa</option>
+                    <option value="paath">Paath</option>
+                    <option value="aarti">Aarti</option>
+                    <option value="bhajan">Bhajan</option>
+                    <option value="mantra">Mantra</option>
+                  </select>
+                </div>
+              </div><!-- col-4 -->
+
+
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label">Music Singer: <span class="tx-danger">*</span></label>
+                  <input class="form-control" type="text" name="music_singer" placeholder="Music Singer">
+                </div>
+              </div><!-- col-4 -->
+
+
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label">Thumbnail Path: <span class="tx-danger">*</span></label>
+                  <input class="form-control" type="text" name="music_thumbnail" placeholder="Music Thumbnail">
+                </div>
+              </div><!-- col-4 -->
+
+              <div class="col-lg-4">
+                <div class="form-group mg-b-10-force">
+                  <label class="form-control-label">Music Path: <span class="tx-danger">*</span></label>
+                  <input class="form-control" type="text" name="music_path" placeholder="Music Path">
+                </div>
+              </div><!-- col-8 -->
+
+
+              <div class="col-lg-4">
+                <div class="form-group mg-b-10-force">
+                  <label class="form-control-label">Music Duration: <span class="tx-danger">*</span></label>
+                  <input class="form-control" type="text" name="music_duration" placeholder="Music Duration">
+                </div>
+              </div><!-- col-8 -->
+
+
+
+
+            <div class="col-lg-4">
+                <div class="form-group mg-b-10-force">
+                  <label class="form-control-label">Music Publisher: <span class="tx-danger">*</span></label>
+                  <input class="form-control" type="text" name="music_publisher" placeholder="Music Publisher">
+                </div>
+              </div><!-- col-8 -->
+
+              
+            </div><!-- row -->
+
+            <div class="form-layout-footer">
+              <button class="btn btn-info" type="submit">Music Post</button>
+            </div><!-- form-layout-footer -->
+          </div><!-- form-layout -->
+          </form>
+
+          
+
+
+
+
+        </div><!-- br-section-wrapper -->
+      </div><!-- br-pagebody -->
