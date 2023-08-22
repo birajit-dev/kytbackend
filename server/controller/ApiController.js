@@ -2791,6 +2791,14 @@ exports.senOTPWEB = async (req, res) => {
             const user = req.query.user;
             const mantra = await MantraModel.find({}).sort({ mantra_id: -1 }).limit(4).lean();
             const music = await MusicModel.find({}).sort({ music_id: -1 }).limit(8).lean();
+
+            //now check from user is he have save data or not
+            const horoscopeUser = await UserModel.findOne({phone_no:user_id}).lean();
+            //now get data from horoscopeUser
+            const horoscopeData = await HoroscopeModel.findOne({horoscope_category:horoscopeUser.horoscope}).lean();
+            //now only take horoscope title and description from horoscopeData
+            const horoscope_title = horoscopeData.horoscope_title;
+            const horoscope_description = horoscopeData.horoscope_description;
           
             try {
               // Fetching the LoveMantraModel data for the specified user
@@ -2809,9 +2817,9 @@ exports.senOTPWEB = async (req, res) => {
               const promotional_thumbnail = "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=";
               const music_title = "Music for you";
               const mantras_title = "Mantras For You";
-              const today_title = "Today Title";
-              const today_content_short_description = "short_content";
-              const today_content = "Today Content";
+              const today_title = horoscope_title;
+              const today_content_short_description = horoscope_description.substring(0, 200);
+              const today_content = horoscope_description;
           
               const obj1 = {
                 resultFlag: 1,
