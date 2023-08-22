@@ -1104,6 +1104,7 @@ exports.testOnePost = async(req, res, next) =>{
 //         };
 
 
+
         exports.forYou = async(req, res) =>{
             const mantra = await MantraModel.find({}).sort({mantra_id:-1}).limit(4).lean();
             const music = await MusicModel.find({}).sort({music_id:-1}).limit(8).lean();
@@ -1189,25 +1190,25 @@ exports.testOnePost = async(req, res, next) =>{
                     "list": reelsGet,   
                 },
                 {
-                    "title": "Bholenath",
-                    "description": "Image descriptions",
+                    "title": "Jhandewalan Hanuman Delhi",
+                    "description": "Famous for its gigantic statue of Lord Hanuman, which is standing at an imposing height of 108 ft, Jhandewalan Hanuman Temple is one of the highly revered shrines in the capital.",
                     "viewtype": "photos",
                     "categoryId": "bolenath_photos",
                     "list": [
                         {
                             "_id" : "1",
                             "videos_title" : "Image 1",
-                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/Nabhi Kamal.jpg"
+                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/DAILY%20Post/22-08-2023/15647120143_9c55abe473_b.jpg"
                         },
                         {
                             "_id" : "2",
                             "videos_title" : "Image 2",
-                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/Kapilmuni.jpg"
+                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/DAILY%20Post/22-08-2023/ajayjaggus-168682143-356980069017748-6382372041636635592-n1.webp"
                         },
                         {
                             "_id" : "3",
                             "videos_title" : "Image 3",
-                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/Nabhi Kamal.jpg"
+                            "image_thumbnail": "https://kytstorage.b-cdn.net/Thumbnails/DAILY%20Post/22-08-2023/big-statue-lord-hanuman-near-delhi-metro-bridge-situated-karol-bagh-india-touching-sky-260819592.webp"
                         },
                         {
                             "_id" : "4",
@@ -2946,4 +2947,43 @@ exports.senOTPWEB = async (req, res) => {
               ...(panchangFetch && { ...panchangFetch }),
               };
               res.json(responseData);
+          }
+
+
+
+          exports.pp = async(req, res) =>{
+            try {
+              const api = 'basic_panchang';
+              const userId = '625356';
+              const apiKey = '60fe68f6b0bd8f8548e6041124da67f0';
+             // const data = req.body; // Assuming the request body contains the data object
+      
+              const data = {
+                day: 22,
+                month: 8,
+                year: 2023,
+                hour: 7,
+                min: 45,
+                lat: 19.132,
+                lon: 72.342,
+                tzone: 5.5,
+              };
+
+              const auth = "Basic " + Buffer.from(userId + ":" + apiKey).toString("base64");
+      
+              // Make the HTTP request using axios
+              const response = await axios.post(`https://json.astrologyapi.com/v1/${api}`, data, {
+                  headers: {
+                      "Authorization": auth,
+                      "Content-Type": "application/json"
+                  }
+              });
+      
+              // Send the response data to the client
+              res.json(response.data);
+          } catch (error) {
+              console.error('Error:', error);
+              res.status(500).json({ error: 'An error occurred' });
+          }
+          
           }
