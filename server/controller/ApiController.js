@@ -2245,6 +2245,55 @@ exports.senOTPWEB = async (req, res) => {
             res.json(saveReels);
       }
 
+      exports.reelsUpdate = async (req, res) => {
+        const data = req.body;
+        const { _id } = data;
+    
+        try {
+            // Find the existing reel entry by reels_code
+            const existingReels = await ReelsModel.findOne({ _id });
+            if (!existingReels) {
+                return res.status(404).json({ message: 'Reel entry not found.' });
+            }
+    
+            // Update the fields with new data
+            existingReels.reels_name = data.reels_name;
+            existingReels.reels_summary = data.reels_summary;
+            existingReels.reels_path = data.reels_path;
+            existingReels.reels_thumbnail = data.reels_thumbnail;
+            existingReels.reels_category = data.reels_category;
+            existingReels.update_date = newDate; // Update the update_date
+    
+            // Save the updated reel entry
+            const updatedReels = await existingReels.save();
+    
+            res.json(updatedReels);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'An error occurred while updating the reel entry.' });
+        }
+    };
+    
+
+    exports.reelsDeleteGET = async (req, res) => {
+      const reels_code  = req.query.reels_code;
+  
+      try {
+          // Find and delete the reel entry by reels_code
+          const deletedReels = await ReelsModel.findOneAndDelete({ reels_code });
+  
+          if (!deletedReels) {
+              return res.status(404).json({ message: 'Reel entry not found.' });
+          }
+  
+          res.json({ message: 'Reel entry deleted successfully.' });
+      } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: 'An error occurred while deleting the reel entry.' });
+      }
+  };
+  
+
 
       exports.reelsDelete = async(req, res) =>{
         const data = req.body;

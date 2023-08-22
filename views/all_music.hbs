@@ -10,7 +10,7 @@
         </nav>
       </div><!-- br-pageheader -->
       <div class="pd-x-20 pd-sm-x-30 pd-t-20 pd-sm-t-30">
-        <h4 class="tx-gray-800 mg-b-5">Reels Data</h4>
+        <h4 class="tx-gray-800 mg-b-5">Music Data</h4>
       </div>
 
       <div class="br-pagebody">
@@ -21,9 +21,10 @@
         <table class="table table-bordered table-colored table-primary">
             <thead>
               <tr>
-                <th class="wd-40p">Reels Title</th>
-                <th class="wd-15p">Reels Code</th>
-                <th class="wd-10p">Reels Date</th>
+                <th class="wd-40p">Music Title</th>
+                <th class="wd-15p">Music Category</th>
+                <th class="wd-15p">Music Sub-Category</th>
+                <th class="wd-10p">Music Key</th>
                 <th class="wd-10p">Action</th>
                 <th class="wd-10p">Delete</th>
 
@@ -31,13 +32,14 @@
               </tr>
             </thead>
             <tbody>
-              {{#each reels}}
+              {{#each music}}
               <tr>
-                <td style="font-weight: 700;">{{reels_name}}</td>
-                <td>{{reels_code}}</td>
-                <td>{{update_date}}</td>
-                <td><a href="/reels/edit?id={{_id}}" class="btn btn-teal btn-block mg-b-10">Edit</a></td>
-                <td><a href="/api/v1/get/reels/delete?reels_code={{reels_code}}" class="btn btn-danger btn-block mg-b-10">Delete</a></td>
+                <td style="font-weight: 700;">{{music_title}}</td>
+                <td>{{music_category}}</td>
+                <td>{{music_subcategory}}</td>
+                <td>{{music_key}}</td>
+                <td><a href="/music/edit?id={{_id}}" class="btn btn-teal btn-block mg-b-10">Edit</a></td>
+                <td><a href="/api/v1/get/music/delete?music_key={{music_key}}" class="btn btn-danger btn-block mg-b-10">Delete</a></td>
               </tr>
               {{/each}}
               

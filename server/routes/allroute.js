@@ -51,8 +51,20 @@ router.post('/api/v1/edit/templesinfo', ApiController.templesEdit);
 router.post('/api/v1/post/registerpuja', ApiController.pujaTemplesAdd);
 //Add to Mantra Favourite
 router.post('/api/v1/post/lovemantra', ApiController.loveMantra);
+
+
+
 //Post Reels
 router.post('/api/v1/post/reels', ApiController.reelsAdd);
+router.post('/api/v1/post/reels/update', ApiController.reelsUpdate);
+router.get('/api/v1/get/reels/delete', ApiController.reelsDeleteGET);
+
+
+
+
+
+
+
 //Put Method Update User
 router.post('/api/v1/mobile/updateuser', ApiController.updateProfile);
 //Delete Method//
@@ -195,7 +207,9 @@ router.get('/api/v2/mobile/watchVidoes', ApiController.playVideoV2);
 //Web Routes//
 router.get('/', WebController.reelsPost);
 router.get('/allreels', WebController.getAllReels);
-router.get('/music', WebController.musicPost);
+router.get('/music/add', WebController.musicPost);
+router.get('/allmusic', WebController.getAllMusic);
+router.get('/reels/edit', WebController.editReels);
 
 
 

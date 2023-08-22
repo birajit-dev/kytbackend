@@ -23,6 +23,7 @@ const PanchangModel = require('../model/panchangs');
 const PandeetModel = require('../model/pandeet');
 const VideosCategory = require('../model/videos_categories');
 const MusicCategoryModel = require('../model/music_categories');
+const MusicModel = require('../model/music');
 const ReelsModel = require('../model/reels');
 const newDate = moment().format('lll');
 
@@ -99,8 +100,19 @@ const newDate = moment().format('lll');
         });
     }
     
+    exports.editReels = async(req, res) =>{
+        const reels = await ReelsModel.findOne({_id: req.query.id}).lean();
+        res.render('edit_reels',{
+            reels
+        });
+    }
 
-
+    exports.getAllMusic = async(req, res) =>{
+        const music = await MusicModel.find({}).lean();
+        res.render('all_music',{
+            music
+        });
+    }
 
     
     
