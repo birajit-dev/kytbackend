@@ -333,13 +333,18 @@ console.log(generateString(10));
         exports.horoscopePost = async(req, res) =>{
             try{
                 const horData = req.body;
+                const vurl =  horData.horoscope_title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+
+                const inputDate = horData.horoscope_date;
+                const formattedDate = moment(inputDate).format('DD/MM/YYYY');
+
                 let addHoro = new HoroscopeModel({
                     horoscope_title: horData.horoscope_title,
                     horoscope_description: horData.horoscope_description,
-                    horoscope_url: horData.horoscope_url,
+                    horoscope_url: vurl,
                     horoscope_category: horData.horoscope_category,
                     horoscope_thumbnail: horData.horoscope_thumbnail,
-                    horoscope_date: horData.horoscope_date,
+                    horoscope_date:formattedDate,
                     horoscope_keyword: horData.horoscope_keyword,
                     hrooscope_publish: horData.hrooscope_publish,
                     update_date: newDate, 
@@ -350,6 +355,10 @@ console.log(generateString(10));
                 res.status(400).json({message: error.message});
             }
         }
+
+
+
+
 
         exports.wishesPost = async(req, res) =>{
             try{

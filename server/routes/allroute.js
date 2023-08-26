@@ -243,6 +243,9 @@ router.get('/videos/add', WebController.videosPost);
 router.get('/api/subcategories/:category', ApiController.getVideosSubcatory);
 router.get('/videos/edit', WebController.editVideos);
 
+
+router.get('/horoscope/add', WebController.horoscopePost);
+
 router.get('/reels/edit', WebController.editReels);
 
 

@@ -142,6 +142,10 @@ const newDate = moment().format('lll');
             category
         });
     }
+
+    exports.horoscopePost = async(req, res) =>{
+        res.render('horoscope_add');
+    }
     
 
     
