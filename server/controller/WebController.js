@@ -26,6 +26,7 @@ const VideosModel = require('../model/kytvideos');
 const MusicCategoryModel = require('../model/music_categories');
 const MusicModel = require('../model/music');
 const ReelsModel = require('../model/reels');
+const TempleModel = require('../model/templeInfo');
 const newDate = moment().format('lll');
 
 
@@ -150,14 +151,13 @@ const newDate = moment().format('lll');
     exports.templePost = async(req, res) =>{
         res.render('temple_add');
     }
-    
 
-    
-    
-    
-
-
-
+    exports.templeList = async(req, res) =>{
+        const temple_list = await TempleModel.find({}).lean();
+        res.render('temples',{
+            temple_list
+        });
+    }
   
 
 

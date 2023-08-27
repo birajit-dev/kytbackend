@@ -251,6 +251,7 @@ router.get('/videos/edit', WebController.editVideos);
 
 router.get('/horoscope/add', WebController.horoscopePost);
 router.get('/temple/add', WebController.templePost);
+router.get('/temple', WebController.templeList);
 
 router.get('/reels/edit', WebController.editReels);
 
