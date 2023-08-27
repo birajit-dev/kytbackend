@@ -58,6 +58,11 @@ router.post('/api/v1/post/podcast', ApiController.podcastPost);
 router.post('/api/v1/post/wishes', ApiController.wishesPost);
 router.post('/api/v1/post/horoscope', ApiController.horoscopePost);
 //API for Temple Post
+
+
+
+
+
 router.post('/api/v1/post/templeadd', ApiController.templesAdd);
 router.post('/api/v1/edit/templesinfo', ApiController.templesEdit);
 //Register for Puja//
@@ -245,6 +250,7 @@ router.get('/videos/edit', WebController.editVideos);
 
 
 router.get('/horoscope/add', WebController.horoscopePost);
+router.get('/temple/add', WebController.templePost);
 
 router.get('/reels/edit', WebController.editReels);
 

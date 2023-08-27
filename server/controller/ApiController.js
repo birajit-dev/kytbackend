@@ -1801,33 +1801,82 @@ exports.senOTPWEB = async (req, res) => {
     }
 
     //Temples Information Controller
-    exports.templesAdd =  async(req, res) =>{
-        const data = req.body;
-        const t_code = generateString(12);
-        let addTemples = new TempleModel({
-            name: data.name,
-            summary: data.summary,
-            address: data.address,
-            latitude: data.latitude,
-            longitude: data.longitude,
-            about: data.about,
-            temple_status: data.temple_status,
-            temple_status_text: data.temple_status_text,
-            temple_cover_photo: data.temple_cover_photo,
-            temple_round_photo: data.temple_round_photo,
-            temple_phone: data.temple_phone,
-            status: data.status,
-            coordinates: {
-                type: 'Point',
-                coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],
+    // exports.templesAdd =  async(req, res) =>{
+    //     const data = req.body;
+    //     const t_code = generateString(12);
+    //     let addTemples = new TempleModel({
+    //         name: data.name,
+    //         summary: data.summary,
+    //         address: data.address,
+    //         latitude: data.latitude,
+    //         longitude: data.longitude,
+    //         about: data.about,
+    //         temple_status: data.temple_status,
+    //         temple_status_text: data.temple_status_text,
+    //         temple_cover_photo: data.temple_cover_photo,
+    //         temple_round_photo: data.temple_round_photo,
+    //         temple_phone: data.temple_phone,
+    //         status: data.status,
+    //         coordinates: {
+    //             type: 'Point',
+    //             coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],
+    //           },
+    //         temple_code:t_code,
+    //         temple_timings:data.temple_timings,
+    //         update_date: newDate,
+    //     });
+    //     let ds = addTemples.save();
+    //     res.json(ds);
+    // }
+
+
+    exports.templesAdd = async (req, res) => {
+      try {
+          const data = req.body;
+          const t_code = generateString(12); // Assuming you have a function to generate the temple code
+  
+          // Extract and organize temple timings from the request body
+          const temple_timings = [];
+          let timingCount = 0;
+          while (data.hasOwnProperty(`day${timingCount}`)) {
+              temple_timings.push({
+                  day: data[`day${timingCount}`],
+                  timings: data[`timings${timingCount}`],
+              });
+              timingCount++;
+          }
+  
+          const newTemple = new TempleModel({
+              name: data.name,
+              summary: data.summary,
+              address: data.address,
+              latitude: data.latitude,
+              longitude: data.longitude,
+              about: data.about,
+              temple_status: data.temple_status,
+              temple_status_text: data.temple_status_text,
+              temple_cover_photo: data.temple_cover_photo,
+              temple_round_photo: data.temple_round_photo,
+              temple_phone: data.temple_phone,
+              coordinates: {
+                  type: 'Point',
+                  coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],
               },
-            temple_code:t_code,
-            temple_timings:data.temple_timings,
-            update_date: newDate,
-        });
-        let ds = addTemples.save();
-        res.json(ds);
-    }
+              temple_code: t_code,
+              temple_timings: temple_timings, // Use the extracted temple_timings array
+              update_date: newDate,
+          });
+  
+          const savedTemple = await newTemple.save();
+          res.status(200).json(savedTemple);
+      } catch (error) {
+          res.status(500).json({ error: 'An error occurred while saving the temple.' });
+      }
+  };
+
+
+
+
     exports.templesEdit = async(req, res) =>{
         let data = req.body;
         TempleModel.findByIdAndUpdate(data.id,{

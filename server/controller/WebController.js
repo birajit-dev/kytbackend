@@ -146,6 +146,10 @@ const newDate = moment().format('lll');
     exports.horoscopePost = async(req, res) =>{
         res.render('horoscope_add');
     }
+
+    exports.templePost = async(req, res) =>{
+        res.render('temple_add');
+    }
     
 
     

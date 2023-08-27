@@ -1,0 +1,143 @@
+    <div class="br-mainpanel">
+        <div class="br-pagebody">
+            <div class="br-section-wrapper">
+                <h6 class="tx-gray-800 tx-uppercase tx-bold tx-14 mg-b-10">Horoscope Post</h6>
+                <form action="/api/v1/post/templeadd" method="POST">
+                    <div class="form-layout form-layout-1">
+                        <div class="row mg-b-25">
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-control-label">Name: <span class="tx-danger">*</span></label>
+                        <input class="form-control" type="text" name="name" required>
+                    </div>
+                </div><!-- col-4 -->
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-control-label">Address: <span class="tx-danger">*</span></label>
+                        <input class="form-control" type="text" name="address" required>
+                    </div>
+                </div><!-- col-4 -->
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-control-label">Latitude: <span class="tx-danger">*</span></label>
+                        <input class="form-control" type="number" name="latitude" step="any" required>
+                    </div>
+                </div><!-- col-4 -->
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-control-label">Longitude: <span class="tx-danger">*</span></label>
+                        <input class="form-control" type="number" name="longitude" step="any" required>
+                    </div>
+                </div><!-- col-4 -->
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-control-label">Temple Status: <span class="tx-danger">*</span></label>
+                        <select class="form-control select2" data-placeholder="Temple Status" name="temple_status" id="horoscopeCategory">
+                            <option label="Choose Category"></option>
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                        </select>
+                    </div>
+                </div><!-- col-4 -->
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-control-label">Temple Status Text: <span class="tx-danger">*</span></label>
+                        <select class="form-control select2" data-placeholder="Temple Status" name="temple_status_text" id="horoscopeCategory">
+                            <option label="Choose Category"></option>
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+                </div><!-- col-4 -->
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-control-label">Temple Cover Photo: <span class="tx-danger">*</span></label>
+                        <input class="form-control" type="text" name="temple_cover_photo" step="any" required>
+                    </div>
+                </div><!-- col-4 -->
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-control-label">Temple Round Photo: <span class="tx-danger">*</span></label>
+                        <input class="form-control" type="text" name="temple_round_photo" step="any" required>
+                    </div>
+                </div><!-- col-4 -->
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-control-label">Temple Phone: <span class="tx-danger">*</span></label>
+                        <input class="form-control" type="tel" name="temple_phone" required>
+                    </div>
+                </div><!-- col-4 -->
+
+            <div class="col-lg-12">
+            <h6>Temple Timings:</h6>
+            <div id="timingContainer">
+                <!-- Timings will be dynamically added here -->
+            </div>
+            <button type="button" id="addTiming" class="btn btn-secondary">Add Timing</button>
+            </div>
+            <br>
+            
+
+                <div class="col-lg-12">
+                    <br>
+                    <div class="form-group">
+                        <textarea class="form-control" name="summary" placeholder="Summary Temple"></textarea>
+                    </div>
+                </div><!-- col-4 -->
+
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <textarea class="form-control" id="mytextarea" name="about" placeholder="About Temple"></textarea>
+                    </div>
+                </div><!-- col-4 -->
+
+
+
+                
+
+
+
+                
+ 
+
+
+    <script>
+        const timingContainer = document.getElementById('timingContainer');
+        const addTimingButton = document.getElementById('addTiming');
+
+        let timingCount = 0;
+
+        addTimingButton.addEventListener('click', () => {
+            const timingDiv = document.createElement('div');
+            timingDiv.innerHTML = `
+                <div class="form-group">
+                    <label class="form-control-label">Day:</label>
+                    <input class="form-control" type="text" name="day${timingCount}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label">Timings:</label>
+                    <input class="form-control" type="text" name="timings${timingCount}" required>
+                </div>
+            `;
+            timingContainer.appendChild(timingDiv);
+            timingCount++;
+        });
+    </script>
+
+                        </div><!-- row -->
+
+                        <div class="form-layout-footer">
+                            <button class="btn btn-info" type="submit">Post Horoscope</button>
+                        </div><!-- form-layout-footer -->
+                    </div><!-- form-layout -->
+                </form>
+            </div><!-- br-section-wrapper -->
+        </div><!-- br-pagebody -->
+    </div>
