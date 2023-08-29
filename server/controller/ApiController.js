@@ -1921,135 +1921,235 @@ exports.senOTPWEB = async (req, res) => {
             });    
     }
     
-    exports.templeList = async (req, res) => {
-        // Create the 2dsphere index on the "coordinates" field
-        TempleModel.collection.createIndex({ coordinates: '2dsphere' }, (err) => {
-            if (err) {
-            console.error('Error creating 2dsphere index:', err);
-            } else {
-            console.log('2dsphere index created successfully.');
-            }
-        });  
+    // exports.templeList = async (req, res) => {
+    //     // Create the 2dsphere index on the "coordinates" field
+    //     TempleModel.collection.createIndex({ coordinates: '2dsphere' }, (err) => {
+    //         if (err) {
+    //         console.error('Error creating 2dsphere index:', err);
+    //         } else {
+    //         console.log('2dsphere index created successfully.');
+    //         }
+    //     });  
 
-        const { latitude, longitude, page } = req.query; // Use req.query to access query parameters
-        const itemsPerPage = 10; // Number of items to display per page
+    //     const { latitude, longitude, page } = req.query; // Use req.query to access query parameters
+    //     const itemsPerPage = 10; // Number of items to display per page
       
-        // Validate the page parameter
-        if (isNaN(page) || page < 1) {
+    //     // Validate the page parameter
+    //     if (isNaN(page) || page < 1) {
+    //       res.status(400).json({ error: 'Invalid page number. Page must be a positive integer.' });
+    //       return;
+    //     }
+      
+    //     const skip = (page - 1) * itemsPerPage; // Calculate the number of items to skip
+      
+    //     try {
+    //       const temples = await TempleModel.aggregate([
+    //         {
+    //           $geoNear: {
+    //             near: {
+    //               type: 'Point',
+    //               coordinates: [parseFloat(longitude), parseFloat(latitude)], // Note the order: [longitude, latitude]
+    //             },
+    //             distanceField: 'distance',
+    //             spherical: true,
+    //             distanceMultiplier: 0.001, // Convert meters to kilometers
+    //           },
+    //         },
+    //         {
+    //           $project: {
+    //             name: 1,
+    //             distance: { $toInt: '$distance' },
+    //             summary: 1,
+    //             address: 1,
+    //             latitude: 1,
+    //             longitude: 1,
+    //             about: 1,
+    //             temple_status: 1,
+    //             temple_status_text: 1,
+    //             temple_cover_photo: 1,
+    //             temple_round_photo: 1,
+    //             temple_code: 1,
+    //             temple_phone: 1,
+    //             update_date: { $toDate: '$update_date' }, // Assuming update_date is stored as a Date field
+    //           },
+    //         },
+    //         {
+    //           $skip: skip, // Skip the specified number of items
+    //         },
+    //         {
+    //           $limit: itemsPerPage, // Limit the number of items per page
+    //         },
+    //       ]);
+      
+    //       if (temples && temples.length > 0) {
+    //         console.log('Found nearby places.');
+    //         temples.forEach((temple) => {
+    //           console.log('Nearest place:', temple.name);
+    //           console.log('Distance (km):', temple.distance);
+    //         });
+      
+    //         res.json({
+    //           resultFlag: 1,
+    //           message: 'Nearby temples found',
+    //           data: temples,
+    //           totalCount: temples.length,
+    //           totalPages: Math.ceil(temples.length / itemsPerPage),
+    //           currentPage: parseInt(page),
+    //         });
+    //       } else {
+    //         console.log('No nearby places found.');
+    //         res.json({
+    //           resultFlag: 0,
+    //           message: 'No nearby places found.',
+    //           data: [],
+    //           totalCount: 0,
+    //           totalPages: 0,
+    //           currentPage: parseInt(page),
+    //         });
+    //       }
+    //     } catch (error) {
+    //       console.error('Error finding nearest place:', error);
+    //       res.status(500).json({ resultFlag: 0, message: 'Internal server error', data: [], totalCount: 0, totalPages: 0, currentPage: parseInt(page) });
+    //     }
+    //   };
+
+
+    //   exports.singleTemples = async (req, res) => {
+    //     const { code } = req.query; // Assuming the URL parameter is "code"
+    //     const dayOfWeek = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+      
+    //     try {
+    //       const temple_one = await TempleModel.findOne({ temple_code: code }).lean();
+      
+    //       if (temple_one && temple_one.temple_code) {
+    //         // Set isToday to true for the current day and false for other days
+    //         temple_one.temple_timings.forEach((timing) => {
+    //           timing.isToday = timing.day === dayOfWeek;
+    //         });
+      
+    //         const responseData = {
+    //           resultFlag: 1,
+    //           message: "Temple Record Found",
+    //           ...temple_one,
+    //         };
+    //         res.json(responseData);
+    //       } else {
+    //         const responseData = {
+    //           resultFlag: 0,
+    //           message: "Temple Record Not Found",
+    //         };
+    //         res.json(responseData);
+    //       }
+    //     } catch (err) {
+    //       console.error(err);
+    //       const responseData = {
+    //         resultFlag: 0,
+    //         message: "Error occurred while fetching temple data",
+    //       };
+    //       res.json(responseData);
+    //     }
+    //   };
+      
+
+    exports.templeList = async (req, res) => {
+      // Create the 2dsphere index on the "coordinates" field
+      TempleModel.collection.createIndex({ coordinates: '2dsphere' }, (err) => {
+          if (err) {
+              console.error('Error creating 2dsphere index:', err);
+          } else {
+              console.log('2dsphere index created successfully.');
+          }
+      });  
+  
+      const { latitude, longitude, page } = req.query; // Use req.query to access query parameters
+      const itemsPerPage = 10; // Number of items to display per page
+  
+      // Validate the page parameter
+      if (isNaN(page) || page < 1) {
           res.status(400).json({ error: 'Invalid page number. Page must be a positive integer.' });
           return;
-        }
-      
-        const skip = (page - 1) * itemsPerPage; // Calculate the number of items to skip
-      
-        try {
+      }
+  
+      const skip = (page - 1) * itemsPerPage; // Calculate the number of items to skip
+  
+      try {
+          // Calculate total number of temples
+          const totalTemples = await TempleModel.countDocuments();
+  
           const temples = await TempleModel.aggregate([
-            {
-              $geoNear: {
-                near: {
-                  type: 'Point',
-                  coordinates: [parseFloat(longitude), parseFloat(latitude)], // Note the order: [longitude, latitude]
-                },
-                distanceField: 'distance',
-                spherical: true,
-                distanceMultiplier: 0.001, // Convert meters to kilometers
+              {
+                  $geoNear: {
+                      near: {
+                          type: 'Point',
+                          coordinates: [parseFloat(longitude), parseFloat(latitude)], // Note the order: [longitude, latitude]
+                      },
+                      distanceField: 'distance',
+                      spherical: true,
+                      distanceMultiplier: 0.001, // Convert meters to kilometers
+                  },
               },
-            },
-            {
-              $project: {
-                name: 1,
-                distance: { $toInt: '$distance' },
-                summary: 1,
-                address: 1,
-                latitude: 1,
-                longitude: 1,
-                about: 1,
-                temple_status: 1,
-                temple_status_text: 1,
-                temple_cover_photo: 1,
-                temple_round_photo: 1,
-                temple_code: 1,
-                temple_phone: 1,
-                update_date: { $toDate: '$update_date' }, // Assuming update_date is stored as a Date field
+              {
+                  $project: {
+                      name: 1,
+                      distance: { $toInt: '$distance' },
+                      summary: 1,
+                      address: 1,
+                      latitude: 1,
+                      longitude: 1,
+                      about: 1,
+                      temple_status: 1,
+                      temple_status_text: 1,
+                      temple_cover_photo: 1,
+                      temple_round_photo: 1,
+                      temple_code: 1,
+                      temple_phone: 1,
+                      update_date: { $toDate: '$update_date' }, // Assuming update_date is stored as a Date field
+                  },
               },
-            },
-            {
-              $skip: skip, // Skip the specified number of items
-            },
-            {
-              $limit: itemsPerPage, // Limit the number of items per page
-            },
+              {
+                  $skip: skip, // Skip the specified number of items
+              },
+              {
+                  $limit: itemsPerPage, // Limit the number of items per page
+              },
           ]);
-      
+  
           if (temples && temples.length > 0) {
-            console.log('Found nearby places.');
-            temples.forEach((temple) => {
-              console.log('Nearest place:', temple.name);
-              console.log('Distance (km):', temple.distance);
-            });
-      
-            res.json({
-              resultFlag: 1,
-              message: 'Nearby temples found',
-              data: temples,
-              totalCount: temples.length,
-              totalPages: Math.ceil(temples.length / itemsPerPage),
-              currentPage: parseInt(page),
-            });
+              // Calculate total pages based on total temples
+              const totalPages = Math.ceil(totalTemples / itemsPerPage);
+  
+              res.json({
+                  resultFlag: 1,
+                  message: 'Nearby temples found',
+                  data: temples,
+                  totalCount: totalTemples, // Use the total number of temples
+                  totalPages: totalPages, // Use the calculated totalPages value
+                  currentPage: parseInt(page),
+              });
           } else {
-            console.log('No nearby places found.');
-            res.json({
+              console.log('No nearby places found.');
+              res.json({
+                  resultFlag: 0,
+                  message: 'No nearby places found.',
+                  data: [],
+                  totalCount: 0,
+                  totalPages: 0,
+                  currentPage: parseInt(page),
+              });
+          }
+      } catch (error) {
+          console.error('Error finding nearest place:', error);
+          res.status(500).json({
               resultFlag: 0,
-              message: 'No nearby places found.',
+              message: 'Internal server error',
               data: [],
               totalCount: 0,
               totalPages: 0,
               currentPage: parseInt(page),
-            });
-          }
-        } catch (error) {
-          console.error('Error finding nearest place:', error);
-          res.status(500).json({ resultFlag: 0, message: 'Internal server error', data: [], totalCount: 0, totalPages: 0, currentPage: parseInt(page) });
-        }
-      };
-
-
-      exports.singleTemples = async (req, res) => {
-        const { code } = req.query; // Assuming the URL parameter is "code"
-        const dayOfWeek = new Date().toLocaleDateString('en-US', { weekday: 'long' });
-      
-        try {
-          const temple_one = await TempleModel.findOne({ temple_code: code }).lean();
-      
-          if (temple_one && temple_one.temple_code) {
-            // Set isToday to true for the current day and false for other days
-            temple_one.temple_timings.forEach((timing) => {
-              timing.isToday = timing.day === dayOfWeek;
-            });
-      
-            const responseData = {
-              resultFlag: 1,
-              message: "Temple Record Found",
-              ...temple_one,
-            };
-            res.json(responseData);
-          } else {
-            const responseData = {
-              resultFlag: 0,
-              message: "Temple Record Not Found",
-            };
-            res.json(responseData);
-          }
-        } catch (err) {
-          console.error(err);
-          const responseData = {
-            resultFlag: 0,
-            message: "Error occurred while fetching temple data",
-          };
-          res.json(responseData);
-        }
-      };
-      
+          });
+      }
+  };
+  
       
 
 
