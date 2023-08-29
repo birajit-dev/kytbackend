@@ -2014,41 +2014,41 @@ exports.senOTPWEB = async (req, res) => {
     //   };
 
 
-    //   exports.singleTemples = async (req, res) => {
-    //     const { code } = req.query; // Assuming the URL parameter is "code"
-    //     const dayOfWeek = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+      exports.singleTemples = async (req, res) => {
+        const { code } = req.query; // Assuming the URL parameter is "code"
+        const dayOfWeek = new Date().toLocaleDateString('en-US', { weekday: 'long' });
       
-    //     try {
-    //       const temple_one = await TempleModel.findOne({ temple_code: code }).lean();
+        try {
+          const temple_one = await TempleModel.findOne({ temple_code: code }).lean();
       
-    //       if (temple_one && temple_one.temple_code) {
-    //         // Set isToday to true for the current day and false for other days
-    //         temple_one.temple_timings.forEach((timing) => {
-    //           timing.isToday = timing.day === dayOfWeek;
-    //         });
+          if (temple_one && temple_one.temple_code) {
+            // Set isToday to true for the current day and false for other days
+            temple_one.temple_timings.forEach((timing) => {
+              timing.isToday = timing.day === dayOfWeek;
+            });
       
-    //         const responseData = {
-    //           resultFlag: 1,
-    //           message: "Temple Record Found",
-    //           ...temple_one,
-    //         };
-    //         res.json(responseData);
-    //       } else {
-    //         const responseData = {
-    //           resultFlag: 0,
-    //           message: "Temple Record Not Found",
-    //         };
-    //         res.json(responseData);
-    //       }
-    //     } catch (err) {
-    //       console.error(err);
-    //       const responseData = {
-    //         resultFlag: 0,
-    //         message: "Error occurred while fetching temple data",
-    //       };
-    //       res.json(responseData);
-    //     }
-    //   };
+            const responseData = {
+              resultFlag: 1,
+              message: "Temple Record Found",
+              ...temple_one,
+            };
+            res.json(responseData);
+          } else {
+            const responseData = {
+              resultFlag: 0,
+              message: "Temple Record Not Found",
+            };
+            res.json(responseData);
+          }
+        } catch (err) {
+          console.error(err);
+          const responseData = {
+            resultFlag: 0,
+            message: "Error occurred while fetching temple data",
+          };
+          res.json(responseData);
+        }
+      };
       
 
     exports.templeList = async (req, res) => {
