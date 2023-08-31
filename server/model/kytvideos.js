@@ -16,6 +16,13 @@ const videosSchema = new mongoose.Schema({
             videos_publisher: String,
             videos_publish: String,
             videos_duration: String,
+            latitude: String,
+            longitude: String,
+            state: String,
+            coordinates: {
+                type: { type: String, enum: ['Point'], default: 'Point' },
+                coordinates: [Number], // [longitude, latitude]
+              },
             update_date: String,        
 });
 

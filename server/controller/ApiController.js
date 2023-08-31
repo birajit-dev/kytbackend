@@ -3297,3 +3297,84 @@ exports.senOTPWEB = async (req, res) => {
                 res.status(400).json({ message: error.message });
             }
         }
+
+
+        exports.updateVideoV2 = async (req, res) => {
+            try {
+                const videoId = req.body._id; // Assuming you pass the video ID in the URL
+                const updateData = req.body;
+        
+                // If you're passing longitude and latitude directly in the request body
+                const longitude = parseFloat(updateData.longitude);
+                const latitude = parseFloat(updateData.latitude);
+                updateData.coordinates = {
+                    type: 'Point',
+                    coordinates: [longitude, latitude]
+                };
+        
+                // Update video based on the videoId
+                const updatedVideo = await VideosModel.findByIdAndUpdate(videoId, updateData, { new: true });
+        
+                if (!updatedVideo) {
+                    return res.status(404).json({ message: 'Video not found' });
+                }
+        
+                res.json(updatedVideo);
+            } catch (error) {
+                res.status(400).json({ message: error.message });
+            }
+        };
+        
+
+        
+
+
+
+
+        exports.addVideosV2 = async(req, res) =>{
+            try{                
+            const addV = req.body;
+            //Viideo Key Generator
+            const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            function generateString(length) {
+                let result = '';
+                const charactersLength = characters.length;
+                for ( let i = 0; i < length; i++ ) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                return result;
+            }
+            const vKey = generateString(8);
+            //Video URL Generator
+            const vurl =  addV.videos_title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+                let addVideos = new VideosModel({
+                    videos_title: addV.videos_title,
+                    videos_description: addV.videos_description,
+                    videos_category: addV.videos_category,
+                    videos_url: vurl,
+                    videos_key: vKey,
+                    videos_sub_category: addV.videos_sub_category,
+                    videos_path: addV.videos_path,
+                    videos_keyword: addV.videos_keyword,
+                    videos_temple_locate: addV.videos_temple_locate,         
+                    videos_thumbnail: addV.videos_thumbnail,
+                    videos_publisher: addV.videos_publisher,
+                    videos_publish: addV.videos_publish,
+                    videos_duration: addV.videos_duration,
+                    latitude: addV.latitude,
+                    longitude: addV.longitude,
+                    state: addV.state,
+                    coordinates: {
+                        type: 'Point',
+                        coordinates: [parseFloat(addV.longitude), parseFloat(addV.latitude)],
+                    },
+                    update_date: newDate,   
+                });
+                await addVideos.save();
+                res.json(addVideos)
+                //res.send("Videos Categories Saved,")
+
+            }catch(error){
+                res.status(400).json({message: error.message})
+            }
+        }
