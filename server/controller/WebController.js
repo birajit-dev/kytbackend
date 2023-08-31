@@ -27,6 +27,7 @@ const MusicCategoryModel = require('../model/music_categories');
 const MusicModel = require('../model/music');
 const ReelsModel = require('../model/reels');
 const TempleModel = require('../model/templeInfo');
+const StateModel = require('../model/state');
 const newDate = moment().format('lll');
 
 
@@ -156,6 +157,20 @@ const newDate = moment().format('lll');
         const temple_list = await TempleModel.find({}).lean();
         res.render('temples',{
             temple_list
+        });
+    }
+
+    exports.getStateData = async(req, res) =>{
+        const state_list = await StateModel.find({}).lean();
+        res.render('state_all',{
+            state_list
+        });
+    }
+
+    exports.updateStateData = async(req, res) =>{
+        const state = await StateModel.findOne({ _id: req.query.id }).lean();
+        res.render('state_edit',{
+            state,
         });
     }
   

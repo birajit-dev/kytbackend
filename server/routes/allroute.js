@@ -266,6 +266,9 @@ router.get('/temple', WebController.templeList);
 
 router.get('/reels/edit', WebController.editReels);
 
+router.get('/allstate', WebController.getStateData);
+router.get('/state/edit', WebController.updateStateData);
+
 
 
 

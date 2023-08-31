@@ -1,0 +1,51 @@
+
+
+    <!-- ########## START: MAIN PANEL ########## -->
+    <div class="br-mainpanel">
+      <div class="br-pageheader pd-y-15 pd-l-20">
+        <nav class="breadcrumb pd-0 mg-0 tx-12">
+          <a class="breadcrumb-item" href="index-2.html">Bracket</a>
+          <a class="breadcrumb-item" href="#">Tables</a>
+          <span class="breadcrumb-item active">Data Table</span>
+        </nav>
+      </div><!-- br-pageheader -->
+      <div class="pd-x-20 pd-sm-x-30 pd-t-20 pd-sm-t-30">
+        <h4 class="tx-gray-800 mg-b-5">State Data</h4>
+      </div>
+
+      <div class="br-pagebody">
+          
+
+        
+ 
+        <table class="table table-bordered table-colored table-primary">
+            <thead>
+              <tr>
+                <th class="wd-10p">State Code</th>
+                <th class="wd-15p">State Name</th>
+                <th class="wd-10p">Update Date</th>
+                <th class="wd-10p">Action</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {{#each state_list}}
+              <tr>
+                <td style="font-weight: 700;">{{state_code}}</td>
+                <td style="font-weight: 700;">{{state_name}}</td>
+                <td>{{update_date}}</td>
+                <td><a href="/state/edit?id={{_id}}" class="btn btn-teal btn-block mg-b-10">Edit</a></td>
+              </tr>
+              {{/each}}
+              
+            </tbody>
+          </table>
+
+
+
+      </div><!-- br-pagebody -->
+      
+    </div><!-- br-mainpanel -->
+    <!-- ########## END: MAIN PANEL ########## -->
+
+
