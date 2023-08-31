@@ -46,6 +46,7 @@ const WatchedVideoModel =  require('../model/watchedvideos');
 const OrderModel = require('../model/orderstatus');
 const PostModel  = require('../model/post');
 const PanchangV2Model = require('../model/panchangv2');
+const StateModel = require('../model/state');
 
 
 const { json } = require('body-parser');
@@ -3378,3 +3379,22 @@ exports.senOTPWEB = async (req, res) => {
                 res.status(400).json({message: error.message})
             }
         }
+
+
+        exports.updateState = async (req, res) => {
+            try {
+                const stateId = req.body._id; // Assuming you pass the state ID in the URL
+                const updateData = req.body;
+                // Ensure that only the state_thumbnail field is present in the updateData
+                const allowedFields = { state_thumbnail: updateData.state_thumbnail };
+                // Update state based on the stateId, only updating the state_thumbnail field
+                const updatedState = await StateModel.findByIdAndUpdate(stateId, allowedFields, { new: true });
+                if (!updatedState) {
+                    return res.status(404).json({ message: 'State not found' });
+                }
+                res.json(updatedState);
+            } catch (error) {
+                res.status(400).json({ message: error.message });
+            }
+        };
+        

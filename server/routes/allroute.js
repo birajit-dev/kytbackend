@@ -32,6 +32,11 @@ router.post('/api/v1/post/videos/update', ApiController.updateVideo);
 router.post('/api/v2/post/videos/update', ApiController.updateVideoV2);
 
 
+
+// State Data Update
+router.post('/api/v1/post/state/update', ApiController.updateState);
+
+
 //router.get('/api/v1/videos', WebController.videosPage);
 router.post('/api/v1/post/videos_categories', ApiController.addVcategories);
 router.post('/api/v1/post/vsubcatory', ApiController.addVsubCategory);
