@@ -132,9 +132,10 @@ console.log(generateString(10));
         exports.addVcategories = async(req, res, next) =>{
             try{
                 const vData = req.body;
+                const change_tag = vData.vcategories_title.toLowerCase().replace(/ /g, '_');
                 let upVcategories = new VcategoriesModel({
                     vcategories_title: vData.vcategories_title,
-                    categoriesId: vData.categoriesId,
+                    categoriesId: change_tag,
                     vcategories_thumbnail: vData.vcategories_thumbnail,
                     vcategories_keywrods: vData.vcategories_keywrods,
                     vcategories_descriptions: vData.vcategories_descriptions,
@@ -150,10 +151,12 @@ console.log(generateString(10));
         exports.addVsubCategory = async(req, res, next) =>{
             try{
                 const subData = req.body;
+                const change_tag = subData.subcategory_title.toLowerCase().replace(/ /g, '_');
+
                 let upSub = new SubCategoryModel({
                     parentCategory: subData.parentCategory,
                     subcategory_title: subData.subcategory_title,
-                    subcategory_Id: subData.subcategory_Id,
+                    subcategory_Id: change_tag,
                     subcategory_thumbnail: subData.subcategory_thumbnail,
                     update_date: newDate,
                 })
@@ -3398,3 +3401,31 @@ exports.senOTPWEB = async (req, res) => {
             }
         };
         
+
+        exports.getStateNamebyLatLong = async(req, res) =>{
+            const { latitude, longitude } = req.query;
+            try {
+                const response = await axios.get(`https://nominatim.openstreetmap.org/reverse`, {
+                    params: {
+                        format: 'json',
+                        lat: latitude,
+                        lon: longitude,
+                    },
+                });
+                const address = response.data.address;
+                const stateName = address.state;
+                const stateCode = address.state_code;
+                const countryName = address.country;
+        
+                res.json({ state_name: stateName, state_code: stateCode, country_name: countryName });
+            } catch (error) {
+                console.error('Error fetching location data:', error);
+                res.status(500).json({ message: 'Error fetching location data' });
+            }
+        }
+
+
+
+
+        
+

@@ -12,17 +12,17 @@
                                 </div>
                             </div><!-- col-4 -->
 
-                           <div class="col-lg-4">
-    <div class="form-group mg-b-10-force">
-        <label class="form-control-label">Videos Category: <span class="tx-danger">*</span></label>
-        <select class="form-control select2" data-placeholder="Videos Category" name="videos_category" id="videosCategory" onchange="populateSubcategories(this)">
-            <option label="Choose Category"></option>
-            {{#each category}}
-            <option value="{{categoriesId}}">{{vcategories_title}}</option>
-            {{/each}}
-        </select>
-    </div>
-</div><!-- col-4 -->
+                            <div class="col-lg-4">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Videos Category: <span class="tx-danger">*</span></label>
+                                    <select class="form-control select2" data-placeholder="Videos Category" name="videos_category" id="videosCategory" onchange="populateSubcategories(this)">
+                                        <option label="Choose Category"></option>
+                                        {{#each category}}
+                                        <option value="{{categoriesId}}">{{vcategories_title}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div><!-- col-4 -->
 
 <div class="col-lg-4">
     <div class="form-group mg-b-10-force">

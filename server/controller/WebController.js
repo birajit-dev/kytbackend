@@ -173,7 +173,17 @@ const newDate = moment().format('lll');
             state,
         });
     }
+
+    exports.videoCategoryPost = async(req, res) =>{
+        res.render('videos_categories');
+    }
   
+    exports.videoSubCategoryPost = async(req, res) =>{
+        const category = await VideosCategoryModel.find({}).lean();
+        res.render('videos_subcategory',{
+            category
+        });
+    }
 
 
 

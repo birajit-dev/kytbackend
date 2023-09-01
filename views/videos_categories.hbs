@@ -1,0 +1,39 @@
+
+   
+   
+    <div class="br-mainpanel">
+        <div class="br-pagebody">
+            <div class="br-section-wrapper">
+                <h6 class="tx-gray-800 tx-uppercase tx-bold tx-14 mg-b-10">Videos Post</h6>
+                <form action="/api/v1/post/videos_categories" method="POST">
+                    <div class="form-layout form-layout-1">
+                        <div class="row mg-b-25">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Category Title: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" name="vcategories_title" placeholder="Category Title">
+                                </div>
+                            </div><!-- col-4 -->
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Category Thumbnail: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" name="vcategories_thumbnail" placeholder="Thumbnail">
+                                </div>
+                            </div><!-- col-4 -->
+
+                           
+                         <!-- Add more input fields as needed -->
+
+                        </div><!-- row -->
+
+                        <div class="form-layout-footer">
+                            <button class="btn btn-info" type="submit">Post Video</button>
+                        </div><!-- form-layout-footer -->
+                    </div><!-- form-layout -->
+                </form>
+            </div><!-- br-section-wrapper -->
+        </div><!-- br-pagebody -->
+    </div>
+</body>
+</html>

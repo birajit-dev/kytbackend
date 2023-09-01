@@ -269,6 +269,12 @@ router.get('/reels/edit', WebController.editReels);
 router.get('/allstate', WebController.getStateData);
 router.get('/state/edit', WebController.updateStateData);
 
+router.get('/videos/category', WebController.videoCategoryPost);
+router.get('/videos/subcategory', WebController.videoSubCategoryPost);
+
+
+router.get('/getstatename', ApiController.getStateNamebyLatLong);
+
 
 
 
