@@ -28,6 +28,7 @@ const MusicModel = require('../model/music');
 const ReelsModel = require('../model/reels');
 const TempleModel = require('../model/templeInfo');
 const StateModel = require('../model/state');
+const MantraCategoriesModel = require('../model/mantra_categories');
 const newDate = moment().format('lll');
 
 
@@ -52,7 +53,10 @@ const newDate = moment().format('lll');
         })
     }
     exports.mantraPage = async(req, res) =>{
-        res.render('mantras');
+        const mantra_category = await MantraCategoriesModel.find({}).lean();
+        res.render('mantras',{
+            mantra_category
+        });
     }
 
     exports.mantraCategoriesPage = async(req, res) =>{
@@ -184,6 +188,11 @@ const newDate = moment().format('lll');
             category
         });
     }
+
+    exports.musicCategory = async(req, res) =>{
+        res.render('music_category');
+    }
+
 
 
 

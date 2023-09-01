@@ -272,6 +272,9 @@ router.get('/state/edit', WebController.updateStateData);
 router.get('/videos/category', WebController.videoCategoryPost);
 router.get('/videos/subcategory', WebController.videoSubCategoryPost);
 
+router.get('/music/category', WebController.musicCategory);
+router.get('/mantra/category', WebController.mantraCategoriesPage);
+
 
 router.get('/getstatename', ApiController.getStateNamebyLatLong);
 

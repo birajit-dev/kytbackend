@@ -298,9 +298,11 @@ console.log(generateString(10));
         exports.addMcategories = async(req, res) =>{
             try{
                 const addMc = req.body;
+                const change_tag = addMc.mcategories_title.toLowerCase().replace(/ /g, '_');
+
                 let addMct = new MusicCategoriesModel({
                     mcategories_title: addMc.mcategories_title,
-                    mcategories_Id: addMc.mcategories_Id,
+                    mcategories_Id: change_tag,
                     mcategories_thumbnail: addMc.mcategories_thumbnail,
                     update_date: newDate, 
                 });
@@ -338,10 +340,8 @@ console.log(generateString(10));
             try{
                 const horData = req.body;
                 const vurl =  horData.horoscope_title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-
                 const inputDate = horData.horoscope_date;
                 const formattedDate = moment(inputDate).format('DD/MM/YYYY');
-
                 let addHoro = new HoroscopeModel({
                     horoscope_title: horData.horoscope_title,
                     horoscope_description: horData.horoscope_description,
@@ -384,9 +384,10 @@ console.log(generateString(10));
         exports.mantraCategoriesPost =  async(req, res) =>{
             try{
                 const mantraCdata = req.body;
+                const change_tag = mantraCdata.mantras_categories_title.toLowerCase().replace(/ /g, '_');
                 let mantraCategoriesAdd = new MantraCategoriesModel({
                     mantras_categories_title: mantraCdata.mantras_categories_title,
-                    mantra_category_Id: mantraCdata.mantra_category_Id,
+                    mantra_category_Id: change_tag,
                     mantras_categories_thumbnail: mantraCdata.mantras_categories_thumbnail,
                     update_date: newDate,   
                 });
