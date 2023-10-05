@@ -11,12 +11,27 @@ var bodyParser = require('body-parser');
 
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(cors());
+
+
+
 const corsOptions = {
   origin: 'https://knowyourtemples.in',
   optionsSuccessStatus: 200,
 };
 
+
+
+const corsOptions2 = {
+  origin: 'https://sanatantemples.com',
+  optionsSuccessStatus: 200,
+};
+
+
+
 app.use(cors(corsOptions));
+app.use(cors(corsOptions2));
+
+
 
 app.use(sessions({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
